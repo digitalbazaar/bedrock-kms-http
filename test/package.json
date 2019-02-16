@@ -1,0 +1,42 @@
+{
+  "name": "bedrock-kms-http-test",
+  "version": "0.0.1-0",
+  "description": "Bedrock KMS HTTP API test",
+  "private": true,
+  "main": "./lib",
+  "scripts": {
+    "test": "node --preserve-symlinks test.js test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalbazaar/bedrock-kms-http"
+  },
+  "keywords": [
+    "bedrock"
+  ],
+  "author": {
+    "name": "Digital Bazaar, Inc.",
+    "email": "support@digitalbazaar.com",
+    "url": "http://digitalbazaar.com"
+  },
+  "bugs": {
+    "url": "https://github.com/digitalbazaar/bedrock-kms-http/issues"
+  },
+  "homepage": "https://github.com/digitalbazaar/bedrock-kms-http",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bedrock": "^1.12.1",
+    "bedrock-account": "^1.0.0",
+    "bedrock-did-client": "^1.1.2",
+    "bedrock-express": "^2.0.8",
+    "bedrock-identity": "^5.0.0",
+    "bedrock-key": "^5.1.2",
+    "bedrock-passport": "^4.0.2",
+    "bedrock-permission": "^2.5.0",
+    "bedrock-kms-http": "file:..",
+    "bedrock-server": "^2.3.2",
+    "bedrock-test": "^2.0.0",
+    "bedrock-validation": "^4.1.0",
+    "uuid": "^3.2.1"
+  }
+}
