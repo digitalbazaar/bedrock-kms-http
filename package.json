@@ -21,7 +21,10 @@
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-kms-http",
   "dependencies": {
-    "assert-plus": "^1.0.0"
+    "assert-plus": "^1.0.0",
+    "base64url-universal": "^1.0.0",
+    "http-signature-header": "^1.2.0",
+    "uuid-random": "^1.0.6"
   },
   "peerDependencies": {
     "bedrock": "^1.12.1",

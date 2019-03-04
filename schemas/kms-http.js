@@ -6,12 +6,13 @@
 const operation = {
   title: 'KMS Operation',
   type: 'object',
-  required: ['plugin', 'operation'],
+  required: ['plugin', 'method'],
+  additionalProperties: false,
   properties: {
     plugin: {
       type: 'string'
     },
-    operation: {
+    method: {
       type: 'string'
     },
     parameters: {
