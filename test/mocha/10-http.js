@@ -20,7 +20,7 @@ describe('bedrock-kms-http API', () => {
         '@context': 'https://w3id.org/security/v2',
         type: 'GenerateKeyOperation',
         invocationTarget: {
-          id: 'idFoo',
+          id: `https://example.com/kms/ssm-v1/${uuid()}`,
           type: 'typeFoo',
           controller: 'controllerFoo',
         },
