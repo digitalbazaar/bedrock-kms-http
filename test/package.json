@@ -4,19 +4,23 @@
   "description": "Bedrock KMS HTTP API test",
   "private": true,
   "scripts": {
-    "test": "node --preserve-symlinks test.js Test"
+    "test": "node --preserve-symlinks test.js test"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "bedrock": "^1.12.1",
+    "apisauce": "^1.0.2",
+    "bedrock": "^1.15.0",
     "bedrock-account": "^1.0.0",
     "bedrock-did-client": "^1.1.2",
     "bedrock-express": "^2.0.8",
     "bedrock-identity": "^5.0.0",
     "bedrock-key": "^5.1.2",
+    "bedrock-kms": "github:digitalbazaar/bedrock-kms#initial",
+    "bedrock-kms-http": "file:..",
+    "bedrock-mongodb": "^5.5.0",
+    "bedrock-package-manager": "^1.0.0",
     "bedrock-passport": "^4.0.2",
     "bedrock-permission": "^2.5.0",
-    "bedrock-kms-http": "file:..",
+    "bedrock-security-context": "^1.0.0",
     "bedrock-server": "^2.3.2",
     "bedrock-test": "^2.0.0",
     "bedrock-validation": "^4.1.0",
