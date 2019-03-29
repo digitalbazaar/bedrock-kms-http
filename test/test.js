@@ -3,6 +3,7 @@
  */
 const bedrock = require('bedrock');
 require('bedrock-kms-http');
+require('bedrock-ssm-mongodb');
 
 require('bedrock-test');
 bedrock.start();
