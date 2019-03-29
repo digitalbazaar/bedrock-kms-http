@@ -42,10 +42,13 @@ const proof = {
 };
 
 const ExportKeyOperation = {
-  required: ['@context', 'proof', 'type'],
+  required: ['@context', 'invocationTarget', 'proof', 'type'],
   additionalProperties: false,
   properties: {
     '@context': context,
+    invocationTarget: {
+      type: 'string'
+    },
     proof,
     type: {
       type: 'string',
@@ -83,10 +86,13 @@ const GenerateKeyOperation = {
 };
 
 const SignOperation = {
-  required: ['@context', 'proof', 'type', 'verifyData'],
+  required: ['@context', 'invocationTarget', 'proof', 'type', 'verifyData'],
   additionalProperties: false,
   properties: {
     '@context': context,
+    invocationTarget: {
+      type: 'string'
+    },
     proof,
     type: {
       type: 'string',
@@ -99,9 +105,12 @@ const SignOperation = {
 };
 
 const UnwrapKeyOperation = {
-  required: ['@context', 'proof', 'type', 'wrappedKey'],
+  required: ['@context', 'invocationTarget', 'proof', 'type', 'wrappedKey'],
   additionalProperties: false,
   properties: {
+    invocationTarget: {
+      type: 'string'
+    },
     type: {
       type: 'string',
       enum: ['UnwrapKeyOperation']
@@ -113,10 +122,16 @@ const UnwrapKeyOperation = {
 };
 
 const VerifyOperation = {
-  required: ['@context', 'proof', 'type', 'signatureValue', 'verifyData'],
+  required: [
+    '@context', 'invocationTarget', 'proof', 'type',
+    'signatureValue', 'verifyData'
+  ],
   additionalProperties: false,
   properties: {
     '@context': context,
+    invocationTarget: {
+      type: 'string'
+    },
     proof,
     type: {
       type: 'string',
@@ -132,10 +147,13 @@ const VerifyOperation = {
 };
 
 const WrapKeyOperation = {
-  required: ['@context', 'proof', 'type', 'wrappedKey'],
+  required: ['@context', 'invocationTarget', 'proof', 'type', 'wrappedKey'],
   additionalProperties: false,
   properties: {
     '@context': context,
+    invocationTarget: {
+      type: 'string'
+    },
     proof,
     type: {
       type: 'string',
