@@ -108,9 +108,11 @@ const UnwrapKeyOperation = {
   required: ['@context', 'invocationTarget', 'proof', 'type', 'wrappedKey'],
   additionalProperties: false,
   properties: {
+    '@context': context,
     invocationTarget: {
       type: 'string'
     },
+    proof,
     type: {
       type: 'string',
       enum: ['UnwrapKeyOperation']
@@ -147,7 +149,7 @@ const VerifyOperation = {
 };
 
 const WrapKeyOperation = {
-  required: ['@context', 'invocationTarget', 'proof', 'type', 'wrappedKey'],
+  required: ['@context', 'invocationTarget', 'proof', 'type', 'unwrappedKey'],
   additionalProperties: false,
   properties: {
     '@context': context,
@@ -159,7 +161,7 @@ const WrapKeyOperation = {
       type: 'string',
       enum: ['WrapKeyOperation']
     },
-    wrappedKey: {
+    unwrappedKey: {
       type: 'string'
     }
   }
