@@ -17,13 +17,14 @@ describe('bedrock-kms-http API', () => {
   describe('operations', () => {
     it('should execute a "generateKey" operation', async () => {
       const operation = {
-        '@context': 'https://w3id.org/security/v2',
+        '@context': config.constants.SECURITY_CONTEXT_V2_URL,
         type: 'GenerateKeyOperation',
         invocationTarget: {
           id: `https://example.com/kms/ssm-v1/${uuid()}`,
-          type: 'typeFoo',
+          type: 'Ed25519VerificationKey2018',
           controller: 'controllerFoo',
         },
+        // TODO: proofs are not validated
         proof: {
           type: uuid(),
           capability: uuid(),
@@ -33,12 +34,17 @@ describe('bedrock-kms-http API', () => {
           verificationMethod: uuid()
         }
       };
-      const response = await api.post(`/foo/bar`, operation, {httpsAgent});
-      console.log('ERROR', response.data);
-      // should.exist(err.response);
-      // err.response.status.should.equal(400);
+      // this request simulates a proxied request where the hostname in the
+      // invocationTarget.id does not match the local hostname
+      const path = operation.invocationTarget.id.split('/').slice(-2).join('/');
+      const response = await api.post(path, operation, {httpsAgent});
+      should.not.exist(response.problem);
+      should.exist(response.data);
+      response.data.should.be.an('object');
+      Object.keys(response.data).should.have.same.members(
+        ['id', 'type', 'publicKeyBase58']);
     });
-    it('should fail to execute a "generateKey" operation', async () => {
+    it.skip('should fail to execute a "generateKey" operation', async () => {
     });
   });
 });
