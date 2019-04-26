@@ -47,4 +47,35 @@ describe('bedrock-kms-http API', () => {
     it.skip('should fail to execute a "generateKey" operation', async () => {
     });
   });
+  describe('requireAuthentication enabled', () => {
+    before(() => config['kms-http'].requireAuthentication = true);
+    after(() => config['kms-http'].requireAuthentication = false);
+    it('NotAllowedError on unauthenticated GenerateKeyOperation', async () => {
+      const operation = {
+        '@context': config.constants.SECURITY_CONTEXT_V2_URL,
+        type: 'GenerateKeyOperation',
+        invocationTarget: {
+          id: `https://example.com/kms/ssm-v1/${uuid()}`,
+          type: 'Ed25519VerificationKey2018',
+          controller: 'controllerFoo',
+        },
+        // TODO: proofs are not validated
+        proof: {
+          type: uuid(),
+          capability: uuid(),
+          created: uuid(),
+          jws: uuid(),
+          proofPurpose: 'capabilityInvocation',
+          verificationMethod: uuid()
+        }
+      };
+      const path = operation.invocationTarget.id.split('/').slice(-2).join('/');
+      const response = await api.post(path, operation, {httpsAgent});
+      should.exist(response.problem);
+      response.problem.should.equal('CLIENT_ERROR');
+      response.status.should.equal(400);
+      should.exist(response.data);
+      response.data.type.should.equal('NotAllowedError');
+    });
+  });
 });
