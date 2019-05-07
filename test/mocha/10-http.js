@@ -20,10 +20,11 @@ describe('bedrock-kms-http API', () => {
         '@context': config.constants.SECURITY_CONTEXT_V2_URL,
         type: 'GenerateKeyOperation',
         invocationTarget: {
-          id: `https://example.com/kms/ssm-v1/${uuid()}`,
+          id: `https://example.com/kms/${uuid()}`,
           type: 'Ed25519VerificationKey2018',
           controller: 'controllerFoo',
         },
+        kmsModule: 'ssm-v1',
         // TODO: proofs are not validated
         proof: {
           type: uuid(),
@@ -36,7 +37,7 @@ describe('bedrock-kms-http API', () => {
       };
       // this request simulates a proxied request where the hostname in the
       // invocationTarget.id does not match the local hostname
-      const path = operation.invocationTarget.id.split('/').slice(-2).join('/');
+      const path = operation.invocationTarget.id.split('/').slice(-1).join('/');
       const response = await api.post(path, operation, {httpsAgent});
       should.not.exist(response.problem);
       should.exist(response.data);
@@ -55,10 +56,11 @@ describe('bedrock-kms-http API', () => {
         '@context': config.constants.SECURITY_CONTEXT_V2_URL,
         type: 'GenerateKeyOperation',
         invocationTarget: {
-          id: `https://example.com/kms/ssm-v1/${uuid()}`,
+          id: `https://example.com/kms/${uuid()}`,
           type: 'Ed25519VerificationKey2018',
           controller: 'controllerFoo',
         },
+        kmsModule: 'ssm-v1',
         // TODO: proofs are not validated
         proof: {
           type: uuid(),
@@ -69,7 +71,7 @@ describe('bedrock-kms-http API', () => {
           verificationMethod: uuid()
         }
       };
-      const path = operation.invocationTarget.id.split('/').slice(-2).join('/');
+      const path = operation.invocationTarget.id.split('/').slice(-1).join('/');
       const response = await api.post(path, operation, {httpsAgent});
       should.exist(response.problem);
       response.problem.should.equal('CLIENT_ERROR');
