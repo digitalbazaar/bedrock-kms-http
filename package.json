@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-kms-http",
   "dependencies": {
-    "http-signature-header": "^1.2.0"
+    "http-signature-header": "^1.2.0",
+    "web-kms-switch": "digitalbazaar/web-kms-switch#initial"
   },
   "peerDependencies": {
     "bedrock": "^1.12.1",
