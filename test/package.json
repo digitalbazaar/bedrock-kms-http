@@ -14,7 +14,7 @@
     "bedrock-express": "^2.0.8",
     "bedrock-identity": "^5.0.0",
     "bedrock-key": "^5.1.2",
-    "bedrock-kms": "github:digitalbazaar/bedrock-kms#initial",
+    "bedrock-kms": "github:digitalbazaar/bedrock-kms#use-web-kms-switch",
     "bedrock-kms-http": "file:..",
     "bedrock-mongodb": "^5.5.0",
     "bedrock-package-manager": "^1.0.0",
