@@ -32,7 +32,8 @@
     "bedrock-passport": "^4.0.2",
     "bedrock-permission": "^2.5.0",
     "bedrock-server": "^2.3.2",
-    "bedrock-validation": "^4.1.0"
+    "bedrock-validation": "^4.1.0",
+    "bedrock-zcap-storage": "digitalbazaar/bedrock-zcap-storage#initial"
   },
   "directories": {
     "lib": "./lib"
