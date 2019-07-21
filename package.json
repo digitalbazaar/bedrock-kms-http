@@ -28,7 +28,7 @@
     "bedrock": "^1.12.1",
     "bedrock-account": "^1.0.0",
     "bedrock-express": "^2.1.0",
-    "bedrock-kms": "digitalbazaar/bedrock-kms#initial",
+    "bedrock-kms": "digitalbazaar/bedrock-kms#use-keystores",
     "bedrock-passport": "^4.0.2",
     "bedrock-permission": "^2.5.0",
     "bedrock-server": "^2.3.2",
