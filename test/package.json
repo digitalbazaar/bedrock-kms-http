@@ -14,7 +14,7 @@
     "bedrock-express": "^2.0.8",
     "bedrock-identity": "^5.0.0",
     "bedrock-key": "^5.1.2",
-    "bedrock-kms": "github:digitalbazaar/bedrock-kms#use-web-kms-switch",
+    "bedrock-kms": "^1.0.0",
     "bedrock-kms-http": "file:..",
     "bedrock-mongodb": "^5.5.0",
     "bedrock-package-manager": "^1.0.0",
@@ -22,7 +22,7 @@
     "bedrock-permission": "^2.5.0",
     "bedrock-security-context": "^1.0.0",
     "bedrock-server": "^2.3.2",
-    "bedrock-ssm-mongodb": "digitalbazaar/bedrock-ssm-mongodb#update-package-type",
+    "bedrock-ssm-mongodb": "^2.0.0",
     "bedrock-test": "^2.0.0",
     "bedrock-validation": "^4.1.0",
     "uuid": "^3.2.1"
