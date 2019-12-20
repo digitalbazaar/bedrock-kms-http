@@ -21,17 +21,17 @@
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-kms-http",
   "dependencies": {
-    "http-signature-zcap-verify": "^1.0.0",
-    "web-kms-switch": "digitalbazaar/web-kms-switch#http-sig"
+    "http-signature-zcap-verify": "^1.0.2",
+    "webkms-switch": "^1.0.0"
   },
   "peerDependencies": {
-    "bedrock": "^1.12.1",
-    "bedrock-account": "^1.0.0",
-    "bedrock-express": "^2.1.0",
-    "bedrock-kms": "digitalbazaar/bedrock-kms#use-keystores",
-    "bedrock-passport": "^4.0.2",
+    "bedrock": "^3.0.1",
+    "bedrock-account": "^2.0.0",
+    "bedrock-express": "^3.0.0",
+    "bedrock-kms": "^1.0.0",
+    "bedrock-passport": "^5.0.0",
     "bedrock-permission": "^2.5.0",
-    "bedrock-server": "^2.3.2",
+    "bedrock-server": "^2.4.0",
     "bedrock-validation": "^4.1.0",
     "bedrock-zcap-storage": "^1.0.0"
   },
