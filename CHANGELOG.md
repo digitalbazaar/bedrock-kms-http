@@ -1,5 +1,10 @@
 # bedrock-kms-http ChangeLog
 
+## 1.1.1 - 2020-01-xx
+
+### Fixed
+- Ensure local zcap storage is checked for parent zcaps.
+
 ## 1.1.0 - 2020-01-11
 
 ### Added
