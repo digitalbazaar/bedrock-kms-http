@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 1.1.0 - 2020-01-xx
+## 1.1.0 - 2020-01-11
 
 ### Added
 - Support delegation by non-root controllers provided that `delegator`
