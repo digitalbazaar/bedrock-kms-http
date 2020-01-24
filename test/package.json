@@ -7,7 +7,6 @@
     "test": "node --preserve-symlinks test.js test"
   },
   "dependencies": {
-    "apisauce": "^1.0.2",
     "bedrock": "^3.0.0",
     "bedrock-account": "^2.0.0",
     "bedrock-express": "^3.0.0",
@@ -25,6 +24,7 @@
     "bedrock-ssm-mongodb": "^2.0.0",
     "bedrock-test": "^5.0.0",
     "bedrock-validation": "^4.1.0",
-    "bedrock-zcap-storage": "^1.2.0"
+    "bedrock-zcap-storage": "^1.2.0",
+    "webkms-client": "^1.1.0"
   }
 }
