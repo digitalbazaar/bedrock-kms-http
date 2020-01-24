@@ -4,14 +4,13 @@
 'use strict';
 
 const bedrock = require('bedrock');
-const https = require('https');
+const brHttpsAgent = require('bedrock-https-agent');
 const {create} = require('apisauce');
 const {config, util: {uuid}} = bedrock;
-// allow self-signed cert for tests
-const httpsAgent = new https.Agent({rejectUnauthorized: false});
 
 const baseURL = `${config.server.baseUri}/kms`;
-const api = create({baseURL});
+const {httpsAgent} = brHttpsAgent;
+const api = create({baseURL, httpsAgent});
 
 describe('bedrock-kms-http API', () => {
   describe('operations', () => {
@@ -38,7 +37,9 @@ describe('bedrock-kms-http API', () => {
       // this request simulates a proxied request where the hostname in the
       // invocationTarget.id does not match the local hostname
       const path = operation.invocationTarget.id.split('/').slice(-1).join('/');
-      const response = await api.post(path, operation, {httpsAgent});
+      const response = await api.post(path, operation);
+      console.log('JJJJJJJ', response);
+
       should.not.exist(response.problem);
       should.exist(response.data);
       response.data.should.be.an('object');
@@ -72,7 +73,7 @@ describe('bedrock-kms-http API', () => {
         }
       };
       const path = operation.invocationTarget.id.split('/').slice(-1).join('/');
-      const response = await api.post(path, operation, {httpsAgent});
+      const response = await api.post(path, operation);
       should.exist(response.problem);
       response.problem.should.equal('CLIENT_ERROR');
       response.status.should.equal(400);
