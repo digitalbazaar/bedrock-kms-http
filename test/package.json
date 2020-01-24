@@ -8,23 +8,22 @@
   },
   "dependencies": {
     "apisauce": "^1.0.2",
-    "bedrock": "^1.15.0",
-    "bedrock-account": "^1.0.0",
-    "bedrock-did-client": "^1.1.2",
-    "bedrock-express": "^2.0.8",
-    "bedrock-identity": "^5.0.0",
-    "bedrock-key": "^5.1.2",
+    "bedrock": "^3.0.0",
+    "bedrock-account": "^2.0.0",
+    "bedrock-express": "^3.0.0",
+    "bedrock-identity": "^7.0.0",
+    "bedrock-jsonld-document-loader": "^1.0.1",
     "bedrock-kms": "^1.0.0",
     "bedrock-kms-http": "file:..",
-    "bedrock-mongodb": "^5.5.0",
+    "bedrock-mongodb": "^6.0.0",
     "bedrock-package-manager": "^1.0.0",
-    "bedrock-passport": "^4.0.2",
+    "bedrock-passport": "^5.0.0",
     "bedrock-permission": "^2.5.0",
-    "bedrock-security-context": "^1.0.0",
+    "bedrock-security-context": "^3.0.0",
     "bedrock-server": "^2.3.2",
     "bedrock-ssm-mongodb": "^2.0.0",
-    "bedrock-test": "^2.0.0",
+    "bedrock-test": "^5.0.0",
     "bedrock-validation": "^4.1.0",
-    "uuid": "^3.2.1"
+    "bedrock-zcap-storage": "^1.2.0"
   }
 }

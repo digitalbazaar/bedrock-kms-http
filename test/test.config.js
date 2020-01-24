@@ -11,3 +11,5 @@ require('bedrock-kms-http');
 config['kms-http'].requireAuthentication = false;
 
 config.mocha.tests.push(path.join(__dirname, 'mocha'));
+
+config.kms.allowedHost = config.server.host;
