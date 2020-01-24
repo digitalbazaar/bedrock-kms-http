@@ -24,7 +24,7 @@
     "bedrock-ssm-mongodb": "^2.0.0",
     "bedrock-test": "^5.0.0",
     "bedrock-validation": "^4.1.0",
-    "bedrock-zcap-storage": "^1.2.0",
-    "webkms-client": "^1.1.0"
+    "bedrock-zcap-storage": "digitalbazaar/bedrock-zcap-storage#revocation",
+    "webkms-client": "digitalbazaar/webkms-client#master"
   }
 }
