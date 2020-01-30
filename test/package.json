@@ -13,7 +13,7 @@
     "bedrock-https-agent": "^1.0.1",
     "bedrock-identity": "^7.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
-    "bedrock-kms": "^1.0.0",
+    "bedrock-kms": "digitalbazaar/bedrock-kms#did-key",
     "bedrock-kms-http": "file:..",
     "bedrock-mongodb": "^6.0.0",
     "bedrock-package-manager": "^1.0.0",
@@ -25,6 +25,9 @@
     "bedrock-test": "^5.0.0",
     "bedrock-validation": "^4.1.0",
     "bedrock-zcap-storage": "digitalbazaar/bedrock-zcap-storage#revocation",
-    "webkms-client": "digitalbazaar/webkms-client#master"
+    "crypto-ld": "^3.7.0",
+    "jsonld-signatures": "^4.6.0",
+    "ocapld": "^1.6.1",
+    "webkms-client": "digitalbazaar/webkms-client#did-key"
   }
 }

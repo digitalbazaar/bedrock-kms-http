@@ -3,10 +3,9 @@
  */
 'use strict';
 
-const bedrock = require('bedrock');
 const brHttpsAgent = require('bedrock-https-agent');
-// const {config, util: {uuid}} = bedrock;
 const {ControllerKey, KmsClient} = require('webkms-client');
+const helpers = require('./helpers');
 
 describe('bedrock-kms-http API', () => {
   describe('keystores', () => {
@@ -25,7 +24,7 @@ describe('bedrock-kms-http API', () => {
       let err;
       let result;
       try {
-        result = await _createKeystore({controllerKey});
+        result = await helpers.createKeystore({controllerKey});
       } catch(e) {
         err = e;
       }
@@ -43,28 +42,4 @@ describe('bedrock-kms-http API', () => {
       result.delegator.should.equal(controllerKeyId);
     });
   });
-
 });
-
-async function _createKeystore({controllerKey, recoveryHost, referenceId}) {
-  // create keystore
-  const config = {
-    sequence: 0,
-    controller: controllerKey.id,
-    invoker: controllerKey.id,
-    delegator: controllerKey.id
-  };
-  if(recoveryHost) {
-    config.invoker = [config.invoker, recoveryHost];
-  }
-  if(referenceId) {
-    config.referenceId = referenceId;
-  }
-  const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
-  const {httpsAgent} = brHttpsAgent;
-  return await KmsClient.createKeystore({
-    url: `${kmsBaseUrl}/keystores`,
-    config,
-    httpsAgent,
-  });
-}
