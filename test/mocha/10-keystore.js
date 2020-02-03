@@ -3,8 +3,7 @@
  */
 'use strict';
 
-const brHttpsAgent = require('bedrock-https-agent');
-const {ControllerKey, KmsClient} = require('webkms-client');
+const {CapabilityAgent} = require('webkms-client');
 const helpers = require('./helpers');
 
 describe('bedrock-kms-http API', () => {
@@ -13,18 +12,13 @@ describe('bedrock-kms-http API', () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
 
-      const {httpsAgent} = brHttpsAgent;
-      // keystore in the kmsClient is set later
-      const kmsClient = new KmsClient({httpsAgent});
-
-      const controllerKey = await ControllerKey.fromSecret({
-        secret, handle, kmsClient
-      });
+      const capabilityAgent = await CapabilityAgent
+        .fromSecret({secret, handle});
 
       let err;
       let result;
       try {
-        result = await helpers.createKeystore({controllerKey});
+        result = await helpers.createKeystore({capabilityAgent});
       } catch(e) {
         err = e;
       }
@@ -33,13 +27,13 @@ describe('bedrock-kms-http API', () => {
       result.should.have.property('id');
       result.should.have.property('sequence');
       result.sequence.should.equal(0);
-      const {id: controllerKeyId} = controllerKey;
+      const {id: capabilityAgentId} = capabilityAgent;
       result.should.have.property('controller');
-      result.controller.should.equal(controllerKeyId);
+      result.controller.should.equal(capabilityAgentId);
       result.should.have.property('invoker');
-      result.invoker.should.equal(controllerKeyId);
+      result.invoker.should.equal(capabilityAgentId);
       result.should.have.property('delegator');
-      result.delegator.should.equal(controllerKeyId);
+      result.delegator.should.equal(capabilityAgentId);
     });
   });
 });

@@ -5,7 +5,11 @@
 
 const {config} = require('bedrock');
 const path = require('path');
-require('bedrock-kms-http');
+
+// MongoDB
+config.mongodb.name = 'bedrock_kms_http_test';
+config.mongodb.dropCollections.onInit = true;
+config.mongodb.dropCollections.collections = [];
 
 // do not require an authentication session for tests
 config['kms-http'].requireAuthentication = false;
