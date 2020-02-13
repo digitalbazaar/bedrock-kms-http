@@ -28,7 +28,7 @@
     "bedrock-zcap-storage": "digitalbazaar/bedrock-zcap-storage#revocation",
     "bedrock-zcap-storage-http": "github:digitalbazaar/bedrock-zcap-storage-http#revocations",
     "crypto-ld": "^3.7.0",
-    "jsonld-signatures": "digitalbazaar/jsonld-signatures#proof-result",
+    "jsonld-signatures": "digitalbazaar/jsonld-signatures",
     "ocapld": "^1.7.0",
     "sinon": "^8.1.1",
     "webkms-client": "^2.0.1"
