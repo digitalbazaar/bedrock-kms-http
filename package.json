@@ -22,7 +22,7 @@
   "homepage": "https://github.com/digitalbazaar/bedrock-kms-http",
   "dependencies": {
     "http-signature-zcap-verify": "^1.0.2",
-    "jsonld-signatures": "^4.6.0",
+    "jsonld-signatures": "^5.0.0",
     "webkms-switch": "^1.0.0"
   },
   "peerDependencies": {
