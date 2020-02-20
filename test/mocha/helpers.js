@@ -6,7 +6,6 @@
 const bedrock = require('bedrock');
 const brHttpsAgent = require('bedrock-https-agent');
 const {KmsClient} = require('webkms-client');
-const {DelegationService} = require('bedrock-web-zcap-storage');
 const brPassport = require('bedrock-passport');
 const sinon = require('sinon');
 
@@ -30,24 +29,6 @@ exports.createKeystore = async ({capabilityAgent, referenceId}) => {
     config,
     httpsAgent,
   });
-};
-
-exports.storeDelegation = async ({delegation}) => {
-  const {httpsAgent} = brHttpsAgent;
-  const ds = new DelegationService({
-    baseURL: `${bedrock.config.server.baseUri}`,
-    httpsAgent,
-  });
-  await ds.create(delegation);
-};
-
-exports.deleteDelegation = async ({id}) => {
-  const {httpsAgent} = brHttpsAgent;
-  const ds = new DelegationService({
-    baseURL: `${bedrock.config.server.baseUri}`,
-    httpsAgent,
-  });
-  await ds.delete({id});
 };
 
 exports.stubPassport = ({actor}) => {

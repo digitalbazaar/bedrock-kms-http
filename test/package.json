@@ -24,7 +24,6 @@
     "bedrock-ssm-mongodb": "^2.0.0",
     "bedrock-test": "^5.0.0",
     "bedrock-validation": "^4.1.0",
-    "bedrock-web-zcap-storage": "github:digitalbazaar/bedrock-web-zcap-storage#initial",
     "bedrock-zcap-storage": "digitalbazaar/bedrock-zcap-storage#revocation",
     "bedrock-zcap-storage-http": "github:digitalbazaar/bedrock-zcap-storage-http#revocations",
     "crypto-ld": "^3.7.0",

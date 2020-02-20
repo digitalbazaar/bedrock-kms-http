@@ -211,14 +211,7 @@ describe('revocations API', () => {
       zcap: carolZcap
     });
 
-    // Bob uses bedrock-web-zcap-storage to store record of the
-    // delegation to Carol
-    await helpers.storeDelegation({
-      delegation: {
-        capability: signedCapabilityFromBobToCarol,
-        delegator: bobKey.id,
-      }
-    });
+    // Bob would then store record of the delegation to Carol in an EDV
 
     // demonstrate that Carol can also sign with Alice's key
     const carolSignedDocument = await _signWithDelegatedKey({
@@ -271,21 +264,9 @@ describe('revocations API', () => {
     data.message.should.include('invalid');
     // TODO: with jsigs@5, err.cause should have additional details for assert
 
-    // Bob uses bedrock-web-zcap-storage to indicate the capability stored
-    // in the delegations collection is now revoked. This is just a
-    // housekeeping measure, Carol's capability is revoked on Alice's system
-    // and is no longer valid.
-    await helpers.deleteDelegation({id: signedCapabilityFromBobToCarol.id});
-
-    // an attempt to delete the delegation again results in NotFoundError
-    err = null;
-    try {
-      await helpers.deleteDelegation({id: signedCapabilityFromBobToCarol.id});
-    } catch(e) {
-      err = e;
-    }
-    should.exist(err);
-    err.message.should.contain('NotFoundError');
+    // Bob would then update his delegation record in an EDV to indicate that
+    // the delegation is now revoked. This is just a housekeeping measure,
+    // Carol's capability is revoked on Alice's system and is no longer valid.
 
     // demonstrate that Carol can no longer use Alice's key for signing.
     let result;
