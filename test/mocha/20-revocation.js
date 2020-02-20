@@ -92,9 +92,7 @@ describe('revocations API', () => {
   let passportStub;
   before(() => {
     const actor = {
-      // FIXME: how does the account/actor ID, a urn:uuid: relate to
-      // the did:key found in a capability?
-      id: bobKey.id
+      id: 'urn:uuid:7d1f8aea-5a22-480e-840b-d60bc5705864'
     };
     passportStub = helpers.stubPassport({actor});
   });
