@@ -29,7 +29,7 @@
     "bedrock": "^3.0.1",
     "bedrock-account": "^2.0.0",
     "bedrock-express": "^3.0.0",
-    "bedrock-kms": "^1.2.0",
+    "bedrock-kms": "^1.4.0",
     "bedrock-passport": "^5.0.0",
     "bedrock-permission": "^2.5.0",
     "bedrock-server": "^2.4.0",
