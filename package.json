@@ -34,7 +34,7 @@
     "bedrock-permission": "^2.5.0",
     "bedrock-server": "^2.4.0",
     "bedrock-validation": "^4.1.0",
-    "bedrock-zcap-storage": "^1.0.0"
+    "bedrock-zcap-storage": "^2.0.0"
   },
   "directories": {
     "lib": "./lib"
