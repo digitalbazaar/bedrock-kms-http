@@ -1,6 +1,9 @@
 # bedrock-kms-http ChangeLog
 
-## 1.2.0 - 2020-02-xx
+## 1.2.0 - 2020-02-26
+
+### Added
+- Revocations API.
 
 ### Changed
 - Use jsonld-signatures@5.
