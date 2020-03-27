@@ -21,9 +21,9 @@
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-kms-http",
   "dependencies": {
-    "http-signature-zcap-verify": "^2.0.0",
+    "http-signature-zcap-verify": "digitalbazaar/http-signature-zcap-verify#ocapld-next",
     "jsonld-signatures": "^5.0.0",
-    "webkms-switch": "^1.3.0"
+    "webkms-switch": "digitalbazaar/webkms-switch#ocapld-next"
   },
   "peerDependencies": {
     "bedrock": "^3.0.1",
