@@ -1,5 +1,14 @@
 # bedrock-kms-http ChangeLog
 
+## 2.0.0 - 2020-04-02
+
+### Added
+- Create expectedRootCapability for revocations.
+
+### Changed
+- **BREAKING**: Use webkms-switch@2.
+- **BREAKING**: Use http-signature-zcap-verify@3.
+
 ## 1.2.1 - 2020-02-27
 
 ### Fixed
