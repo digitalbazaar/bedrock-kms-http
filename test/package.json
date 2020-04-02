@@ -14,7 +14,7 @@
     "bedrock-https-agent": "^1.0.1",
     "bedrock-identity": "^7.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
-    "bedrock-kms": "^1.4.0",
+    "bedrock-kms": "^2.0.0",
     "bedrock-kms-http": "file:..",
     "bedrock-mongodb": "^6.0.0",
     "bedrock-package-manager": "^1.0.0",
@@ -28,7 +28,7 @@
     "bedrock-zcap-storage": "^2.0.0",
     "crypto-ld": "^3.7.0",
     "jsonld-signatures": "^5.0.0",
-    "ocapld": "^1.8.0",
+    "ocapld": "^2.0.0",
     "sinon": "^8.1.1",
     "webkms-client": "^2.0.1"
   }
