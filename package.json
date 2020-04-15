@@ -3,7 +3,9 @@
   "version": "2.0.1-0",
   "description": "Bedrock KMS HTTP API",
   "main": "./lib",
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint lib test"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/digitalbazaar/bedrock-kms-http"

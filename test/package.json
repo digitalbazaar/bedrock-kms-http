@@ -4,7 +4,10 @@
   "description": "Bedrock KMS HTTP API test",
   "private": true,
   "scripts": {
-    "test": "node --preserve-symlinks test.js test"
+    "test": "node --preserve-symlinks test.js test",
+    "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text-summary npm test",
+    "coverage-ci": "cross-env NODE_ENV=test nyc --reporter=text-lcov npm test > coverage.lcov",
+    "coverage-report": "nyc report"
   },
   "dependencies": {
     "bedrock": "^3.0.0",
@@ -26,10 +29,21 @@
     "bedrock-test": "^5.0.0",
     "bedrock-validation": "^4.1.0",
     "bedrock-zcap-storage": "^2.0.0",
+    "cross-env": "^7.0.2",
     "crypto-ld": "^3.7.0",
     "jsonld-signatures": "^5.0.0",
+    "nyc": "^15.0.1",
     "ocapld": "^2.0.0",
-    "sinon": "^8.1.1",
+    "sinon": "^9.0.0",
     "webkms-client": "^2.0.1"
+  },
+  "nyc": {
+    "excludeNodeModules": false,
+    "include": [
+      "node_modules/bedrock-kms-http/**"
+    ],
+    "exclude": [
+      "node_modules/bedrock-kms-http/node_modules/**"
+    ]
   }
 }

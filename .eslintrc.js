@@ -1,6 +1,8 @@
 module.exports = {
+  root: true,
   env: {
     node: true
   },
-  extends: 'digitalbazaar'
+  extends: ['digitalbazaar'],
+  ignorePatterns: ['node_modules/']
 };
