@@ -24,18 +24,18 @@
   "homepage": "https://github.com/digitalbazaar/bedrock-kms-http",
   "dependencies": {
     "http-signature-zcap-verify": "^3.0.0",
-    "jsonld-signatures": "^5.0.0",
+    "jsonld-signatures": "^5.0.1",
     "webkms-switch": "^2.0.0"
   },
   "peerDependencies": {
-    "bedrock": "^3.0.1",
-    "bedrock-account": "^2.0.0",
-    "bedrock-express": "^3.0.0",
-    "bedrock-kms": "^2.0.0",
-    "bedrock-passport": "^5.0.0",
-    "bedrock-permission": "^2.5.0",
-    "bedrock-server": "^2.4.0",
-    "bedrock-validation": "^4.1.0",
+    "bedrock": "^3.1.0",
+    "bedrock-account": "^2.2.0",
+    "bedrock-express": "^3.1.0",
+    "bedrock-kms": "digitalbazaar/bedrock-kms#support-v1",
+    "bedrock-passport": "^5.0.2",
+    "bedrock-permission": "^2.5.4",
+    "bedrock-server": "^2.6.0",
+    "bedrock-validation": "^4.3.0",
     "bedrock-zcap-storage": "^2.0.0"
   },
   "directories": {
@@ -43,6 +43,6 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
-    "eslint-config-digitalbazaar": "^2.0.0"
+    "eslint-config-digitalbazaar": "^2.3.0"
   }
 }
