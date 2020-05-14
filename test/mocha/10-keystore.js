@@ -30,10 +30,6 @@ describe('bedrock-kms-http API', () => {
       const {id: capabilityAgentId} = capabilityAgent;
       result.should.have.property('controller');
       result.controller.should.equal(capabilityAgentId);
-      result.should.have.property('invoker');
-      result.invoker.should.equal(capabilityAgentId);
-      result.should.have.property('delegator');
-      result.delegator.should.equal(capabilityAgentId);
     });
   });
 });
