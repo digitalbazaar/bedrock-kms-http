@@ -11,7 +11,10 @@ const sinon = require('sinon');
 
 // the `keystores` endpoint uses session based authentication which is
 // mocked
-exports.createKeystore = async ({capabilityAgent, referenceId}) => {
+exports.createKeystore = async ({
+  capabilityAgent, referenceId,
+  kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`
+}) => {
   // create keystore
   const config = {
     sequence: 0,
@@ -20,7 +23,7 @@ exports.createKeystore = async ({capabilityAgent, referenceId}) => {
   if(referenceId) {
     config.referenceId = referenceId;
   }
-  const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
+
   const {httpsAgent} = brHttpsAgent;
   return await KmsClient.createKeystore({
     url: `${kmsBaseUrl}/keystores`,
