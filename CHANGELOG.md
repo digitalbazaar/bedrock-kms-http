@@ -1,5 +1,13 @@
 # bedrock-kms-http ChangeLog
 
+## 2.1.0 - 2020-05-15
+
+### Added
+- Add CORS support for key ops.
+
+### Changed
+- Use bedrock-kms@2.1.0.
+
 ## 2.0.0 - 2020-04-02
 
 ### Added
