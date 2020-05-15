@@ -31,7 +31,7 @@
     "bedrock": "^3.1.0",
     "bedrock-account": "^2.2.0",
     "bedrock-express": "^3.1.0",
-    "bedrock-kms": "digitalbazaar/bedrock-kms#support-v1",
+    "bedrock-kms": "^2.1.0",
     "bedrock-passport": "^5.0.2",
     "bedrock-permission": "^2.5.4",
     "bedrock-server": "^2.6.0",
