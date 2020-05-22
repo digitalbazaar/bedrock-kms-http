@@ -1,15 +1,9 @@
 /*
  * Copyright (c) 2019-2020 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
-const {util: {uuid}} = require('bedrock');
-const brHttpsAgent = require('bedrock-https-agent');
-const pMap = require('p-map');
-const {CapabilityAgent, KeystoreAgent, KmsClient} = require('webkms-client');
-const helpers = require('./helpers');
-// TextEncoder is not a global in node 10
-const {TextEncoder} = require('util');
+import pMap from 'p-map';
+import uuid from 'uuid-random';
+import {CapabilityAgent, KeystoreAgent, KmsClient} from 'webkms-client';
 
 const KMS_MODULE = 'ssm-v1';
 
@@ -26,16 +20,15 @@ describe('bedrock-kms-http HMAC operations', () => {
       let err;
       let keystore;
       try {
-        keystore = await helpers.createKeystore({capabilityAgent});
+        keystore = await _createKeystore({capabilityAgent});
       } catch(e) {
         err = e;
       }
-      assertNoError(err);
+      should.not.exist(err);
 
       // create kmsClient only required because we need to use httpsAgent
       // that accepts self-signed certs used in test suite
-      const {httpsAgent} = brHttpsAgent;
-      const kmsClient = new KmsClient({httpsAgent});
+      const kmsClient = new KmsClient();
       const keystoreAgent = new KeystoreAgent({
         capabilityAgent,
         keystore,
@@ -55,7 +48,7 @@ describe('bedrock-kms-http HMAC operations', () => {
       } catch(e) {
         err = err;
       }
-      assertNoError(err);
+      should.not.exist(err);
       should.exist(result);
       result.should.be.a('string');
     });
@@ -74,6 +67,7 @@ describe('bedrock-kms-http HMAC operations', () => {
       });
       it(`performs ${operationCount} signatures`, async function() {
         this.timeout(0);
+        const startTime = Date.now();
         let result;
         let err;
         try {
@@ -82,11 +76,27 @@ describe('bedrock-kms-http HMAC operations', () => {
         } catch(e) {
           err = e;
         }
-        assertNoError(err);
+        should.not.exist(err);
         should.exist(result);
         result.should.be.an('array');
         result.should.have.length(operationCount);
+        const elapsedTime = Date.now() - startTime;
+        // NOTE: reporter in karma does not report elapsed time for individual
+        // tests, this logging is intentional
+        console.log('ELAPSED TIME', elapsedTime);
       });
     }); // end bulk operations
   });
 });
+
+async function _createKeystore({capabilityAgent, referenceId}) {
+  // create keystore
+  const config = {
+    sequence: 0,
+    controller: capabilityAgent.id,
+  };
+  if(referenceId) {
+    config.referenceId = referenceId;
+  }
+  return await KmsClient.createKeystore({config});
+}

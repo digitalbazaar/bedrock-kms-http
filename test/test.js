@@ -10,4 +10,6 @@ require('bedrock-security-context');
 require('bedrock-ssm-mongodb');
 
 require('bedrock-test');
+require('bedrock-karma');
+
 bedrock.start();

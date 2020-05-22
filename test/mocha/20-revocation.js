@@ -258,15 +258,11 @@ describe('revocations API', () => {
       err = e;
     }
     should.exist(err);
-
-    // NOTE: this is how non-network errors are surfaced
-    console.log('ERROR STATUS', err.response.status);
-
-    const data = await err.response.json();
-    // NOTE: this is how non-network errors are surfaced
-    console.log('ERROR JSON BODY', data);
-
-    data.message.should.include('invalid');
+    err.status.should.equal(400);
+    should.exist(err.data);
+    const {data} = err;
+    data.message.should.include('capability delegation is invalid');
+    data.type.should.equal('DataError');
     // TODO: with jsigs@5, err.cause should have additional details for assert
 
     // Bob would then update his delegation record in an EDV to indicate that
@@ -286,10 +282,8 @@ describe('revocations API', () => {
     }
     should.not.exist(result);
     should.exist(err);
-
-    // FIXME: Is this what we want returned from client libs?
-    // err.response.json() is a promise that must be resolved
-    (await err.response.json()).type.should.equal('NotAllowedError');
+    should.exist(err.data);
+    err.data.type.should.equal('NotAllowedError');
   });
 });
 

@@ -20,3 +20,15 @@ config.kms.allowedHost = config.server.host;
 
 // allow self-signed certs in test framework
 config['https-agent'].rejectUnauthorized = false;
+
+// configure karma tests
+config.karma.suites['bedrock-web-kms'] = path.join('web', '**', '*.js');
+config.karma.config.proxies = {
+  '/': {
+    target: 'https://localhost:18443',
+    changeOrigin: true
+  }
+};
+config.karma.config.proxyValidateSSL = false;
+config.karma.config.browserNoActivityTimeout = 120000;
+config.karma.config.browserDisconnectTimeout = 120000;
