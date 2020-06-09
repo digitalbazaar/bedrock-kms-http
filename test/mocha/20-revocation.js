@@ -258,7 +258,14 @@ describe('revocations API', () => {
       err = e;
     }
     should.exist(err);
-    const {data} = err.response;
+
+    // NOTE: this is how non-network errors are surfaced
+    console.log('ERROR STATUS', err.response.status);
+
+    const data = await err.response.json();
+    // NOTE: this is how non-network errors are surfaced
+    console.log('ERROR JSON BODY', data);
+
     data.message.should.include('invalid');
     // TODO: with jsigs@5, err.cause should have additional details for assert
 
@@ -279,9 +286,10 @@ describe('revocations API', () => {
     }
     should.not.exist(result);
     should.exist(err);
-    // FIXME: this is an axios error due to poor error handling in
-    // webkms-client which needs to be addressed
-    err.response.data.type.should.equal('NotAllowedError');
+
+    // FIXME: Is this what we want returned from client libs?
+    // err.response.json() is a promise that must be resolved
+    (await err.response.json()).type.should.equal('NotAllowedError');
   });
 });
 

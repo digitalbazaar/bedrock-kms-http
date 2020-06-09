@@ -12,7 +12,7 @@ const {TextEncoder} = require('util');
 
 const KMS_MODULE = 'ssm-v1';
 
-describe('bedrock-kms-http HMAC operations', () => {
+describe.skip('bedrock-kms-http HMAC operations', () => {
   describe('Sha256HmacKey2019', () => {
     let hmac;
     before(async () => {
