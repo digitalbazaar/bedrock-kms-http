@@ -5,6 +5,7 @@
 
 const {util: {uuid}} = require('bedrock');
 const brHttpsAgent = require('bedrock-https-agent');
+const pMap = require('p-map');
 const {CapabilityAgent, KeystoreAgent, KmsClient} = require('webkms-client');
 const helpers = require('./helpers');
 // TextEncoder is not a global in node 10
@@ -12,7 +13,7 @@ const {TextEncoder} = require('util');
 
 const KMS_MODULE = 'ssm-v1';
 
-describe.skip('bedrock-kms-http HMAC operations', () => {
+describe('bedrock-kms-http HMAC operations', () => {
   describe('Sha256HmacKey2019', () => {
     let hmac;
     before(async () => {
@@ -73,14 +74,11 @@ describe.skip('bedrock-kms-http HMAC operations', () => {
       });
       it(`performs ${operationCount} signatures`, async function() {
         this.timeout(0);
-        const promises = [];
-        for(let i = 0; i < operationCount; ++i) {
-          promises.push(hmac.sign({data: vData[i]}));
-        }
         let result;
         let err;
         try {
-          result = await Promise.all(promises);
+          result = await pMap(
+            vData, data => hmac.sign({data}), {concurrency: 5});
         } catch(e) {
           err = e;
         }
