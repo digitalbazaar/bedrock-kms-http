@@ -29,14 +29,14 @@
   },
   "peerDependencies": {
     "bedrock": "^3.1.0",
-    "bedrock-account": "^2.2.0",
+    "bedrock-account": "2.x - 3.x",
     "bedrock-express": "^3.1.0",
-    "bedrock-kms": "^2.1.0",
+    "bedrock-kms": "2.x - 3.x",
     "bedrock-passport": "^5.0.2",
-    "bedrock-permission": "^2.5.4",
+    "bedrock-permission": "2.x - 3.x",
     "bedrock-server": "^2.6.0",
     "bedrock-validation": "^4.3.0",
-    "bedrock-zcap-storage": "^2.0.0"
+    "bedrock-zcap-storage": "2.x - 3.x"
   },
   "directories": {
     "lib": "./lib"
