@@ -1,5 +1,14 @@
 # bedrock-kms-http ChangeLog
 
+## 2.2.0 - 2020-06-19
+
+### Added
+- Improve test coverage.
+
+### Changed
+- Update peer deps.
+- Improve error handling in `_verifyHost` helper.
+
 ## 2.1.0 - 2020-05-15
 
 ### Added
