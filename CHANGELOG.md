@@ -1,5 +1,12 @@
 # bedrock-kms-http ChangeLog
 
+## 2.3.0 - 2020-06-30
+
+### Changed
+- Update peerDependencies to include bedrock-account@4.
+- Update test deps.
+- Update CI workflow.
+
 ## 2.2.0 - 2020-06-19
 
 ### Added
