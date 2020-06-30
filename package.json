@@ -4,7 +4,7 @@
   "description": "Bedrock KMS HTTP API",
   "main": "./lib",
   "scripts": {
-    "lint": "eslint lib test"
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
