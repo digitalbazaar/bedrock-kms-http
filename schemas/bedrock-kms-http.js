@@ -25,7 +25,7 @@ const postKeystore = {
       title: 'sequence',
       type: 'number',
       minimum: 0,
-      exclusiveMaximum: Number.MAX_SAFE_INTEGER
+      maximum: Number.MAX_SAFE_INTEGER - 1
     }}
 };
 
