@@ -42,7 +42,7 @@ exports.findKeystore = async ({
   kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`
 }) => {
   const url = `${kmsBaseUrl}/keystores` +
-  `/?controller=${controller}&referenceId=${referenceId}`;
+    `/?controller=${controller}&referenceId=${referenceId}`;
   const {httpsAgent} = brHttpsAgent;
   return await KmsClient.findKeystore({
     url, controller, referenceId, httpsAgent
