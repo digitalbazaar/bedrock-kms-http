@@ -8,15 +8,24 @@ const controller = {
   type: 'string'
 };
 
+const referenceId = {
+  title: 'referenceId',
+  type: 'string'
+};
+
 const postKeystore = {
   title: 'postKeystore',
   type: 'object',
-  additionalProperties: true,
+  additionalProperties: false,
   required: ['sequence', 'controller'],
-  properties: {controller,
+  properties: {
+    controller,
+    referenceId,
     sequence: {
       title: 'sequence',
-      type: 'number'
+      type: 'number',
+      minimum: 0,
+      exclusiveMaximum: Number.MAX_SAFE_INTEGER
     }}
 };
 
@@ -25,10 +34,10 @@ const findKeystore = {
   type: 'object',
   additionalProperties: false,
   required: ['controller', 'referenceId'],
-  properties: {controller,
-    referenceId: {
-      title: 'referenceId', type: 'string'
-    }}
+  properties: {
+    controller,
+    referenceId
+  }
 };
 
 const zcap = {
@@ -65,10 +74,7 @@ const zcap = {
         items: {type: 'string'}
       }]
     },
-    controller: {
-      title: 'controller',
-      type: 'string'
-    },
+    controller,
     delegator: {
       anyOf: [{
         type: 'string'
@@ -125,7 +131,8 @@ const recovery = {
   type: 'object',
   additionalProperties: false,
   required: ['@context', 'controller'],
-  properties: {controller,
+  properties: {
+    controller,
     '@context': {
       title: '@context', type: 'string'
     }}

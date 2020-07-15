@@ -357,7 +357,7 @@ describe('revocations API', () => {
       // in the allowedAction of the parentCapability, there is an issue in
       // ocapld for this.
       allowedAction: 'sign',
-    //  invocationTarget: zcap.invocationTarget,
+      //  invocationTarget: zcap.invocationTarget,
     };
 
     // finish bobs delegation to carol
@@ -373,8 +373,8 @@ describe('revocations API', () => {
     let err;
     try {
       await _revokeDelegatedCapability({
-      // the capability here is to `write` to a revocations endpoint on
-      // Alice's system
+        // the capability here is to `write` to a revocations endpoint on
+        // Alice's system
         capability: signedBobRevocationZcap,
         // the `sign` capability that Bob gave to Carol
         capabilityToRevoke: signedCapabilityFromBobToCarol,
