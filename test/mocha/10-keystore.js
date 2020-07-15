@@ -7,7 +7,7 @@ const bedrock = require('bedrock');
 const {CapabilityAgent} = require('webkms-client');
 const helpers = require('./helpers');
 const brHttpsAgent = require('bedrock-https-agent');
-const axios = require('axios');
+const {httpClient} = require('@digitalbazaar/http-client');
 const mockData = require('./mock.data');
 
 describe('bedrock-kms-http API', () => {
@@ -46,22 +46,18 @@ describe('bedrock-kms-http API', () => {
       const config = {
         controller: capabilityAgent.id
       };
-      const {httpsAgent} = brHttpsAgent;
 
       let err;
       let result;
       try {
-        result = await axios.post(
-          url,
-          config,
-          {httpsAgent}
-        );
+        const {agent} = brHttpsAgent;
+        result = await httpClient.post(url, {agent, json: config});
       } catch(e) {
         err = e;
       }
       should.exist(err);
       should.not.exist(result);
-      err.response.data.message.should.equal(
+      err.data.message.should.equal(
         'A validation error occured in the \'postKeystore\' validator.');
     });
     it('gets a keystore', async () => {
@@ -124,49 +120,41 @@ describe('bedrock-kms-http API', () => {
 
       const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
       const url = `${kmsBaseUrl}/keystores` +
-      `/?r?controller=${keystore.controller}`;
-
-      const {httpsAgent} = brHttpsAgent;
+        `/?r?controller=${keystore.controller}`;
 
       let err;
       let result;
       try {
-        result = await axios.get(
-          url,
-          {httpsAgent}
-        );
+        const {agent} = brHttpsAgent;
+        result = await httpClient.get(url, {agent});
       } catch(e) {
         err = e;
       }
       should.exist(err);
       should.not.exist(result);
-      err.response.data.message.should.equal(
+      err.data.message.should.equal(
         'A validation error occured in the \'findKeystore\' validator.');
     });
     it('throws error on no referenceId in findKeystore validation',
       async () => {
-      // eslint-disable-next-line max-len
-        const referenceId = 'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
+        const referenceId =
+         'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
 
         const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
         const url = `${kmsBaseUrl}/keystores` +
-      `/?referenceId=${referenceId}`;
-
-        const {httpsAgent} = brHttpsAgent;
+          `/?referenceId=${referenceId}`;
 
         let err;
         let result;
         try {
-          result = await axios.get(
-            url,
-            {httpsAgent}
-          );
+          const {agent} = brHttpsAgent;
+          result = await httpClient.get(url, {agent});
         } catch(e) {
           err = e;
         }
         should.exist(err);
         should.not.exist(result);
-        err.response.data.message.should.equal(
+        err.data.message.should.equal(
           'A validation error occured in the \'findKeystore\' validator.');
       });
     it('throws error with no invoker in zcap validation', async () => {
@@ -182,22 +170,18 @@ describe('bedrock-kms-http API', () => {
 
       const zcap = mockData.zcaps.zero;
       delete zcap.invoker;
-      const {httpsAgent} = brHttpsAgent;
 
       let err;
       let result;
       try {
-        result = await axios.post(
-          url,
-          zcap,
-          {httpsAgent}
-        );
+        const {agent} = brHttpsAgent;
+        result = await httpClient.post(url, {agent, json: zcap});
       } catch(e) {
         err = e;
       }
       should.exist(err);
       should.not.exist(result);
-      err.response.data.message.should.equal(
+      err.data.message.should.equal(
         'A validation error occured in the \'zcap\' validator.');
     });
     it('throws error with no controller in recovery validation',
@@ -215,22 +199,18 @@ describe('bedrock-kms-http API', () => {
         const config = {
           '@context': 'https://w3id.org/security/v2',
         };
-        const {httpsAgent} = brHttpsAgent;
 
         let err;
         let result;
         try {
-          result = await axios.post(
-            url,
-            config,
-            {httpsAgent}
-          );
+          const {agent} = brHttpsAgent;
+          result = await httpClient.post(url, {agent, json: config});
         } catch(e) {
           err = e;
         }
         should.exist(err);
         should.not.exist(result);
-        err.response.data.message.should.equal(
+        err.data.message.should.equal(
           'A validation error occured in the \'recovery\' validator.');
       });
     it('throws error on receivedHost not equal to allowedHost', async () => {
