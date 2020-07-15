@@ -1,5 +1,12 @@
 # bedrock-kms-http ChangeLog
 
+## 3.1.0 - 2020-09-25
+
+### Added
+- Added validators to `keystore`, `keystores`, `authorizations`, and
+  `zcaps` endpoints.
+- Improve test coverage.
+
 ## 3.0.0 - 2020-09-22
 
 ### Changed
