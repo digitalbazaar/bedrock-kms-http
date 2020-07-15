@@ -356,8 +356,7 @@ describe('revocations API', () => {
       // this is where we need to ensure the allowedAction here is included
       // in the allowedAction of the parentCapability, there is an issue in
       // ocapld for this.
-      allowedAction: 'sign',
-      //  invocationTarget: zcap.invocationTarget,
+      allowedAction: 'sign'
     };
 
     // finish bobs delegation to carol

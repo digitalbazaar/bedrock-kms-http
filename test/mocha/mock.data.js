@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019-2020 Digital Bazaar, Inc. All rights reserved.
+ */
+
 /* eslint-disable max-len */
 const data = {};
 module.exports = data;

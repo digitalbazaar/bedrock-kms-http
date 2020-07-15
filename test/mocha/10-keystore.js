@@ -83,8 +83,8 @@ describe('bedrock-kms-http API', () => {
     it('finds a keystore', async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
-      // eslint-disable-next-line max-len
-      const referenceId = 'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
+      const referenceId =
+      'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
 
       const capabilityAgent = await CapabilityAgent
         .fromSecret({secret, handle});
@@ -109,8 +109,8 @@ describe('bedrock-kms-http API', () => {
     it('throws error on no controller in findKeystore validation', async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
-      // eslint-disable-next-line max-len
-      const referenceId = 'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
+      const referenceId =
+      'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
 
       const capabilityAgent = await CapabilityAgent
         .fromSecret({secret, handle});
