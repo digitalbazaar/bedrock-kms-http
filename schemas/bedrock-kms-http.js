@@ -119,10 +119,7 @@ const zcap = {
       title: 'Proof',
       type: 'object'
     },
-    referenceId: {
-      title: 'Reference Id',
-      type: 'string'
-    }
+    referenceId
   }
 };
 
