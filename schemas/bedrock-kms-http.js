@@ -26,7 +26,16 @@ const postKeystore = {
       type: 'number',
       minimum: 0,
       maximum: Number.MAX_SAFE_INTEGER - 1
-    }}
+    },
+    invoker: {
+      title: 'invoker',
+      type: 'string'
+    },
+    delegator: {
+      title: 'delegator',
+      type: 'string'
+    }
+  }
 };
 
 const findKeystore = {
