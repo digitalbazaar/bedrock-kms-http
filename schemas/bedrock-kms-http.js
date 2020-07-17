@@ -13,6 +13,25 @@ const referenceId = {
   type: 'string'
 };
 
+const delegator = {
+  anyOf: [{
+    type: 'string'
+  }, {
+    type: 'array',
+    minItems: 1,
+    items: {type: 'string'}
+  }]
+};
+const invoker = {
+  anyOf: [{
+    type: 'string'
+  }, {
+    type: 'array',
+    minItems: 1,
+    items: {type: 'string'}
+  }]
+};
+
 const postKeystore = {
   title: 'postKeystore',
   type: 'object',
@@ -21,19 +40,13 @@ const postKeystore = {
   properties: {
     controller,
     referenceId,
+    delegator,
+    invoker,
     sequence: {
       title: 'sequence',
       type: 'number',
       minimum: 0,
       maximum: Number.MAX_SAFE_INTEGER - 1
-    },
-    invoker: {
-      title: 'invoker',
-      type: 'string'
-    },
-    delegator: {
-      title: 'delegator',
-      type: 'string'
     }
   }
 };
@@ -56,6 +69,9 @@ const zcap = {
   required: ['id', 'invoker', 'parentCapability', 'allowedAction',
     'invocationTarget'],
   properties: {
+    controller,
+    invoker,
+    delegator,
     id: {
       title: 'id',
       type: 'string'
@@ -75,25 +91,6 @@ const zcap = {
     },
     '@context': {
       title: '@context',
-      anyOf: [{
-        type: 'string'
-      }, {
-        type: 'array',
-        minItems: 1,
-        items: {type: 'string'}
-      }]
-    },
-    controller,
-    delegator: {
-      anyOf: [{
-        type: 'string'
-      }, {
-        type: 'array',
-        minItems: 1,
-        items: {type: 'string'}
-      }]
-    },
-    invoker: {
       anyOf: [{
         type: 'string'
       }, {
