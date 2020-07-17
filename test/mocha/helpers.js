@@ -34,7 +34,7 @@ exports.createKeystore = async ({
 
 exports.getKeystore = async ({id}) => {
   const {httpsAgent} = brHttpsAgent;
-  return await KmsClient.getKeystore({id, httpsAgent});
+  return KmsClient.getKeystore({id, httpsAgent});
 };
 
 exports.findKeystore = async ({
@@ -44,7 +44,7 @@ exports.findKeystore = async ({
   const url = `${kmsBaseUrl}/keystores` +
     `/?controller=${controller}&referenceId=${referenceId}`;
   const {httpsAgent} = brHttpsAgent;
-  return await KmsClient.findKeystore({
+  return KmsClient.findKeystore({
     url, controller, referenceId, httpsAgent
   });
 };
@@ -52,7 +52,7 @@ exports.findKeystore = async ({
 exports.enableCapability = async ({
   capabilityToEnable, capability, invocationSigner
 }) => {
-  return await KmsClient.enableCapability({
+  return KmsClient.enableCapability({
     capabilityToEnable, capability, invocationSigner
   });
 };
