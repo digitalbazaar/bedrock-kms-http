@@ -136,8 +136,36 @@ const zcap = {
     },
     proof: {
       title: 'Proof',
-      type: 'object'
-    },
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        verificationMethod: {
+          title: 'verificationMethod',
+          type: 'string'
+        },
+        type: {
+          title: 'type',
+          type: 'string'
+        },
+        created: {
+          title: 'created',
+          type: 'string'
+        },
+        proofPurpose: {
+          title: 'proofPurpose',
+          type: 'string'
+        },
+        capabilityChain: {
+          title: 'capabilityChain',
+          type: 'array',
+          minItems: 1,
+          items: {type: 'string'}
+        },
+        jws: {
+          title: 'jws',
+          type: 'string'
+        },
+      }},
     referenceId
   }
 };
