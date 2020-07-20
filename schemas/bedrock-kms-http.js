@@ -106,6 +106,10 @@ const zcap = {
         type: 'string'
       }, {
         type: 'object',
+        required: [
+          'type', 'id'
+        ],
+        additionalProperties: false,
         properties: {
           id: {
             title: 'Invocation Target Id',
@@ -113,6 +117,14 @@ const zcap = {
           },
           type: {
             title: 'Invocation Target Type',
+            type: 'string'
+          },
+          controller: {
+            title: 'controller',
+            type: 'string'
+          },
+          verificationMethod: {
+            title: 'verificationMethod',
             type: 'string'
           }
         }
