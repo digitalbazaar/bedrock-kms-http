@@ -159,7 +159,9 @@ const zcap = {
           title: 'capabilityChain',
           type: 'array',
           minItems: 1,
-          items: {type: 'string'}
+          items: {
+            type: ['string', 'object']
+          }
         },
         jws: {
           title: 'jws',
