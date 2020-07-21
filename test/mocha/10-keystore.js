@@ -35,31 +35,32 @@ describe('bedrock-kms-http API', () => {
       result.should.have.property('controller');
       result.controller.should.equal(capabilityAgentId);
     });
-    it('throws error on no sequence in postKeystore validation', async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
-      const handle = 'testKey1';
+    it('throws error on no sequence in postKeystoreBody validation',
+      async () => {
+        const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+        const handle = 'testKey1';
 
-      const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle});
-      const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
-      const url = `${kmsBaseUrl}/keystores`;
-      const config = {
-        controller: capabilityAgent.id
-      };
+        const capabilityAgent = await CapabilityAgent
+          .fromSecret({secret, handle});
+        const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
+        const url = `${kmsBaseUrl}/keystores`;
+        const config = {
+          controller: capabilityAgent.id
+        };
 
-      let err;
-      let result;
-      try {
-        const {agent} = brHttpsAgent;
-        result = await httpClient.post(url, {agent, json: config});
-      } catch(e) {
-        err = e;
-      }
-      should.exist(err);
-      should.not.exist(result);
-      err.data.message.should.equal(
-        'A validation error occured in the \'postKeystore\' validator.');
-    });
+        let err;
+        let result;
+        try {
+          const {agent} = brHttpsAgent;
+          result = await httpClient.post(url, {agent, json: config});
+        } catch(e) {
+          err = e;
+        }
+        should.exist(err);
+        should.not.exist(result);
+        err.data.message.should.equal(
+          'A validation error occured in the \'postKeystoreBody\' validator.');
+      });
     it('gets a keystore', async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
@@ -106,39 +107,40 @@ describe('bedrock-kms-http API', () => {
       result.controller.should.equal(keystore.controller);
       result.referenceId.should.equal(keystore.referenceId);
     });
-    it('throws error on no controller in findKeystore validation', async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
-      const handle = 'testKey1';
-      const referenceId =
-      'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
+    it('throws error on no controller in getKeystoreQuery validation',
+      async () => {
+        const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+        const handle = 'testKey1';
+        const referenceId =
+          'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
 
-      const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle});
+        const capabilityAgent = await CapabilityAgent
+          .fromSecret({secret, handle});
 
-      const keystore = await helpers.createKeystore({
-        capabilityAgent, referenceId});
+        const keystore = await helpers.createKeystore({
+          capabilityAgent, referenceId});
 
-      const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
-      const url = `${kmsBaseUrl}/keystores` +
-        `/?r?controller=${keystore.controller}`;
+        const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
+        const url = `${kmsBaseUrl}/keystores` +
+          `/?r?controller=${keystore.controller}`;
 
-      let err;
-      let result;
-      try {
-        const {agent} = brHttpsAgent;
-        result = await httpClient.get(url, {agent});
-      } catch(e) {
-        err = e;
-      }
-      should.exist(err);
-      should.not.exist(result);
-      err.data.message.should.equal(
-        'A validation error occured in the \'findKeystore\' validator.');
-    });
-    it('throws error on no referenceId in findKeystore validation',
+        let err;
+        let result;
+        try {
+          const {agent} = brHttpsAgent;
+          result = await httpClient.get(url, {agent});
+        } catch(e) {
+          err = e;
+        }
+        should.exist(err);
+        should.not.exist(result);
+        err.data.message.should.equal(
+          'A validation error occured in the \'getKeystoreQuery\' validator.');
+      });
+    it('throws error on no referenceId in getKeystoreQuery validation',
       async () => {
         const referenceId =
-         'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
+          'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
 
         const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
         const url = `${kmsBaseUrl}/keystores` +
@@ -155,7 +157,7 @@ describe('bedrock-kms-http API', () => {
         should.exist(err);
         should.not.exist(result);
         err.data.message.should.equal(
-          'A validation error occured in the \'findKeystore\' validator.');
+          'A validation error occured in the \'getKeystoreQuery\' validator.');
       });
     it('throws error with no invoker in zcap validation', async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
@@ -184,7 +186,7 @@ describe('bedrock-kms-http API', () => {
       err.data.message.should.equal(
         'A validation error occured in the \'zcap\' validator.');
     });
-    it('throws error with no controller in recovery validation',
+    it('throws error with no controller in postRecoverBody validation',
       async () => {
         const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
@@ -211,7 +213,7 @@ describe('bedrock-kms-http API', () => {
         should.exist(err);
         should.not.exist(result);
         err.data.message.should.equal(
-          'A validation error occured in the \'recovery\' validator.');
+          'A validation error occured in the \'postRecoverBody\' validator.');
       });
     it('throws error on receivedHost not equal to allowedHost', async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
