@@ -32,8 +32,8 @@ const invoker = {
   }]
 };
 
-const postKeystore = {
-  title: 'postKeystore',
+const postKeystoreBody = {
+  title: 'postKeystoreBody',
   type: 'object',
   additionalProperties: false,
   required: ['sequence', 'controller'],
@@ -51,8 +51,8 @@ const postKeystore = {
   }
 };
 
-const findKeystore = {
-  title: 'findKeystore',
+const getKeystoreQuery = {
+  title: 'getKeystoreQuery',
   type: 'object',
   additionalProperties: false,
   required: ['controller', 'referenceId'],
@@ -172,8 +172,8 @@ const zcap = {
   }
 };
 
-const recovery = {
-  title: 'recovery',
+const postRecoverBody = {
+  title: 'postRecoverBody',
   type: 'object',
   additionalProperties: false,
   required: ['@context', 'controller'],
@@ -185,8 +185,8 @@ const recovery = {
 };
 
 module.exports = {
-  findKeystore: () => findKeystore,
-  postKeystore: () => postKeystore,
+  getKeystoreQuery: () => getKeystoreQuery,
+  postKeystoreBody: () => postKeystoreBody,
   zcap: () => zcap,
-  recovery: () => recovery
+  postRecoverBody: () => postRecoverBody
 };
