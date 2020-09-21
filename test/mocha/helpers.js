@@ -25,7 +25,7 @@ exports.createKeystore = async ({
   }
 
   const {httpsAgent} = brHttpsAgent;
-  return await KmsClient.createKeystore({
+  return KmsClient.createKeystore({
     url: `${kmsBaseUrl}/keystores`,
     config,
     httpsAgent,
