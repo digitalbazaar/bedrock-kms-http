@@ -5,6 +5,7 @@
 
 const {config} = require('bedrock');
 const path = require('path');
+require('bedrock-express');
 
 // MongoDB
 config.mongodb.name = 'bedrock_kms_http_test';
@@ -32,3 +33,6 @@ config.karma.config.proxies = {
 config.karma.config.proxyValidateSSL = false;
 config.karma.config.browserNoActivityTimeout = 120000;
 config.karma.config.browserDisconnectTimeout = 120000;
+
+config.express.useSession = false;
+config['https-agent'].keepAlive = true;
