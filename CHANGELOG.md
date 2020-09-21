@@ -1,5 +1,14 @@
 # bedrock-kms-http ChangeLog
 
+## 3.0.0 - 2020-09-xx
+
+### Changed
+- **BREAKING**: Do not look up zcaps in authorizations collection;
+  full zcap chain must be submitted. A future feature may involve
+  ensuring that zcaps for certain keys are present in the
+  authorizations collection as an added security measure, but
+  those zcaps would still need to be submitted at invocation.
+
 ## 2.3.0 - 2020-06-30
 
 ### Changed
