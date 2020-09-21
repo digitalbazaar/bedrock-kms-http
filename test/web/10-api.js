@@ -98,5 +98,5 @@ async function _createKeystore({capabilityAgent, referenceId}) {
   if(referenceId) {
     config.referenceId = referenceId;
   }
-  return await KmsClient.createKeystore({config});
+  return KmsClient.createKeystore({config});
 }
