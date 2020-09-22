@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 3.0.0 - 2020-09-xx
+## 3.0.0 - 2020-09-22
 
 ### Changed
 - **BREAKING**: Do not look up zcaps in authorizations collection;
