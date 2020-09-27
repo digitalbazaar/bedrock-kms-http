@@ -185,8 +185,8 @@ const postRecoverBody = {
 };
 
 module.exports = {
-  getKeystoreQuery: () => getKeystoreQuery,
-  postKeystoreBody: () => postKeystoreBody,
-  zcap: () => zcap,
-  postRecoverBody: () => postRecoverBody
+  getKeystoreQuery,
+  postKeystoreBody,
+  zcap,
+  postRecoverBody
 };
