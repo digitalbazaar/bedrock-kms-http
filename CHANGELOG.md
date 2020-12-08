@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 3.1.0 - 2020-09-25
+## 3.1.0 - 2020-TBD
 
 ### Added
 - Added validators to `keystore`, `keystores`, `authorizations`, and
