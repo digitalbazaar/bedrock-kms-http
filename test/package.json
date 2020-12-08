@@ -12,6 +12,7 @@
     "coverage-report": "nyc report"
   },
   "dependencies": {
+    "@digitalbazaar/http-client": "^1.0.0",
     "@digitalbazaar/http-digest-header": "^1.0.0",
     "bedrock": "^3.1.1",
     "bedrock-account": "^4.0.0",
@@ -36,6 +37,7 @@
     "bedrock-zcap-storage": "^3.0.0",
     "cross-env": "^7.0.2",
     "crypto-ld": "^3.8.0",
+    "http-signature-zcap-invoke": "^2.0.0",
     "jsonld-signatures": "^5.1.0",
     "nyc": "^15.1.0",
     "ocapld": "^2.0.0",

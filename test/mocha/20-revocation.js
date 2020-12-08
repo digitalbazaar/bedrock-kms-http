@@ -12,6 +12,9 @@ const {CapabilityDelegation} = require('ocapld');
 const {AsymmetricKey, CapabilityAgent, KmsClient, KeystoreAgent} =
   require('webkms-client');
 const {Ed25519KeyPair} = require('crypto-ld');
+const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
+const {signCapabilityInvocation} = require('http-signature-zcap-invoke');
+
 const {util: {uuid}} = bedrock;
 const {
   purposes: {AssertionProofPurpose},
@@ -386,6 +389,117 @@ describe('revocations API', () => {
     should.exist(err);
     err.data.message.should.equal(
       'A validation error occured in the \'zcap\' validator.');
+  });
+
+  it('should throw error when header value verification fails.', async () => {
+    // generate a new key for alice
+    const aliceKey = await aliceKeystoreAgent.generateKey(
+      {type: 'Ed25519VerificationKey2018', kmsModule: KMS_MODULE});
+    await _setKeyId(aliceKey);
+
+    // next, delegate authority to bob to use alice's key
+    const zcap = {
+      '@context': bedrock.config.constants.SECURITY_CONTEXT_V2_URL,
+      // this is a unique ID
+      id: `urn:zcap:${uuid()}`,
+      // this is Bob's capabilityInvocation key that will be used to invoke
+      // the capability
+      invoker: bobKey.id,
+      // this provides Bob the ability to delegate the capability again to
+      // Carol later
+      delegator: bobKey.id,
+      // if parentCapability points to a root capability it must be a
+      // URL that can be dereferenced. In this case, aliceKey.kmsId is a root
+      // capability.
+      parentCapability: aliceKey.kmsId,
+      allowedAction: 'sign',
+      invocationTarget: {
+        verificationMethod: aliceKey.id,
+        id: aliceKey.kmsId,
+        type: aliceKey.type,
+      }
+    };
+
+    // This capability allows Bob to write to this revocations endpoint
+    // This capability is required for Bob to revoke Carol's capability later.
+
+    // the invoker for writing must be the delegator of the capability that is
+    // being revoked there should also be a check that the invocation target
+    // exists on the host system
+    const bobRevocationZcap = {
+      '@context': bedrock.config.constants.SECURITY_CONTEXT_V2_URL,
+      // this is a unique ID
+      id: `urn:zcap:${uuid()}`,
+      invoker: bobKey.id,
+      // there is no root capability at the `invocationTarget` location,
+      // so this alternate URL is used that will automatically generate a
+      // root capability
+      parentCapability: `${aliceKeystoreAgent.keystore.id}/zcaps/revocations`,
+      allowedAction: 'write',
+      invocationTarget: `${aliceKeystoreAgent.keystore.id}/revocations`,
+    };
+
+    const signer = aliceCapabilityAgent.getSigner();
+
+    // Alice now signs the capability delegation that allows Bob to `write`
+    // to Alice's keystore revocations endpoint
+    const signedBobRevocationZcap = await _delegate({
+      capabilityChain: [bobRevocationZcap.parentCapability],
+      signer,
+      zcap: bobRevocationZcap
+    });
+
+    // Bob now delegates the use of Alice's key to Carol
+    const carolZcap = {
+      '@context': bedrock.config.constants.SECURITY_CONTEXT_V2_URL,
+      // this is a unique ID
+      id: `urn:zcap:${uuid()}`,
+      invoker: carolKey.id,
+      // the capability Alice gave to Bob
+      parentCapability: zcap.id,
+      // this is where we need to ensure the allowedAction here is included
+      // in the allowedAction of the parentCapability, there is an issue in
+      // ocapld for this.
+      allowedAction: 'sign',
+      invocationTarget: zcap.invocationTarget,
+    };
+
+    // finish bobs delegation to carol
+    const signedCapabilityFromBobToCarol = await _delegate({
+      capabilityChain: [
+        aliceKey.kmsId,
+        zcap,
+      ],
+      signer: bobKey,
+      zcap: carolZcap
+    });
+
+    // Bob submits a revocation using his revocation capability to
+    // revoke the capability he gave to Carol.
+
+    const url = signedBobRevocationZcap.invocationTarget;
+    let err;
+    try {
+      // sign HTTP header
+      const headers = await signCapabilityInvocation({
+        url, method: 'post', headers: DEFAULT_HEADERS,
+        capability: signedBobRevocationZcap,
+        json: signedCapabilityFromBobToCarol, invocationSigner: bobKey,
+        capabilityAction: 'write'
+      });
+
+      // Intentionally mess with the json body
+      signedCapabilityFromBobToCarol.hello = 'hello';
+
+      const {httpsAgent: agent} = brHttpsAgent;
+      // try making a post request with the bad data
+      await httpClient.post(url, {
+        agent, headers, json: signedCapabilityFromBobToCarol});
+    } catch(e) {
+      err = e;
+    }
+    should.exist(err);
+    err.message.should.equal('Header value verification failed.');
   });
 });
 
