@@ -22,6 +22,7 @@ const delegator = {
     items: {type: 'string'}
   }]
 };
+
 const invoker = {
   anyOf: [{
     type: 'string'
