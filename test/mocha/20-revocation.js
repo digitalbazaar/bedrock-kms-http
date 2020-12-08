@@ -499,7 +499,8 @@ describe('revocations API', () => {
       err = e;
     }
     should.exist(err);
-    err.message.should.equal('Header value verification failed.');
+    err.message.should.equal(
+      'Header digest value does not match digest of body.');
   });
 });
 
