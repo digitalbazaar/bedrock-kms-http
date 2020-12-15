@@ -8,6 +8,7 @@ const {CapabilityAgent} = require('webkms-client');
 const helpers = require('./helpers');
 const brHttpsAgent = require('bedrock-https-agent');
 const {httpClient} = require('@digitalbazaar/http-client');
+const {createHeaderValue} = require('@digitalbazaar/http-digest-header');
 const mockData = require('./mock.data');
 
 describe('bedrock-kms-http API', () => {
@@ -173,11 +174,21 @@ describe('bedrock-kms-http API', () => {
       const zcap = mockData.zcaps.zero;
       delete zcap.invoker;
 
+      const digest = await createHeaderValue({
+        data: zcap, useMultihash: true
+      });
+
       let err;
       let result;
       try {
         const {agent} = brHttpsAgent;
-        result = await httpClient.post(url, {agent, json: zcap});
+        result = await httpClient.post(url, {
+          agent,
+          json: zcap,
+          headers: {
+            digest
+          }
+        });
       } catch(e) {
         err = e;
       }
