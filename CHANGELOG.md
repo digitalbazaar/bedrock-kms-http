@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 3.1.0 - 2021-01-TBD
+## 3.1.0 - 2021-01-12
 
 ### Changed
 - Update bedrock-account@5.0
