@@ -29,7 +29,7 @@
   },
   "peerDependencies": {
     "bedrock": "^3.1.1",
-    "bedrock-account": "3.x - 4.x",
+    "bedrock-account": "3.x - 5.x",
     "bedrock-express": "^3.2.0",
     "bedrock-kms": "2.x - 3.x",
     "bedrock-passport": "^6.0.0",
