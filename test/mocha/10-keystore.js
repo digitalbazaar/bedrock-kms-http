@@ -6,9 +6,10 @@
 const bedrock = require('bedrock');
 const {CapabilityAgent} = require('webkms-client');
 const helpers = require('./helpers');
-const brHttpsAgent = require('bedrock-https-agent');
-const {httpClient} = require('@digitalbazaar/http-client');
+const {agent} = require('bedrock-https-agent');
+const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
 const mockData = require('./mock.data');
+const {signCapabilityInvocation} = require('http-signature-zcap-invoke');
 
 describe('bedrock-kms-http API', () => {
   describe('keystores', () => {
@@ -51,7 +52,6 @@ describe('bedrock-kms-http API', () => {
         let err;
         let result;
         try {
-          const {agent} = brHttpsAgent;
           result = await httpClient.post(url, {agent, json: config});
         } catch(e) {
           err = e;
@@ -127,7 +127,6 @@ describe('bedrock-kms-http API', () => {
         let err;
         let result;
         try {
-          const {agent} = brHttpsAgent;
           result = await httpClient.get(url, {agent});
         } catch(e) {
           err = e;
@@ -149,7 +148,6 @@ describe('bedrock-kms-http API', () => {
         let err;
         let result;
         try {
-          const {agent} = brHttpsAgent;
           result = await httpClient.get(url, {agent});
         } catch(e) {
           err = e;
@@ -176,7 +174,6 @@ describe('bedrock-kms-http API', () => {
       let err;
       let result;
       try {
-        const {agent} = brHttpsAgent;
         result = await httpClient.post(url, {agent, json: zcap});
       } catch(e) {
         err = e;
@@ -186,7 +183,8 @@ describe('bedrock-kms-http API', () => {
       err.data.message.should.equal(
         'A validation error occured in the \'zcap\' validator.');
     });
-    it('throws error with no controller in postRecoverBody validation',
+    // FIXME: this test uses the obsolete /recovery endpoint
+    it.skip('throws error with no controller in postRecoverBody validation',
       async () => {
         const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
@@ -205,7 +203,6 @@ describe('bedrock-kms-http API', () => {
         let err;
         let result;
         try {
-          const {agent} = brHttpsAgent;
           result = await httpClient.post(url, {agent, json: config});
         } catch(e) {
           err = e;
@@ -234,6 +231,64 @@ describe('bedrock-kms-http API', () => {
       should.not.exist(result);
       should.exist(err);
       err.data.message.should.contain('Permission denied. Expected host');
+    });
+    it('updates a keystore config', async () => {
+      const secret = '69ae7dc3-1d6d-4ff9-9cc0-c07b43d2006b';
+      const handle = 'testKeyUpdate';
+
+      const capabilityAgent = await CapabilityAgent
+        .fromSecret({secret, handle});
+
+      const secret2 = 'ac36ef8e-560b-4f6c-a454-6bfcb4e31a76';
+      const handle2 = 'testKeyUpdate2';
+
+      const capabilityAgent2 = await CapabilityAgent
+        .fromSecret({secret: secret2, handle: handle2});
+
+      let err;
+      let result;
+      try {
+        result = await helpers.createKeystore({capabilityAgent});
+      } catch(e) {
+        err = e;
+      }
+      assertNoError(err);
+      should.exist(result);
+      result.should.have.property('id');
+      result.should.have.property('sequence');
+      result.sequence.should.equal(0);
+      const {id: capabilityAgentId} = capabilityAgent;
+      result.should.have.property('controller');
+      result.controller.should.equal(capabilityAgentId);
+
+      const {id: url} = result;
+      const newConfig = {
+        // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9
+        controller: capabilityAgent2.id,
+      };
+
+      const headers = await signCapabilityInvocation({
+        url, method: 'post',
+        headers: DEFAULT_HEADERS,
+        json: newConfig,
+        capability: 'urn:zcap:root:' + encodeURIComponent(url),
+        invocationSigner: capabilityAgent.signer,
+        capabilityAction: 'write'
+      });
+
+      err = null;
+      result = null;
+      try {
+        result = await httpClient.post(url, {agent, headers, json: newConfig});
+      } catch(e) {
+        err = e;
+      }
+      assertNoError(err);
+      should.exist(result.data);
+      result.data.should.have.keys(['controller', 'id', 'sequence']);
+      result.data.controller.should.equal(capabilityAgent2.id);
+      result.data.id.should.equal(url);
+      result.data.sequence.should.equal(1);
     });
   });
 });
