@@ -173,11 +173,16 @@ const zcap = {
   }
 };
 
-const postRecoverBody = {
-  title: 'postRecoverBody',
+const updateKeystoreConfigBody = {
+  title: 'updateKeystoreConfigBody',
   type: 'object',
   additionalProperties: false,
-  required: ['@context', 'controller'],
+  required: [
+    // FIXME: should sequence be required here?
+    // FIXME: should context be supported or required?
+    // '@context',
+    'controller'
+  ],
   properties: {
     controller,
     '@context': {
@@ -189,5 +194,5 @@ module.exports = {
   getKeystoreQuery,
   postKeystoreBody,
   zcap,
-  postRecoverBody
+  updateKeystoreConfigBody
 };
