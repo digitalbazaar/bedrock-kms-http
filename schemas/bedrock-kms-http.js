@@ -33,6 +33,13 @@ const invoker = {
   }]
 };
 
+const sequence = {
+  title: 'sequence',
+  type: 'number',
+  minimum: 0,
+  maximum: Number.MAX_SAFE_INTEGER - 1
+};
+
 const postKeystoreBody = {
   title: 'postKeystoreBody',
   type: 'object',
@@ -41,14 +48,7 @@ const postKeystoreBody = {
   properties: {
     controller,
     referenceId,
-    delegator,
-    invoker,
-    sequence: {
-      title: 'sequence',
-      type: 'number',
-      minimum: 0,
-      maximum: Number.MAX_SAFE_INTEGER - 1
-    }
+    sequence,
   }
 };
 
@@ -178,16 +178,13 @@ const updateKeystoreConfigBody = {
   type: 'object',
   additionalProperties: false,
   required: [
-    // FIXME: should sequence be required here?
-    // FIXME: should context be supported or required?
-    // '@context',
-    'controller'
+    'controller',
+    'sequence',
   ],
   properties: {
     controller,
-    '@context': {
-      title: '@context', type: 'string'
-    }}
+    sequence,
+  }
 };
 
 module.exports = {
