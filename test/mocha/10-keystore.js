@@ -266,6 +266,7 @@ describe('bedrock-kms-http API', () => {
         const newConfig = {
           // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9
           controller: capabilityAgent2.id,
+          sequence: 1,
         };
 
         const headers = await signCapabilityInvocation({
@@ -324,6 +325,7 @@ describe('bedrock-kms-http API', () => {
         const {id: url} = result;
         const newConfig = {
           controller: capabilityAgent2.id,
+          sequence: 1,
         };
 
         // the capability invocation here is signed by capabilityAgent2 which
