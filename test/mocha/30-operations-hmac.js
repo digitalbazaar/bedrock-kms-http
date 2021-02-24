@@ -8,8 +8,6 @@ const brHttpsAgent = require('bedrock-https-agent');
 const pMap = require('p-map');
 const {CapabilityAgent, KeystoreAgent, KmsClient} = require('webkms-client');
 const helpers = require('./helpers');
-// TextEncoder is not a global in node 10
-const {TextEncoder} = require('util');
 
 const KMS_MODULE = 'ssm-v1';
 
