@@ -1,5 +1,10 @@
 # bedrock-kms-http ChangeLog
 
+## 4.0.0 - TBD
+
+### Changed
+- **BREAKING**: Drop Node 10.x support.
+
 ## 3.2.0 - 2021-02-10
 
 ### Added
