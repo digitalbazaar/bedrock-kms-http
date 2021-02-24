@@ -12,7 +12,7 @@ const brHttpsAgent = require('bedrock-https-agent');
 
 const KMS_MODULE = 'ssm-v1';
 
-describe.only('bedrock-kms-http', () => {
+describe('bedrock-kms-http', () => {
   describe('operation restrictions', () => {
     let ed25519Key;
     before(async () => {
@@ -55,7 +55,7 @@ describe.only('bedrock-kms-http', () => {
       try {
         result = await ed25519Key.sign({data});
       } catch(e) {
-        err = err;
+        err = e;
       }
       assertNoError(err);
       should.exist(result);
@@ -69,7 +69,7 @@ describe.only('bedrock-kms-http', () => {
       try {
         result = await ed25519Key.sign({data});
       } catch(e) {
-        err = err;
+        err = e;
       }
       should.exist(err);
       should.not.exist(result);
@@ -82,7 +82,7 @@ describe.only('bedrock-kms-http', () => {
         try {
           result = await ed25519Key.sign({data});
         } catch(e) {
-          err = err;
+          err = e;
         }
         assertNoError(err);
         should.exist(result);
@@ -96,7 +96,7 @@ describe.only('bedrock-kms-http', () => {
         try {
           result = await ed25519Key.sign({data});
         } catch(e) {
-          err = err;
+          err = e;
         }
         assertNoError(err);
         should.exist(result);

@@ -46,7 +46,7 @@ describe('bedrock-kms-http HMAC operations', () => {
       try {
         result = await hmac.sign({data});
       } catch(e) {
-        err = err;
+        err = e;
       }
       should.not.exist(err);
       should.exist(result);
