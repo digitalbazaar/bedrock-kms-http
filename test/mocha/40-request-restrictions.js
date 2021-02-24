@@ -12,9 +12,9 @@ const brHttpsAgent = require('bedrock-https-agent');
 
 const KMS_MODULE = 'ssm-v1';
 
-describe('bedrock-kms-http', () => {
+describe.only('bedrock-kms-http', () => {
   describe('operation restrictions', () => {
-    let hmac;
+    let ed25519Key;
     before(async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
@@ -40,9 +40,9 @@ describe('bedrock-kms-http', () => {
         keystore,
         kmsClient
       });
-      hmac = await keystoreAgent.generateKey({
+      ed25519Key = await keystoreAgent.generateKey({
         kmsModule: KMS_MODULE,
-        type: 'hmac',
+        type: 'Ed25519VerificationKey2018',
       });
     });
     afterEach(() => {
@@ -53,13 +53,13 @@ describe('bedrock-kms-http', () => {
       let err;
       let result;
       try {
-        result = await hmac.sign({data});
+        result = await ed25519Key.sign({data});
       } catch(e) {
         err = err;
       }
       assertNoError(err);
       should.exist(result);
-      result.should.be.a('string');
+      result.should.be.a('Uint8Array');
     });
     it('should not allow an operation from an unknown Host', async () => {
       bedrock.config.kms.allowedHost = 'production.com';
@@ -67,13 +67,12 @@ describe('bedrock-kms-http', () => {
       let err;
       let result;
       try {
-        result = await hmac.sign({data});
+        result = await ed25519Key.sign({data});
       } catch(e) {
         err = err;
       }
-      assertNoError(err);
-      should.exist(result);
-      result.should.be.a('string');
+      should.exist(err);
+      should.not.exist(result);
     });
     it('should not allow an operation from an allowedHost with an unknown ip',
       async () => {
@@ -81,13 +80,13 @@ describe('bedrock-kms-http', () => {
         let err;
         let result;
         try {
-          result = await hmac.sign({data});
+          result = await ed25519Key.sign({data});
         } catch(e) {
           err = err;
         }
         assertNoError(err);
         should.exist(result);
-        result.should.be.a('string');
+        result.should.be.a('Uint8Array');
       });
     it('should allow an operation from an allowedHost with a known ip',
       async () => {
@@ -95,13 +94,13 @@ describe('bedrock-kms-http', () => {
         let err;
         let result;
         try {
-          result = await hmac.sign({data});
+          result = await ed25519Key.sign({data});
         } catch(e) {
           err = err;
         }
         assertNoError(err);
         should.exist(result);
-        result.should.be.a('string');
+        result.should.be.a('Uint8Array');
       });
   });
 });
