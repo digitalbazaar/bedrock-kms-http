@@ -232,63 +232,122 @@ describe('bedrock-kms-http API', () => {
       should.exist(err);
       err.data.message.should.contain('Permission denied. Expected host');
     });
-    it('updates a keystore config', async () => {
-      const secret = '69ae7dc3-1d6d-4ff9-9cc0-c07b43d2006b';
-      const handle = 'testKeyUpdate';
+    describe('update keystore config', () => {
+      it('updates a keystore config', async () => {
+        const secret = '69ae7dc3-1d6d-4ff9-9cc0-c07b43d2006b';
+        const handle = 'testKeyUpdate';
 
-      const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle});
+        const capabilityAgent = await CapabilityAgent
+          .fromSecret({secret, handle});
 
-      const secret2 = 'ac36ef8e-560b-4f6c-a454-6bfcb4e31a76';
-      const handle2 = 'testKeyUpdate2';
+        const secret2 = 'ac36ef8e-560b-4f6c-a454-6bfcb4e31a76';
+        const handle2 = 'testKeyUpdate2';
 
-      const capabilityAgent2 = await CapabilityAgent
-        .fromSecret({secret: secret2, handle: handle2});
+        const capabilityAgent2 = await CapabilityAgent
+          .fromSecret({secret: secret2, handle: handle2});
 
-      let err;
-      let result;
-      try {
-        result = await helpers.createKeystore({capabilityAgent});
-      } catch(e) {
-        err = e;
-      }
-      assertNoError(err);
-      should.exist(result);
-      result.should.have.property('id');
-      result.should.have.property('sequence');
-      result.sequence.should.equal(0);
-      const {id: capabilityAgentId} = capabilityAgent;
-      result.should.have.property('controller');
-      result.controller.should.equal(capabilityAgentId);
+        let err;
+        let result;
+        try {
+          result = await helpers.createKeystore({capabilityAgent});
+        } catch(e) {
+          err = e;
+        }
+        assertNoError(err);
+        should.exist(result);
+        result.should.have.property('id');
+        result.should.have.property('sequence');
+        result.sequence.should.equal(0);
+        const {id: capabilityAgentId} = capabilityAgent;
+        result.should.have.property('controller');
+        result.controller.should.equal(capabilityAgentId);
 
-      const {id: url} = result;
-      const newConfig = {
-        // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9
-        controller: capabilityAgent2.id,
-      };
+        const {id: url} = result;
+        const newConfig = {
+          // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9
+          controller: capabilityAgent2.id,
+        };
 
-      const headers = await signCapabilityInvocation({
-        url, method: 'post',
-        headers: DEFAULT_HEADERS,
-        json: newConfig,
-        capability: 'urn:zcap:root:' + encodeURIComponent(url),
-        invocationSigner: capabilityAgent.signer,
-        capabilityAction: 'write'
+        const headers = await signCapabilityInvocation({
+          url, method: 'post',
+          headers: DEFAULT_HEADERS,
+          json: newConfig,
+          capability: 'urn:zcap:root:' + encodeURIComponent(url),
+          invocationSigner: capabilityAgent.signer,
+          capabilityAction: 'write'
+        });
+
+        err = null;
+        result = null;
+        try {
+          result = await httpClient.post(
+            url, {agent, headers, json: newConfig});
+        } catch(e) {
+          err = e;
+        }
+        assertNoError(err);
+        should.exist(result.data);
+        result.data.should.have.keys(['controller', 'id', 'sequence']);
+        result.data.controller.should.equal(capabilityAgent2.id);
+        result.data.id.should.equal(url);
+        result.data.sequence.should.equal(1);
       });
+      it('rejects config update for an invalid zcap', async () => {
+        const secret = 'd852a72d-013f-4dd6-8ba2-588aaf601b66';
+        const handle = 'testKeyUpdate';
 
-      err = null;
-      result = null;
-      try {
-        result = await httpClient.post(url, {agent, headers, json: newConfig});
-      } catch(e) {
-        err = e;
-      }
-      assertNoError(err);
-      should.exist(result.data);
-      result.data.should.have.keys(['controller', 'id', 'sequence']);
-      result.data.controller.should.equal(capabilityAgent2.id);
-      result.data.id.should.equal(url);
-      result.data.sequence.should.equal(1);
-    });
+        const capabilityAgent = await CapabilityAgent
+          .fromSecret({secret, handle});
+
+        const secret2 = '4decd824-50e6-45bf-a79e-41af397f499f';
+        const handle2 = 'testKeyUpdate2';
+
+        const capabilityAgent2 = await CapabilityAgent
+          .fromSecret({secret: secret2, handle: handle2});
+
+        let err;
+        let result;
+        try {
+          result = await helpers.createKeystore({capabilityAgent});
+        } catch(e) {
+          err = e;
+        }
+        assertNoError(err);
+        should.exist(result);
+        result.should.have.property('id');
+        result.should.have.property('sequence');
+        result.sequence.should.equal(0);
+        const {id: capabilityAgentId} = capabilityAgent;
+        result.should.have.property('controller');
+        result.controller.should.equal(capabilityAgentId);
+
+        const {id: url} = result;
+        const newConfig = {
+          controller: capabilityAgent2.id,
+        };
+
+        // the capability invocation here is signed by capabilityAgent2 which
+        // is not the controller of the keystore
+        const headers = await signCapabilityInvocation({
+          url, method: 'post',
+          headers: DEFAULT_HEADERS,
+          json: newConfig,
+          capability: 'urn:zcap:root:' + encodeURIComponent(url),
+          invocationSigner: capabilityAgent2.signer,
+          capabilityAction: 'write'
+        });
+
+        err = null;
+        result = null;
+        try {
+          result = await httpClient.post(
+            url, {agent, headers, json: newConfig});
+        } catch(e) {
+          err = e;
+        }
+        should.exist(err);
+        should.not.exist(result);
+      });
+    }); // end update keystore config
   });
 });
