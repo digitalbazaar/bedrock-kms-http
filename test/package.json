@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "test": "node --preserve-symlinks test.js test",
+    "debug": "node --preserve-symlinks test.js test --log-level debug",
     "test-node": "node --preserve-symlinks test.js test --framework mocha",
     "test-karma": "node --preserve-symlinks test.js test --framework karma",
     "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text-summary npm test",
