@@ -76,7 +76,7 @@ describe('bedrock-kms-http HMAC operations', () => {
         let err;
         try {
           result = await pMap(
-            vData, data => hmac.sign({data}), {concurrency: 100});
+            vData, data => hmac.sign({data}), {concurrency: 10});
         } catch(e) {
           err = e;
         }
