@@ -366,6 +366,68 @@ describe('bedrock-kms-http API', () => {
         should.not.exist(result);
         err.status.should.equal(403);
       });
+      it('rejects config update with an invalid sequence', async () => {
+        const secret = 'a8256be9-beea-4b05-9fc2-7ad4c1a391e4';
+        const handle = 'testKeyUpdate';
+
+        const capabilityAgent = await CapabilityAgent
+          .fromSecret({secret, handle});
+
+        const secret2 = 'd2896f13-fed0-4122-b984-326dc29c927a';
+        const handle2 = 'testKeyUpdate2';
+
+        const capabilityAgent2 = await CapabilityAgent
+          .fromSecret({secret: secret2, handle: handle2});
+
+        let err;
+        let result;
+        try {
+          result = await helpers.createKeystore({capabilityAgent});
+        } catch(e) {
+          err = e;
+        }
+        assertNoError(err);
+        should.exist(result);
+        result.should.have.property('id');
+        result.should.have.property('sequence');
+        result.sequence.should.equal(0);
+        const {id: capabilityAgentId} = capabilityAgent;
+        result.should.have.property('controller');
+        result.controller.should.equal(capabilityAgentId);
+
+        const {id: url} = result;
+        const newConfig = {
+          // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9
+          controller: capabilityAgent2.id,
+          id: url,
+          // the proper sequence would be 1
+          sequence: 10,
+        };
+
+        const headers = await signCapabilityInvocation({
+          url, method: 'post',
+          headers: DEFAULT_HEADERS,
+          json: newConfig,
+          capability: 'urn:zcap:root:' + encodeURIComponent(url),
+          invocationSigner: capabilityAgent.signer,
+          capabilityAction: 'write'
+        });
+
+        err = null;
+        result = null;
+        try {
+          result = await httpClient.post(
+            url, {agent, headers, json: newConfig});
+        } catch(e) {
+          err = e;
+        }
+        should.exist(err);
+        should.not.exist(result);
+        err.status.should.equal(409);
+        err.data.message.should.contain('sequence does not match');
+        err.data.type.should.equal('InvalidStateError');
+        err.data.details.should.have.keys(['id', 'sequence', 'httpStatusCode']);
+      });
     }); // end update keystore config
   });
 });
