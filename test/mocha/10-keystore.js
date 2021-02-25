@@ -266,6 +266,7 @@ describe('bedrock-kms-http API', () => {
         const newConfig = {
           // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9
           controller: capabilityAgent2.id,
+          id: url,
           sequence: 1,
         };
 
@@ -288,10 +289,11 @@ describe('bedrock-kms-http API', () => {
         }
         assertNoError(err);
         should.exist(result.data);
-        result.data.should.have.keys(['controller', 'id', 'sequence']);
-        result.data.controller.should.equal(capabilityAgent2.id);
-        result.data.id.should.equal(url);
-        result.data.sequence.should.equal(1);
+        result.status.should.equal(200);
+        result.data.should.have.keys(['config', 'success']);
+        result.data.success.should.be.a('boolean');
+        result.data.success.should.equal(true);
+        result.data.config.should.eql(newConfig);
       });
       it('rejects config update for an invalid zcap', async () => {
         const secret = 'd852a72d-013f-4dd6-8ba2-588aaf601b66';
@@ -325,6 +327,7 @@ describe('bedrock-kms-http API', () => {
         const {id: url} = result;
         const newConfig = {
           controller: capabilityAgent2.id,
+          id: url,
           sequence: 1,
         };
 
@@ -349,6 +352,7 @@ describe('bedrock-kms-http API', () => {
         }
         should.exist(err);
         should.not.exist(result);
+        err.status.should.equal(403);
       });
     }); // end update keystore config
   });

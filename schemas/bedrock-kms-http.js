@@ -179,10 +179,12 @@ const updateKeystoreConfigBody = {
   additionalProperties: false,
   required: [
     'controller',
+    'id',
     'sequence',
   ],
   properties: {
     controller,
+    id: {type: 'string'},
     sequence,
   }
 };
