@@ -2,8 +2,13 @@
 
 ## 4.0.0 - TBD
 
+### Added
+- Implement support for ZCAP authz on the keystore config update API.
+
 ### Changed
 - **BREAKING**: Drop Node 10.x support.
+- **BREAKING**: Change data model and validation of keystore configs. Configs
+  no long include `invoker` or `delegator` properties.
 
 ## 3.2.0 - 2021-02-10
 
