@@ -35,7 +35,7 @@ const invoker = {
 
 const sequence = {
   title: 'sequence',
-  type: 'number',
+  type: 'integer',
   minimum: 0,
   maximum: Number.MAX_SAFE_INTEGER - 1
 };
