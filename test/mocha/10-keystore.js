@@ -294,6 +294,18 @@ describe('bedrock-kms-http API', () => {
         result.data.success.should.be.a('boolean');
         result.data.success.should.equal(true);
         result.data.config.should.eql(newConfig);
+
+        // retrieve the keystore config to confirm update was effective
+        err = null;
+        result = null;
+        try {
+          result = await helpers.getKeystore({id: newConfig.id});
+        } catch(e) {
+          err = e;
+        }
+        assertNoError(err);
+        should.exist(result);
+        result.should.eql(newConfig);
       });
       it('rejects config update for an invalid zcap', async () => {
         const secret = 'd852a72d-013f-4dd6-8ba2-588aaf601b66';
