@@ -183,7 +183,8 @@ describe('bedrock-kms-http API', () => {
       err.data.message.should.equal(
         'A validation error occured in the \'zcap\' validator.');
     });
-    // FIXME: this test uses the obsolete /recovery endpoint
+    // FIXME: this test uses the obsolete /recovery endpoint, this test will
+    // be refactored along with issue #45.
     it.skip('throws error with no controller in postRecoverBody validation',
       async () => {
         const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
