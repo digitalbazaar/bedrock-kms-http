@@ -276,7 +276,7 @@ describe('bedrock-kms-http API', () => {
           headers: DEFAULT_HEADERS,
           json: newConfig,
           capability: 'urn:zcap:root:' + encodeURIComponent(url),
-          invocationSigner: capabilityAgent.signer,
+          invocationSigner: capabilityAgent.getSigner(),
           capabilityAction: 'write'
         });
 
@@ -410,7 +410,7 @@ describe('bedrock-kms-http API', () => {
           headers: DEFAULT_HEADERS,
           json: newConfig,
           capability: 'urn:zcap:root:' + encodeURIComponent(url),
-          invocationSigner: capabilityAgent.signer,
+          invocationSigner: capabilityAgent.getSigner(),
           capabilityAction: 'write'
         });
 
