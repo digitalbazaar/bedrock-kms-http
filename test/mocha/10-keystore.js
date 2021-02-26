@@ -233,7 +233,8 @@ describe('bedrock-kms-http API', () => {
       }
       should.not.exist(result);
       should.exist(err);
-      err.data.message.should.contain('Permission denied. Expected host');
+      err.data.message.should.contain(
+        'Permission denied. Expected an allowedHost');
     });
   });
 });
