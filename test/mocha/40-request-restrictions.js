@@ -12,9 +12,10 @@ const brHttpsAgent = require('bedrock-https-agent');
 
 const KMS_MODULE = 'ssm-v1';
 
-describe.only('bedrock-kms-http', () => {
+describe('bedrock-kms-http', () => {
   describe('operation restrictions', () => {
     let ed25519Key;
+    let allowedHost;
     before(async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
@@ -44,9 +45,11 @@ describe.only('bedrock-kms-http', () => {
         kmsModule: KMS_MODULE,
         type: 'Ed25519VerificationKey2018',
       });
+      allowedHost = bedrock.config.server.host;
     });
     afterEach(() => {
-      bedrock.config.kms.allowedHost = 'localhost:18443';
+      bedrock.config.kms.allowedHost = allowedHost;
+      bedrock.config.kms.allowedHosts = new Map([[allowedHost, null]]);
     });
     it('should allow an operation from an allowedHost', async () => {
       const data = new TextEncoder('utf-8').encode('hello');
@@ -77,7 +80,7 @@ describe.only('bedrock-kms-http', () => {
     it('should not allow an operation from an allowedHost with an unknown ip',
       async () => {
         bedrock.config.kms.allowedHosts = new Map([
-          ['production.com', ['8.8.8.8']]
+          [allowedHost, ['8.8.8.8']]
         ]);
         const data = new TextEncoder('utf-8').encode('hello');
         let err;
@@ -92,6 +95,9 @@ describe.only('bedrock-kms-http', () => {
       });
     it('should allow an operation from an allowedHost with a known ip',
       async () => {
+        bedrock.config.kms.allowedHosts = new Map([
+          [allowedHost, ['127.0.0.1']]
+        ]);
         const data = new TextEncoder('utf-8').encode('hello');
         let err;
         let result;
