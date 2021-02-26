@@ -12,7 +12,7 @@ const brHttpsAgent = require('bedrock-https-agent');
 
 const KMS_MODULE = 'ssm-v1';
 
-describe('bedrock-kms-http', () => {
+describe.only('bedrock-kms-http', () => {
   describe('operation restrictions', () => {
     let ed25519Key;
     before(async () => {
@@ -76,6 +76,9 @@ describe('bedrock-kms-http', () => {
     });
     it('should not allow an operation from an allowedHost with an unknown ip',
       async () => {
+        bedrock.config.kms.allowedHosts = new Map([
+          ['production.com', ['8.8.8.8']]
+        ]);
         const data = new TextEncoder('utf-8').encode('hello');
         let err;
         let result;
@@ -84,9 +87,8 @@ describe('bedrock-kms-http', () => {
         } catch(e) {
           err = e;
         }
-        assertNoError(err);
-        should.exist(result);
-        result.should.be.a('Uint8Array');
+        should.exist(err);
+        should.not.exist(result);
       });
     it('should allow an operation from an allowedHost with a known ip',
       async () => {

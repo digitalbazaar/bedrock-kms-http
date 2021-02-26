@@ -18,6 +18,7 @@ config['kms-http'].requireAuthentication = false;
 config.mocha.tests.push(path.join(__dirname, 'mocha'));
 
 config.kms.allowedHost = config.server.host;
+config.kms.allowedHosts = new Map([[config.server.host, null]]);
 
 // allow self-signed certs in test framework
 config['https-agent'].rejectUnauthorized = false;
