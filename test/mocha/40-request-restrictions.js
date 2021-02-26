@@ -65,7 +65,11 @@ describe('bedrock-kms-http', () => {
       result.should.be.a('Uint8Array');
     });
     it('should not allow an operation from an unknown Host', async () => {
-      bedrock.config.kms.allowedHost = 'production.com';
+      const host = 'production.com';
+      bedrock.config.kms.allowedHost = host;
+      bedrock.config.kms.allowedHosts = new Map([
+        [host, ['8.8.8.8']]
+      ]);
       const data = new TextEncoder('utf-8').encode('hello');
       let err;
       let result;
@@ -75,6 +79,8 @@ describe('bedrock-kms-http', () => {
         err = e;
       }
       should.exist(err);
+      err.should.be.an('Error');
+      err.message.should.contain('Permission denied. Expected an allowedHost');
       should.not.exist(result);
     });
     it('should not allow an operation from an allowedHost with an unknown ip',
@@ -91,6 +97,8 @@ describe('bedrock-kms-http', () => {
           err = e;
         }
         should.exist(err);
+        err.should.be.an('Error');
+        err.message.should.contain('Permission denied. Expected an allowed IP');
         should.not.exist(result);
       });
     it('should allow an operation from an allowedHost with a known ip',
