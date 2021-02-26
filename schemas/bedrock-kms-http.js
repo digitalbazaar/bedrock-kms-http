@@ -185,6 +185,7 @@ const updateKeystoreConfigBody = {
   properties: {
     controller,
     id: {type: 'string'},
+    referenceId,
     sequence,
   }
 };
