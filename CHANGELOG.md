@@ -1,9 +1,9 @@
 # bedrock-kms-http ChangeLog
 
-## 4.0.0 - TBD
+## 4.0.0 - 2021-03-02
 
 ### Added
-- Implement support for ZCAP authz on the keystore config update API.
+- **BREAKING**: Implement ZCAP authz on the keystore config update API.
 
 ### Changed
 - **BREAKING**: Drop Node 10.x support.
