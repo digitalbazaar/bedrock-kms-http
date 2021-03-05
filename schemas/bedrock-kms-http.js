@@ -40,7 +40,8 @@ const ipAllowList = {
   minItems: 1,
   items: {
     type: 'string',
-    pattern: cidrRegex.v4({exact: true}).toString(),
+    // leading and trailing slashes in regex must be removed
+    pattern: cidrRegex.v4({exact: true}).toString().slice(1, -1),
   }
 };
 
