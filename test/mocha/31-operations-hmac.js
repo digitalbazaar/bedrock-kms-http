@@ -4,9 +4,8 @@
 'use strict';
 
 const {util: {uuid}} = require('bedrock');
-const brHttpsAgent = require('bedrock-https-agent');
 const pMap = require('p-map');
-const {CapabilityAgent, KeystoreAgent, KmsClient} = require('webkms-client');
+
 const helpers = require('./helpers');
 
 const KMS_MODULE = 'ssm-v1';
@@ -17,28 +16,7 @@ describe('bedrock-kms-http HMAC operations', () => {
     before(async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
-
-      const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle});
-
-      let err;
-      let keystore;
-      try {
-        keystore = await helpers.createKeystore({capabilityAgent});
-      } catch(e) {
-        err = e;
-      }
-      assertNoError(err);
-
-      // create kmsClient only required because we need to use httpsAgent
-      // that accepts self-signed certs used in test suite
-      const {httpsAgent} = brHttpsAgent;
-      const kmsClient = new KmsClient({httpsAgent});
-      const keystoreAgent = new KeystoreAgent({
-        capabilityAgent,
-        keystore,
-        kmsClient
-      });
+      const keystoreAgent = await helpers.createKeystoreAgent({handle, secret});
       hmac = await keystoreAgent.generateKey({
         kmsModule: KMS_MODULE,
         type: 'hmac',
@@ -51,7 +29,7 @@ describe('bedrock-kms-http HMAC operations', () => {
       try {
         result = await hmac.sign({data});
       } catch(e) {
-        err = err;
+        err = e;
       }
       assertNoError(err);
       should.exist(result);
@@ -86,5 +64,30 @@ describe('bedrock-kms-http HMAC operations', () => {
         result.should.have.length(operationCount);
       });
     }); // end bulk operations
-  });
+  }); // end Sha256HmacKey2019
+
+  describe('Sha256HmacKey2019 with ipAllowList', () => {
+    it('successfully signs', async () => {
+      const secret = ' 22612679-05ce-4ffd-bf58-22b3c4bc1314';
+      const handle = 'testKeyAllowList';
+      const ipAllowList = ['127.0.0.1/32'];
+      const keystoreAgent = await helpers.createKeystoreAgent(
+        {handle, ipAllowList, secret});
+      const hmac = await keystoreAgent.generateKey({
+        kmsModule: KMS_MODULE,
+        type: 'hmac',
+      });
+      const data = new TextEncoder('utf-8').encode('hello');
+      let err;
+      let result;
+      try {
+        result = await hmac.sign({data});
+      } catch(e) {
+        err = e;
+      }
+      assertNoError(err);
+      should.exist(result);
+      result.should.be.a('string');
+    });
+  }); // end Sha256HmacKey2019 with ipAllowList
 });

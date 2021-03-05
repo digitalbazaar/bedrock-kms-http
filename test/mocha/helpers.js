@@ -4,8 +4,8 @@
 'use strict';
 
 const bedrock = require('bedrock');
+const {CapabilityAgent, KeystoreAgent, KmsClient} = require('webkms-client');
 const {httpsAgent} = require('bedrock-https-agent');
-const {KmsClient} = require('webkms-client');
 const brPassport = require('bedrock-passport');
 const sinon = require('sinon');
 
@@ -32,6 +32,30 @@ exports.createKeystore = async ({
     config,
     httpsAgent,
   });
+};
+
+exports.createKeystoreAgent = async ({handle, ipAllowList, secret}) => {
+  const capabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
+
+  let err;
+  let keystore;
+  try {
+    keystore = await exports.createKeystore({capabilityAgent, ipAllowList});
+  } catch(e) {
+    err = e;
+  }
+  assertNoError(err);
+
+  // create kmsClient only required because we need to use httpsAgent
+  // that accepts self-signed certs used in test suite
+  const kmsClient = new KmsClient({httpsAgent});
+  const keystoreAgent = new KeystoreAgent({
+    capabilityAgent,
+    keystore,
+    kmsClient
+  });
+
+  return keystoreAgent;
 };
 
 exports.getKeystore = async ({id}) => {
