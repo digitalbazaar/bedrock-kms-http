@@ -31,6 +31,7 @@
     "did-veres-one": "^12.1.1",
     "http-signature-zcap-verify": "^3.0.0",
     "jsonld-signatures": "^5.1.0",
+    "netmask": "^1.0.6",
     "ocapld": "^2.0.0",
     "webkms-switch": "^2.0.0"
   },
