@@ -3,6 +3,8 @@
  */
 'use strict';
 
+const cidrRegex = require('cidr-regex');
+
 const controller = {
   title: 'controller',
   type: 'string'
@@ -33,6 +35,15 @@ const invoker = {
   }]
 };
 
+const ipAllowList = {
+  type: 'array',
+  minItems: 1,
+  items: {
+    type: 'string',
+    pattern: cidrRegex.v4({exact: true}).toString(),
+  }
+};
+
 const sequence = {
   title: 'sequence',
   type: 'integer',
@@ -47,6 +58,7 @@ const postKeystoreBody = {
   required: ['sequence', 'controller'],
   properties: {
     controller,
+    ipAllowList,
     referenceId,
     sequence,
   }
@@ -185,6 +197,7 @@ const updateKeystoreConfigBody = {
   properties: {
     controller,
     id: {type: 'string'},
+    ipAllowList,
     referenceId,
     sequence,
   }
