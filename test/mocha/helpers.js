@@ -4,7 +4,7 @@
 'use strict';
 
 const bedrock = require('bedrock');
-const brHttpsAgent = require('bedrock-https-agent');
+const {httpsAgent} = require('bedrock-https-agent');
 const {KmsClient} = require('webkms-client');
 const brPassport = require('bedrock-passport');
 const sinon = require('sinon');
@@ -12,8 +12,8 @@ const sinon = require('sinon');
 // the `keystores` endpoint uses session based authentication which is
 // mocked
 exports.createKeystore = async ({
-  capabilityAgent, referenceId,
-  kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`
+  capabilityAgent, ipAllowList, referenceId,
+  kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`,
 }) => {
   // create keystore
   const config = {
@@ -23,8 +23,10 @@ exports.createKeystore = async ({
   if(referenceId) {
     config.referenceId = referenceId;
   }
+  if(ipAllowList) {
+    config.ipAllowList = ipAllowList;
+  }
 
-  const {httpsAgent} = brHttpsAgent;
   return KmsClient.createKeystore({
     url: `${kmsBaseUrl}/keystores`,
     config,
@@ -33,7 +35,6 @@ exports.createKeystore = async ({
 };
 
 exports.getKeystore = async ({id}) => {
-  const {httpsAgent} = brHttpsAgent;
   return KmsClient.getKeystore({id, httpsAgent});
 };
 
@@ -43,7 +44,6 @@ exports.findKeystore = async ({
 }) => {
   const url = `${kmsBaseUrl}/keystores` +
     `/?controller=${controller}&referenceId=${referenceId}`;
-  const {httpsAgent} = brHttpsAgent;
   return KmsClient.findKeystore({
     url, controller, referenceId, httpsAgent
   });

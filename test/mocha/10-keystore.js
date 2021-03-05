@@ -29,12 +29,84 @@ describe('bedrock-kms-http API', () => {
       }
       assertNoError(err);
       should.exist(result);
-      result.should.have.property('id');
-      result.should.have.property('sequence');
+      result.should.have.keys(['controller', 'id', 'sequence']);
       result.sequence.should.equal(0);
       const {id: capabilityAgentId} = capabilityAgent;
-      result.should.have.property('controller');
       result.controller.should.equal(capabilityAgentId);
+    });
+    it('creates a keystore including proper ipAllowList', async () => {
+      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+      const handle = 'testKey1';
+
+      const capabilityAgent = await CapabilityAgent
+        .fromSecret({secret, handle});
+
+      const ipAllowList = ['127.0.0.1/32'];
+
+      let err;
+      let result;
+      try {
+        result = await helpers.createKeystore({capabilityAgent, ipAllowList});
+      } catch(e) {
+        err = e;
+      }
+      assertNoError(err);
+      should.exist(result);
+      result.should.have.keys(['controller', 'id', 'ipAllowList', 'sequence']);
+      result.sequence.should.equal(0);
+      const {id: capabilityAgentId} = capabilityAgent;
+      result.controller.should.equal(capabilityAgentId);
+      result.ipAllowList.should.eql(ipAllowList);
+    });
+    it('returns error on invalid ipAllowList', async () => {
+      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+      const handle = 'testKey1';
+
+      const capabilityAgent = await CapabilityAgent
+        .fromSecret({secret, handle});
+
+      // this is no a valid CIDR
+      const ipAllowList = ['127.0.0.1/33'];
+
+      let err;
+      let result;
+      try {
+        result = await helpers.createKeystore({capabilityAgent, ipAllowList});
+      } catch(e) {
+        err = e;
+      }
+      should.exist(err);
+      should.not.exist(result);
+      err.data.details.errors.should.have.length(1);
+      const [error] = err.data.details.errors;
+      error.name.should.equal('ValidationError');
+      error.message.should.contain('should match pattern');
+      error.details.path.should.equal('.ipAllowList[0]');
+    });
+    it('returns error on invalid ipAllowList', async () => {
+      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+      const handle = 'testKey1';
+
+      const capabilityAgent = await CapabilityAgent
+        .fromSecret({secret, handle});
+
+      // an empty allow list is invalid
+      const ipAllowList = [];
+
+      let err;
+      let result;
+      try {
+        result = await helpers.createKeystore({capabilityAgent, ipAllowList});
+      } catch(e) {
+        err = e;
+      }
+      should.exist(err);
+      should.not.exist(result);
+      err.data.details.errors.should.have.length(1);
+      const [error] = err.data.details.errors;
+      error.name.should.equal('ValidationError');
+      error.message.should.contain('should NOT have fewer than 1 items');
+      error.details.path.should.equal('.ipAllowList');
     });
     it('throws error on no sequence in postKeystoreBody validation',
       async () => {
