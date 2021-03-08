@@ -501,6 +501,149 @@ describe('bedrock-kms-http API', () => {
         err.data.type.should.equal('InvalidStateError');
         err.data.details.should.have.keys(['id', 'sequence', 'httpStatusCode']);
       });
+      describe('updates with ipAllowList', () => {
+        it('updates a keystore config with ipAllowList', async () => {
+          const secret = 'e44c4869-2fd7-4f7f-a123-addb05ec9c2a';
+          const handle = 'testKeyUpdate';
+
+          const capabilityAgent = await CapabilityAgent
+            .fromSecret({secret, handle});
+
+          const secret2 = '82ef7805-21ed-43bb-a604-4ccc7a06eacc';
+          const handle2 = 'testKeyUpdate2';
+
+          const capabilityAgent2 = await CapabilityAgent
+            .fromSecret({secret: secret2, handle: handle2});
+
+          const ipAllowList = ['127.0.0.1/32'];
+
+          let err;
+          let result;
+          try {
+            result = await helpers.createKeystore(
+              {capabilityAgent, ipAllowList});
+          } catch(e) {
+            err = e;
+          }
+          assertNoError(err);
+          should.exist(result);
+          result.should.have.property('id');
+          result.should.have.property('sequence');
+          result.sequence.should.equal(0);
+          const {id: capabilityAgentId} = capabilityAgent;
+          result.should.have.property('controller');
+          result.controller.should.equal(capabilityAgentId);
+
+          const {id: url} = result;
+          const newConfig = {
+            // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9
+            controller: capabilityAgent2.id,
+            id: url,
+            ipAllowList,
+            sequence: 1,
+          };
+
+          const headers = await signCapabilityInvocation({
+            url, method: 'post',
+            headers: DEFAULT_HEADERS,
+            json: newConfig,
+            capability: 'urn:zcap:root:' + encodeURIComponent(url),
+            invocationSigner: capabilityAgent.getSigner(),
+            capabilityAction: 'write'
+          });
+
+          err = null;
+          result = null;
+          try {
+            result = await httpClient.post(
+              url, {agent, headers, json: newConfig});
+          } catch(e) {
+            err = e;
+          }
+          assertNoError(err);
+          should.exist(result.data);
+          result.status.should.equal(200);
+          result.data.should.have.keys(['config', 'success']);
+          result.data.success.should.be.a('boolean');
+          result.data.success.should.equal(true);
+          result.data.config.should.eql(newConfig);
+
+          // retrieve the keystore config to confirm update was effective
+          err = null;
+          result = null;
+          try {
+            result = await helpers.getKeystore({id: newConfig.id});
+          } catch(e) {
+            err = e;
+          }
+          assertNoError(err);
+          should.exist(result);
+          result.should.eql(newConfig);
+        });
+        it('returns NotAllowedError for invalid source IP', async () => {
+          const secret = '481f41a0-af87-407f-b7ec-38f1fbb10d12';
+          const handle = 'testKeyUpdate';
+
+          const capabilityAgent = await CapabilityAgent
+            .fromSecret({secret, handle});
+
+          const secret2 = 'ddbbbc38-eb27-4238-8b84-382ada29b8c0';
+          const handle2 = 'testKeyUpdate2';
+
+          const capabilityAgent2 = await CapabilityAgent
+            .fromSecret({secret: secret2, handle: handle2});
+
+          const ipAllowList = ['8.8.8.8/32'];
+
+          let err;
+          let result;
+          try {
+            result = await helpers.createKeystore(
+              {capabilityAgent, ipAllowList});
+          } catch(e) {
+            err = e;
+          }
+          assertNoError(err);
+          should.exist(result);
+          result.should.have.property('id');
+          result.should.have.property('sequence');
+          result.sequence.should.equal(0);
+          const {id: capabilityAgentId} = capabilityAgent;
+          result.should.have.property('controller');
+          result.controller.should.equal(capabilityAgentId);
+
+          const {id: url} = result;
+          const newConfig = {
+            // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9
+            controller: capabilityAgent2.id,
+            id: url,
+            ipAllowList,
+            sequence: 1,
+          };
+
+          const headers = await signCapabilityInvocation({
+            url, method: 'post',
+            headers: DEFAULT_HEADERS,
+            json: newConfig,
+            capability: 'urn:zcap:root:' + encodeURIComponent(url),
+            invocationSigner: capabilityAgent.getSigner(),
+            capabilityAction: 'write'
+          });
+
+          err = null;
+          result = null;
+          try {
+            result = await httpClient.post(
+              url, {agent, headers, json: newConfig});
+          } catch(e) {
+            err = e;
+          }
+          should.not.exist(result);
+          should.exist(err);
+          err.status.should.equal(403);
+          err.data.type.should.equal('NotAllowedError');
+        });
+      }); // updates with ipAllowList
     }); // end update keystore config
   });
 });
