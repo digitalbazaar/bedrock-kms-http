@@ -34,7 +34,9 @@ exports.createKeystore = async ({
   });
 };
 
-exports.createKeystoreAgent = async ({handle, ipAllowList, secret}) => {
+exports.createKeystoreAgent = async ({
+  handle, ipAllowList, secret, kmsClientHeaders = {}
+}) => {
   const capabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
 
   let err;
@@ -48,7 +50,8 @@ exports.createKeystoreAgent = async ({handle, ipAllowList, secret}) => {
 
   // create kmsClient only required because we need to use httpsAgent
   // that accepts self-signed certs used in test suite
-  const kmsClient = new KmsClient({httpsAgent});
+  const kmsClient = new KmsClient(
+    {httpsAgent, defaultHeaders: kmsClientHeaders});
   const keystoreAgent = new KeystoreAgent({
     capabilityAgent,
     keystore,
