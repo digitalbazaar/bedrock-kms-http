@@ -32,6 +32,33 @@ describe('generateKey with ipAllowList', () => {
       'cache', '_pruneCacheTimer'
     ]);
   });
+  it('generates a key with x-forwarded-for header', async () => {
+    // source of requests in the test suite are from 127.0.0.1
+    const secret = ' 22612679-05ce-4ffd-bf58-22b3c4bc1314';
+    const handle = 'testKeyAllowList';
+    const ipAllowList = ['8.8.8.8/32'];
+    const keystoreAgent = await helpers.createKeystoreAgent({
+      handle, ipAllowList, secret, kmsClientHeaders: {
+        'x-forwarded-for': '8.8.8.8',
+      },
+    });
+    let err;
+    let result;
+    try {
+      result = await keystoreAgent.generateKey({
+        kmsModule: KMS_MODULE,
+        type: 'hmac',
+      });
+    } catch(e) {
+      err = e;
+    }
+    assertNoError(err);
+    should.exist(result);
+    result.should.have.keys([
+      'algorithm', 'capability', 'id', 'type', 'invocationSigner', 'kmsClient',
+      'cache', '_pruneCacheTimer'
+    ]);
+  });
   it('generates a key with multiple ipAllowList entries', async () => {
     // source of requests in the test suite are from 127.0.0.1
     const secret = ' efef2772-f7aa-4d25-9eac-6228f2a64b3b';
