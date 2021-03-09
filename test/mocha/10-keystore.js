@@ -285,7 +285,10 @@ describe('bedrock-kms-http API', () => {
         err.data.message.should.equal(
           'A validation error occured in the \'postRecoverBody\' validator.');
       });
-    it('throws error on receivedHost not equal to allowedHost', async () => {
+
+    // FIXME: is allowedHost going to continue on?
+    // eslint-disable-next-line max-len
+    it.skip('throws error on receivedHost not equal to allowedHost', async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
       const capabilityAgent = await CapabilityAgent
