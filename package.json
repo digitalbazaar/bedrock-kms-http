@@ -30,7 +30,7 @@
     "did-method-key": "^0.7.0",
     "did-veres-one": "^12.1.1",
     "forwarded": "^0.1.2",
-    "http-signature-zcap-verify": "^3.0.0",
+    "http-signature-zcap-verify": "^4.0.0",
     "jsonld-signatures": "^5.1.0",
     "netmask": "^1.0.6",
     "ocapld": "^2.0.0",
