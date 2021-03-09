@@ -286,28 +286,6 @@ describe('bedrock-kms-http API', () => {
           'A validation error occured in the \'postRecoverBody\' validator.');
       });
 
-    // FIXME: is allowedHost going to continue on?
-    // eslint-disable-next-line max-len
-    it.skip('throws error on receivedHost not equal to allowedHost', async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
-      const handle = 'testKey1';
-      const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle});
-      let err;
-      let result;
-
-      // intentionally specifying a host name other than a local host
-      const kmsBaseUrl = 'https://127.0.0.1:18443/kms';
-
-      try {
-        result = await helpers.createKeystore({capabilityAgent, kmsBaseUrl});
-      } catch(e) {
-        err = e;
-      }
-      should.not.exist(result);
-      should.exist(err);
-      err.data.message.should.contain('Permission denied. Expected host');
-    });
     describe('update keystore config', () => {
       it('updates a keystore config', async () => {
         const secret = '69ae7dc3-1d6d-4ff9-9cc0-c07b43d2006b';
