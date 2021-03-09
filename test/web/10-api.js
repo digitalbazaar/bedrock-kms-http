@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
  */
 import pMap from 'p-map';
 import uuid from 'uuid-random';
