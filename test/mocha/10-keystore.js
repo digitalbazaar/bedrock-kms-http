@@ -65,7 +65,7 @@ describe('bedrock-kms-http API', () => {
       const capabilityAgent = await CapabilityAgent
         .fromSecret({secret, handle});
 
-      // this is no a valid CIDR
+      // this is not a valid CIDR
       const ipAllowList = ['127.0.0.1/33'];
 
       let err;
