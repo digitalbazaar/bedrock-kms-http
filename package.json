@@ -34,7 +34,7 @@
     "jsonld-signatures": "^7.0.0",
     "netmask": "^1.0.6",
     "ocapld": "^2.0.0",
-    "webkms-switch": "digitalbazaar/webkms-switch#next-release-zcap"
+    "webkms-switch": "^3.0.0"
   },
   "peerDependencies": {
     "bedrock": "^4.1.1",
