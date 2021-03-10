@@ -133,52 +133,6 @@ describe('bedrock-kms-http API', () => {
         err.data.message.should.equal(
           'A validation error occured in the \'postKeystoreBody\' validator.');
       });
-    it('gets a keystore', async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
-      const handle = 'testKey1';
-
-      const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle});
-
-      const keystore = await helpers.createKeystore({capabilityAgent});
-      let err;
-      let result;
-      try {
-        result = await helpers.getKeystore({id: keystore.id});
-      } catch(e) {
-        err = e;
-      }
-      assertNoError(err);
-      should.exist(result);
-      result.should.have.property('id');
-      result.id.should.equal(keystore.id);
-    });
-    it('finds a keystore', async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
-      const handle = 'testKey1';
-      const referenceId =
-        'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
-
-      const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle});
-
-      const keystore = await helpers.createKeystore({
-        capabilityAgent, referenceId});
-      let err;
-      let result;
-      try {
-        result = await helpers.findKeystore({
-          controller: keystore.controller, referenceId});
-      } catch(e) {
-        err = e;
-      }
-      assertNoError(err);
-      should.exist(result);
-      result.should.have.property('id');
-      result.id.should.equal(keystore.id);
-      result.controller.should.equal(keystore.controller);
-      result.referenceId.should.equal(keystore.referenceId);
-    });
     it('throws error on no controller in getKeystoreQuery validation',
       async () => {
         const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
@@ -285,6 +239,160 @@ describe('bedrock-kms-http API', () => {
         err.data.message.should.equal(
           'A validation error occured in the \'postRecoverBody\' validator.');
       });
+
+    describe('get keystore config', () => {
+      it('gets a keystore', async () => {
+        const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+        const handle = 'testKey1';
+
+        const capabilityAgent = await CapabilityAgent
+          .fromSecret({secret, handle});
+
+        const keystore = await helpers.createKeystore({capabilityAgent});
+        let err;
+        let result;
+        try {
+          result = await helpers.getKeystore({id: keystore.id});
+        } catch(e) {
+          err = e;
+        }
+        assertNoError(err);
+        should.exist(result);
+        result.should.have.keys(['controller', 'id', 'sequence']);
+        result.id.should.equal(keystore.id);
+      });
+      it('gets a keystore with ipAllowList', async () => {
+        const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+        const handle = 'testKey1';
+
+        const capabilityAgent = await CapabilityAgent
+          .fromSecret({secret, handle});
+
+        const ipAllowList = ['127.0.0.1/32'];
+
+        const keystore = await helpers.createKeystore(
+          {capabilityAgent, ipAllowList});
+        let err;
+        let result;
+        try {
+          result = await helpers.getKeystore({id: keystore.id});
+        } catch(e) {
+          err = e;
+        }
+        assertNoError(err);
+        should.exist(result);
+        result.should.have.keys(
+          ['controller', 'id', 'ipAllowList', 'sequence']);
+        result.should.have.property('id');
+        result.id.should.equal(keystore.id);
+        result.ipAllowList.should.eql(ipAllowList);
+      });
+      it('returns NotAllowedError for invalid source IP', async () => {
+        const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+        const handle = 'testKey1';
+
+        const capabilityAgent = await CapabilityAgent
+          .fromSecret({secret, handle});
+
+        const ipAllowList = ['8.8.8.8/32'];
+
+        const keystore = await helpers.createKeystore(
+          {capabilityAgent, ipAllowList});
+        let err;
+        let result;
+        try {
+          result = await helpers.getKeystore({id: keystore.id});
+        } catch(e) {
+          err = e;
+        }
+        should.not.exist(result);
+        should.exist(err);
+        err.status.should.equal(403);
+        err.data.type.should.equal('NotAllowedError');
+      });
+    }); // get keystore config
+
+    describe('find keystore configs', () => {
+      it('finds a keystore', async () => {
+        const secret = ' b0f43022-3af1-4f22-ae55-19d70582087a';
+        const handle = 'testKey1';
+        const referenceId = 'urn:uuid:4f398f8f-505a-4609-a9df-761f01f4d18b';
+
+        const capabilityAgent = await CapabilityAgent
+          .fromSecret({secret, handle});
+
+        const keystore = await helpers.createKeystore({
+          capabilityAgent, referenceId});
+        let err;
+        let result;
+        try {
+          result = await helpers.findKeystore({
+            controller: keystore.controller, referenceId});
+        } catch(e) {
+          err = e;
+        }
+        assertNoError(err);
+        should.exist(result);
+        result.should.have.keys(
+          ['controller', 'id', 'referenceId', 'sequence']);
+        result.id.should.equal(keystore.id);
+        result.controller.should.equal(keystore.controller);
+        result.referenceId.should.equal(keystore.referenceId);
+      });
+      it('finds a keystore with ipAllowList', async () => {
+        const secret = ' b0f43022-3af1-4f22-ae55-19d70582087a';
+        const handle = 'testKey1';
+        const referenceId = 'urn:uuid:7c8b5e04-bbeb-4267-bdf3-b8ea425f9e32';
+
+        const capabilityAgent = await CapabilityAgent
+          .fromSecret({secret, handle});
+
+        const ipAllowList = ['127.0.0.1/32'];
+
+        const keystore = await helpers.createKeystore({
+          capabilityAgent, ipAllowList, referenceId});
+        let err;
+        let result;
+        try {
+          result = await helpers.findKeystore({
+            controller: keystore.controller, referenceId});
+        } catch(e) {
+          err = e;
+        }
+        assertNoError(err);
+        should.exist(result);
+        result.should.have.keys(
+          ['controller', 'id', 'ipAllowList', 'referenceId', 'sequence']);
+        result.id.should.equal(keystore.id);
+        result.controller.should.equal(keystore.controller);
+        result.referenceId.should.equal(keystore.referenceId);
+        result.ipAllowList.should.eql(ipAllowList);
+      });
+      it('find returns null with ipAllowList and invalid source IP',
+        async () => {
+          const secret = ' b0f43022-3af1-4f22-ae55-19d70582087a';
+          const handle = 'testKey1';
+          const referenceId = 'urn:uuid:17884c10-218d-4398-8f85-58a20cfc4bab';
+
+          const capabilityAgent = await CapabilityAgent
+            .fromSecret({secret, handle});
+
+          const ipAllowList = ['8.8.8.8/32'];
+
+          const keystore = await helpers.createKeystore({
+            capabilityAgent, ipAllowList, referenceId});
+          let err;
+          let result;
+          try {
+            result = await helpers.findKeystore({
+              controller: keystore.controller, referenceId});
+          } catch(e) {
+            err = e;
+          }
+          assertNoError(err);
+          should.equal(result, null);
+        });
+    });
 
     describe('update keystore config', () => {
       it('updates a keystore config', async () => {
