@@ -41,7 +41,7 @@
     "bedrock-account": "3.x - 5.x",
     "bedrock-express": "^3.2.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
-    "bedrock-kms": "^4.0.0",
+    "bedrock-kms": "^5.0.0",
     "bedrock-mongodb": "^8.2.0",
     "bedrock-passport": "^6.0.0",
     "bedrock-permission": "2.x - 3.x",
