@@ -64,11 +64,14 @@ describe('keystore API interactions using webkms-client', () => {
     }
     should.not.exist(result);
     should.exist(err);
-    err.status.should.equal(400);
-    err.data.message.should.equal('Configuration "id" does not match.');
-    err.data.type.should.equal('DataError');
-    err.data.details.should.have.keys('httpStatusCode', 'expected', 'actual');
-    err.data.details.actual.should.equal(aliceKeystoreConfig.id);
-    err.data.details.expected.should.equal(bobKeystoreAgent.keystore.id);
+    err.status.should.equal(403);
+    err.data.message.should.equal('ZCAP authorization error.');
+    err.data.type.should.equal('PermissionDenied');
+    err.data.details.should.have.keys('httpStatusCode');
+    err.data.cause.should.have.keys('message', 'type', 'details', 'cause');
+    err.data.cause.details.should.have.keys(['configId', 'requestUrl']);
+    err.data.cause.details.configId.should.equal(aliceKeystoreConfig.id);
+    err.data.cause.details.requestUrl.should.equal(
+      bobKeystoreAgent.keystore.id);
   });
 });

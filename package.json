@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-kms-http",
   "dependencies": {
-    "@digitalbazaar/ezcap-express": "^1.0.0",
+    "@digitalbazaar/ezcap-express": "digitalbazaar/ezcap-express#get-expected-target",
     "cidr-regex": "^3.1.1",
     "cors": "^2.8.5",
     "did-io": "^0.8.3",
