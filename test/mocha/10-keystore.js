@@ -527,6 +527,9 @@ describe('bedrock-kms-http API', () => {
         should.exist(err);
         should.not.exist(result);
         err.status.should.equal(403);
+        err.data.type.should.equal('PermissionDenied');
+        err.data.cause.message.should.contain(
+          'authorized invoker does not match');
       });
       it('rejects config update with an invalid sequence', async () => {
         const secret = 'a8256be9-beea-4b05-9fc2-7ad4c1a391e4';
