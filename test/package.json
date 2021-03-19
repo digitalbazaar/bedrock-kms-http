@@ -12,6 +12,7 @@
     "coverage-report": "nyc report"
   },
   "dependencies": {
+    "@digitalbazaar/http-client": "^1.0.0",
     "bedrock": "^4.1.1",
     "bedrock-account": "^5.0.0",
     "bedrock-did-context": "^1.0.0",

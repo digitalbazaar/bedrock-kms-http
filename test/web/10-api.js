@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
  */
+import {httpClient} from '@digitalbazaar/http-client';
 import pMap from 'p-map';
 import uuid from 'uuid-random';
 import {CapabilityAgent, KeystoreAgent, KmsClient} from 'webkms-client';
@@ -90,6 +91,7 @@ describe('bedrock-kms-http HMAC operations', () => {
 });
 
 async function _createKeystore({capabilityAgent, referenceId}) {
+  const {id: namespaceId} = await _createNamespace();
   // create keystore
   const config = {
     sequence: 0,
@@ -98,5 +100,24 @@ async function _createKeystore({capabilityAgent, referenceId}) {
   if(referenceId) {
     config.referenceId = referenceId;
   }
-  return KmsClient.createKeystore({config});
+  return KmsClient.createKeystore(
+    {config, url: `${namespaceId}/kms/keystores`});
+}
+
+async function _createNamespace() {
+  const nsBaseUrl = '/ns';
+  const controller = 'urn:uuid:a2a530e9-788b-4e7d-ad5e-865bc4078ef8';
+  const zcap = {
+    id: 'urn:uuid:011d784b-19ba-4a80-9cb3-bb1c2749148c',
+  };
+  const namespaceConfig = {
+    controller,
+    sequence: 0,
+    zcap,
+  };
+  const result = await httpClient.post(nsBaseUrl, {
+    json: namespaceConfig,
+  });
+
+  return result.data;
 }

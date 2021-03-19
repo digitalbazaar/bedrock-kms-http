@@ -8,13 +8,19 @@ const helpers = require('./helpers');
 const KMS_MODULE = 'ssm-v1';
 
 describe('generateKey with ipAllowList', () => {
+  let namespaceId;
+  before(async () => {
+    const result = await helpers.createNamespace();
+    ({id: namespaceId} = result);
+  });
+
   it('generates a key', async () => {
     // source of requests in the test suite are from 127.0.0.1
     const secret = ' 22612679-05ce-4ffd-bf58-22b3c4bc1314';
     const handle = 'testKeyAllowList';
     const ipAllowList = ['127.0.0.1/32'];
     const keystoreAgent = await helpers.createKeystoreAgent(
-      {handle, ipAllowList, secret});
+      {handle, ipAllowList, secret, namespaceId});
     let err;
     let result;
     try {
@@ -38,7 +44,7 @@ describe('generateKey with ipAllowList', () => {
     const handle = 'testKeyAllowList';
     const ipAllowList = ['8.8.8.8/32'];
     const keystoreAgent = await helpers.createKeystoreAgent({
-      handle, ipAllowList, secret, kmsClientHeaders: {
+      handle, ipAllowList, secret, namespaceId, kmsClientHeaders: {
         'x-forwarded-for': '8.8.8.8',
       },
     });
@@ -65,7 +71,7 @@ describe('generateKey with ipAllowList', () => {
     const handle = 'testKeyAllowList';
     const ipAllowList = ['8.8.8.8/32', '127.0.0.1/32'];
     const keystoreAgent = await helpers.createKeystoreAgent(
-      {handle, ipAllowList, secret});
+      {handle, ipAllowList, secret, namespaceId});
     let err;
     let result;
     try {
@@ -89,7 +95,7 @@ describe('generateKey with ipAllowList', () => {
     const handle = 'testKeyAllowList';
     const ipAllowList = ['8.8.8.8/32'];
     const keystoreAgent = await helpers.createKeystoreAgent(
-      {handle, ipAllowList, secret});
+      {handle, ipAllowList, secret, namespaceId});
 
     let err;
     let result;

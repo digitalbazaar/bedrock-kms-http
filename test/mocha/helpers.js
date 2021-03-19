@@ -38,14 +38,15 @@ exports.createKeystore = async ({
 };
 
 exports.createKeystoreAgent = async ({
-  handle, ipAllowList, secret, kmsClientHeaders = {}
+  handle, ipAllowList, secret, kmsClientHeaders = {}, namespaceId
 }) => {
   const capabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
 
   let err;
   let keystore;
   try {
-    keystore = await exports.createKeystore({capabilityAgent, ipAllowList});
+    keystore = await exports.createKeystore(
+      {capabilityAgent, ipAllowList, namespaceId});
   } catch(e) {
     err = e;
   }
