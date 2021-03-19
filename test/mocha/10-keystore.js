@@ -3,7 +3,6 @@
  */
 'use strict';
 
-const bedrock = require('bedrock');
 const {CapabilityAgent} = require('webkms-client');
 const helpers = require('./helpers');
 const {agent} = require('bedrock-https-agent');
@@ -12,6 +11,11 @@ const mockData = require('./mock.data');
 const {signCapabilityInvocation} = require('http-signature-zcap-invoke');
 
 describe('bedrock-kms-http API', () => {
+  let namespaceId;
+  before(async () => {
+    const result = await helpers.createNamespace();
+    ({id: namespaceId} = result);
+  });
   describe('keystores', () => {
     it('creates a keystore', async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
@@ -23,7 +27,7 @@ describe('bedrock-kms-http API', () => {
       let err;
       let result;
       try {
-        result = await helpers.createKeystore({capabilityAgent});
+        result = await helpers.createKeystore({capabilityAgent, namespaceId});
       } catch(e) {
         err = e;
       }
@@ -46,7 +50,8 @@ describe('bedrock-kms-http API', () => {
       let err;
       let result;
       try {
-        result = await helpers.createKeystore({capabilityAgent, ipAllowList});
+        result = await helpers.createKeystore(
+          {capabilityAgent, ipAllowList, namespaceId});
       } catch(e) {
         err = e;
       }
@@ -71,7 +76,8 @@ describe('bedrock-kms-http API', () => {
       let err;
       let result;
       try {
-        result = await helpers.createKeystore({capabilityAgent, ipAllowList});
+        result = await helpers.createKeystore(
+          {capabilityAgent, ipAllowList, namespaceId});
       } catch(e) {
         err = e;
       }
@@ -96,7 +102,8 @@ describe('bedrock-kms-http API', () => {
       let err;
       let result;
       try {
-        result = await helpers.createKeystore({capabilityAgent, ipAllowList});
+        result = await helpers.createKeystore(
+          {capabilityAgent, ipAllowList, namespaceId});
       } catch(e) {
         err = e;
       }
@@ -115,7 +122,7 @@ describe('bedrock-kms-http API', () => {
 
         const capabilityAgent = await CapabilityAgent
           .fromSecret({secret, handle});
-        const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
+        const kmsBaseUrl = `${namespaceId}/kms`;
         const url = `${kmsBaseUrl}/keystores`;
         const config = {
           controller: capabilityAgent.id
@@ -143,10 +150,10 @@ describe('bedrock-kms-http API', () => {
         const capabilityAgent = await CapabilityAgent
           .fromSecret({secret, handle});
 
-        const keystore = await helpers.createKeystore({
-          capabilityAgent, referenceId});
+        const keystore = await helpers.createKeystore(
+          {capabilityAgent, referenceId, namespaceId});
 
-        const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
+        const kmsBaseUrl = `${namespaceId}/kms`;
         const url = `${kmsBaseUrl}/keystores` +
           `/?r?controller=${keystore.controller}`;
 
@@ -167,7 +174,7 @@ describe('bedrock-kms-http API', () => {
         const referenceId =
           'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
 
-        const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
+        const kmsBaseUrl = `${namespaceId}/kms`;
         const url = `${kmsBaseUrl}/keystores` +
           `/?referenceId=${referenceId}`;
 
@@ -189,8 +196,8 @@ describe('bedrock-kms-http API', () => {
 
       const capabilityAgent = await CapabilityAgent
         .fromSecret({secret, handle});
-      const keystore = await helpers.createKeystore({
-        capabilityAgent});
+      const keystore = await helpers.createKeystore(
+        {capabilityAgent, namespaceId});
 
       const url = `${keystore.id}/authorizations`;
 
@@ -218,8 +225,8 @@ describe('bedrock-kms-http API', () => {
 
         const capabilityAgent = await CapabilityAgent
           .fromSecret({secret, handle});
-        const keystore = await helpers.createKeystore({
-          capabilityAgent});
+        const keystore = await helpers.createKeystore(
+          {capabilityAgent, namespaceId});
 
         const url = `${keystore.id}/recover`;
 
@@ -248,7 +255,8 @@ describe('bedrock-kms-http API', () => {
         const capabilityAgent = await CapabilityAgent
           .fromSecret({secret, handle});
 
-        const keystore = await helpers.createKeystore({capabilityAgent});
+        const keystore = await helpers.createKeystore(
+          {capabilityAgent, namespaceId});
         let err;
         let result;
         try {
@@ -271,7 +279,7 @@ describe('bedrock-kms-http API', () => {
         const ipAllowList = ['127.0.0.1/32'];
 
         const keystore = await helpers.createKeystore(
-          {capabilityAgent, ipAllowList});
+          {capabilityAgent, ipAllowList, namespaceId});
         let err;
         let result;
         try {
@@ -297,7 +305,7 @@ describe('bedrock-kms-http API', () => {
         const ipAllowList = ['8.8.8.8/32'];
 
         const keystore = await helpers.createKeystore(
-          {capabilityAgent, ipAllowList});
+          {capabilityAgent, ipAllowList, namespaceId});
         let err;
         let result;
         try {
@@ -321,13 +329,13 @@ describe('bedrock-kms-http API', () => {
         const capabilityAgent = await CapabilityAgent
           .fromSecret({secret, handle});
 
-        const keystore = await helpers.createKeystore({
-          capabilityAgent, referenceId});
+        const keystore = await helpers.createKeystore(
+          {capabilityAgent, referenceId, namespaceId});
         let err;
         let result;
         try {
-          result = await helpers.findKeystore({
-            controller: keystore.controller, referenceId});
+          result = await helpers.findKeystore(
+            {controller: keystore.controller, namespaceId, referenceId});
         } catch(e) {
           err = e;
         }
@@ -350,12 +358,12 @@ describe('bedrock-kms-http API', () => {
         const ipAllowList = ['127.0.0.1/32'];
 
         const keystore = await helpers.createKeystore({
-          capabilityAgent, ipAllowList, referenceId});
+          capabilityAgent, ipAllowList, namespaceId, referenceId});
         let err;
         let result;
         try {
-          result = await helpers.findKeystore({
-            controller: keystore.controller, referenceId});
+          result = await helpers.findKeystore(
+            {controller: keystore.controller, namespaceId, referenceId});
         } catch(e) {
           err = e;
         }
@@ -380,12 +388,12 @@ describe('bedrock-kms-http API', () => {
           const ipAllowList = ['8.8.8.8/32'];
 
           const keystore = await helpers.createKeystore({
-            capabilityAgent, ipAllowList, referenceId});
+            capabilityAgent, ipAllowList, namespaceId, referenceId});
           let err;
           let result;
           try {
-            result = await helpers.findKeystore({
-              controller: keystore.controller, referenceId});
+            result = await helpers.findKeystore(
+              {controller: keystore.controller, namespaceId, referenceId});
           } catch(e) {
             err = e;
           }
@@ -411,7 +419,7 @@ describe('bedrock-kms-http API', () => {
         let err;
         let result;
         try {
-          result = await helpers.createKeystore({capabilityAgent});
+          result = await helpers.createKeystore({capabilityAgent, namespaceId});
         } catch(e) {
           err = e;
         }
@@ -485,7 +493,7 @@ describe('bedrock-kms-http API', () => {
         let err;
         let result;
         try {
-          result = await helpers.createKeystore({capabilityAgent});
+          result = await helpers.createKeystore({capabilityAgent, namespaceId});
         } catch(e) {
           err = e;
         }
@@ -547,7 +555,7 @@ describe('bedrock-kms-http API', () => {
         let err;
         let result;
         try {
-          result = await helpers.createKeystore({capabilityAgent});
+          result = await helpers.createKeystore({capabilityAgent, namespaceId});
         } catch(e) {
           err = e;
         }
@@ -613,7 +621,7 @@ describe('bedrock-kms-http API', () => {
           let result;
           try {
             result = await helpers.createKeystore(
-              {capabilityAgent, ipAllowList});
+              {capabilityAgent, ipAllowList, namespaceId});
           } catch(e) {
             err = e;
           }
@@ -691,7 +699,7 @@ describe('bedrock-kms-http API', () => {
           let result;
           try {
             result = await helpers.createKeystore(
-              {capabilityAgent, ipAllowList});
+              {capabilityAgent, ipAllowList, namespaceId});
           } catch(e) {
             err = e;
           }

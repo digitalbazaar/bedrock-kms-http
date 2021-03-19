@@ -14,13 +14,19 @@ describe('keystore API interactions using webkms-client', () => {
   let bobCapabilityAgent;
   let bobKeystoreAgent;
 
+  let namespaceId;
+  before(async () => {
+    const result = await helpers.createNamespace();
+    ({id: namespaceId} = result);
+  });
+
   before(async () => {
     const secret = '40762a17-1696-428f-a2b2-ddf9fe9b4987';
     const handle = 'testKey2';
     aliceCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
 
     aliceKeystoreConfig = await helpers.createKeystore(
-      {capabilityAgent: aliceCapabilityAgent});
+      {capabilityAgent: aliceCapabilityAgent, namespaceId});
     const {httpsAgent} = brHttpsAgent;
     const kmsClient = new KmsClient({httpsAgent});
 
@@ -38,7 +44,7 @@ describe('keystore API interactions using webkms-client', () => {
     const handle = 'bobKey';
     bobCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
     const keystore = await helpers.createKeystore(
-      {capabilityAgent: bobCapabilityAgent});
+      {capabilityAgent: bobCapabilityAgent, namespaceId});
     try {
       const {httpsAgent} = brHttpsAgent;
       const kmsClient = new KmsClient({httpsAgent});

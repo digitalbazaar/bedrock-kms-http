@@ -4,7 +4,7 @@
 'use strict';
 
 const bedrock = require('bedrock');
-const brHttpsAgent = require('bedrock-https-agent');
+const {httpsAgent} = require('bedrock-https-agent');
 const {documentLoader} = require('bedrock-jsonld-document-loader');
 const helpers = require('./helpers');
 const jsigs = require('jsonld-signatures');
@@ -31,14 +31,19 @@ describe('revocations API', () => {
   let carolKey;
   let carolKeystoreAgent;
 
+  let namespaceId;
+  before(async () => {
+    const result = await helpers.createNamespace();
+    ({id: namespaceId} = result);
+  });
+
   before(async () => {
     const secret = '40762a17-1696-428f-a2b2-ddf9fe9b4987';
     const handle = 'testKey2';
     aliceCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
 
     const keystore = await helpers.createKeystore(
-      {capabilityAgent: aliceCapabilityAgent});
-    const {httpsAgent} = brHttpsAgent;
+      {capabilityAgent: aliceCapabilityAgent, namespaceId});
     const kmsClient = new KmsClient({httpsAgent});
     aliceKeystoreAgent = new KeystoreAgent(
       {capabilityAgent: aliceCapabilityAgent, keystore, kmsClient});
@@ -50,9 +55,8 @@ describe('revocations API', () => {
     const handle = 'bobKey';
     bobCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
     const keystore = await helpers.createKeystore(
-      {capabilityAgent: bobCapabilityAgent});
+      {capabilityAgent: bobCapabilityAgent, namespaceId});
     try {
-      const {httpsAgent} = brHttpsAgent;
       const kmsClient = new KmsClient({httpsAgent});
       bobKeystoreAgent = new KeystoreAgent(
         {capabilityAgent: bobCapabilityAgent, keystore, kmsClient});
@@ -72,14 +76,13 @@ describe('revocations API', () => {
   before(async () => {
     const secret = 'ae806cd9-2765-4232-b955-01e1024ac032';
     const handle = 'carolKey';
-    const {httpsAgent} = brHttpsAgent;
     // keystore in the kmsClient is set later
     const kmsClient = new KmsClient({httpsAgent});
     carolCapabilityAgent = await CapabilityAgent.fromSecret({
       secret, handle, kmsClient
     });
     const keystore = await helpers.createKeystore(
-      {capabilityAgent: carolCapabilityAgent});
+      {capabilityAgent: carolCapabilityAgent, namespaceId});
     carolKeystoreAgent = new KeystoreAgent(
       {capabilityAgent: carolCapabilityAgent, keystore, kmsClient});
 
@@ -403,7 +406,6 @@ async function _delegate({zcap, signer, capabilityChain}) {
 }
 
 async function _signWithDelegatedKey({capability, doc, invokeKey}) {
-  const {httpsAgent} = brHttpsAgent;
   const delegatedSigningKey = new AsymmetricKey({
     capability,
     invocationSigner: invokeKey,
@@ -430,7 +432,6 @@ async function _signWithDelegatedKey({capability, doc, invokeKey}) {
 async function _revokeDelegatedCapability({
   capability, capabilityToRevoke, invocationSigner
 }) {
-  const {httpsAgent} = brHttpsAgent;
   const kmsClient = new KmsClient({httpsAgent});
   await kmsClient.revokeCapability({
     capabilityToRevoke,

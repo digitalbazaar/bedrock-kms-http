@@ -5,31 +5,34 @@
 
 const bedrock = require('bedrock');
 const {CapabilityAgent, KeystoreAgent, KmsClient} = require('webkms-client');
-const {httpsAgent} = require('bedrock-https-agent');
+const {agent, httpsAgent} = require('bedrock-https-agent');
 const brPassport = require('bedrock-passport');
+const {httpClient} = require('@digitalbazaar/http-client');
 const sinon = require('sinon');
+
+const {config} = bedrock;
 
 // the `keystores` endpoint uses session based authentication which is
 // mocked
 exports.createKeystore = async ({
-  capabilityAgent, ipAllowList, referenceId,
-  kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`,
+  capabilityAgent, ipAllowList, namespaceId, referenceId
 }) => {
   // create keystore
-  const config = {
+  const keystoreConfig = {
     sequence: 0,
     controller: capabilityAgent.id,
   };
   if(referenceId) {
-    config.referenceId = referenceId;
+    keystoreConfig.referenceId = referenceId;
   }
   if(ipAllowList) {
-    config.ipAllowList = ipAllowList;
+    keystoreConfig.ipAllowList = ipAllowList;
   }
-
+  const keystoresUrl = `${namespaceId}${config['kms-http'].routes.basePath}` +
+    `${config['kms-http'].routes.keystores}`;
   return KmsClient.createKeystore({
-    url: `${kmsBaseUrl}/keystores`,
-    config,
+    url: keystoresUrl,
+    config: keystoreConfig,
     httpsAgent,
   });
 };
@@ -61,15 +64,33 @@ exports.createKeystoreAgent = async ({
   return keystoreAgent;
 };
 
+exports.createNamespace = async () => {
+  const nsBaseUrl = `${bedrock.config.server.baseUri}/ns`;
+  const controller = 'urn:uuid:a2a530e9-788b-4e7d-ad5e-865bc4078ef8';
+  const zcap = {
+    id: 'urn:uuid:011d784b-19ba-4a80-9cb3-bb1c2749148c',
+  };
+  const namespaceConfig = {
+    controller,
+    sequence: 0,
+    zcap,
+  };
+  const result = await httpClient.post(nsBaseUrl, {
+    agent,
+    json: namespaceConfig,
+  });
+
+  return result.data;
+};
+
 exports.getKeystore = async ({id}) => {
   return KmsClient.getKeystore({id, httpsAgent});
 };
 
 exports.findKeystore = async ({
-  controller, referenceId,
-  kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`
+  controller, namespaceId, referenceId,
 }) => {
-  const url = `${kmsBaseUrl}/keystores` +
+  const url = `${namespaceId}/kms/keystores` +
     `/?controller=${controller}&referenceId=${referenceId}`;
   return KmsClient.findKeystore({
     url, controller, referenceId, httpsAgent
