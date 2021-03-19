@@ -66,7 +66,7 @@ describe('keystore API interactions using webkms-client', () => {
     should.exist(err);
     err.status.should.equal(403);
     err.data.message.should.equal('ZCAP authorization error.');
-    err.data.type.should.equal('PermissionDenied');
+    err.data.type.should.equal('NotAllowedError');
     err.data.details.should.have.keys('httpStatusCode');
     err.data.cause.should.have.keys('message', 'type', 'details', 'cause');
     err.data.cause.details.should.have.keys(

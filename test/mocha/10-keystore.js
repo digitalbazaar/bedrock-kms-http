@@ -527,7 +527,7 @@ describe('bedrock-kms-http API', () => {
         should.exist(err);
         should.not.exist(result);
         err.status.should.equal(403);
-        err.data.type.should.equal('PermissionDenied');
+        err.data.type.should.equal('NotAllowedError');
         err.data.cause.message.should.contain(
           'authorized invoker does not match');
       });
