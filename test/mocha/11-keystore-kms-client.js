@@ -69,7 +69,8 @@ describe('keystore API interactions using webkms-client', () => {
     err.data.type.should.equal('PermissionDenied');
     err.data.details.should.have.keys('httpStatusCode');
     err.data.cause.should.have.keys('message', 'type', 'details', 'cause');
-    err.data.cause.details.should.have.keys(['configId', 'requestUrl']);
+    err.data.cause.details.should.have.keys(
+      ['configId', 'httpStatusCode', 'requestUrl']);
     err.data.cause.details.configId.should.equal(aliceKeystoreConfig.id);
     err.data.cause.details.requestUrl.should.equal(
       bobKeystoreAgent.keystore.id);
