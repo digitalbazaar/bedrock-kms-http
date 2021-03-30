@@ -32,7 +32,7 @@
     "forwarded": "^0.1.2",
     "http-signature-zcap-verify": "^4.0.0",
     "jsonld-signatures": "^7.0.0",
-    "netmask": "^1.0.6",
+    "netmask": "^2.0.1",
     "ocapld": "^2.0.0",
     "webkms-switch": "^3.0.0"
   },
