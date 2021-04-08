@@ -23,18 +23,18 @@
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-kms-http",
   "dependencies": {
-    "@digitalbazaar/ezcap-express": "^2.0.0",
+    "@digitalbazaar/ezcap-express": "digitalbazaar/ezcap-express#v4.x",
+    "@digitalbazaar/zcapld": "^3.0.1",
     "cidr-regex": "^3.1.1",
     "cors": "^2.8.5",
     "did-io": "^0.8.3",
     "did-method-key": "^0.7.0",
     "did-veres-one": "^12.1.1",
     "forwarded": "^0.1.2",
-    "http-signature-zcap-verify": "^4.0.0",
-    "jsonld-signatures": "^7.0.0",
+    "http-signature-zcap-verify": "digitalbazaar/http-signature-zcap-verify#zcapld",
+    "jsonld-signatures": "^8.0.2",
     "netmask": "^2.0.1",
-    "ocapld": "^2.0.0",
-    "webkms-switch": "^3.0.0"
+    "webkms-switch": "digitalbazaar/webkms-switch#support-multiple-context-type"
   },
   "peerDependencies": {
     "bedrock": "^4.1.1",

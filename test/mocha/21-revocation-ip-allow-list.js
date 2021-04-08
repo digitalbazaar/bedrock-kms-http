@@ -8,7 +8,7 @@ const brHttpsAgent = require('bedrock-https-agent');
 const {documentLoader} = require('bedrock-jsonld-document-loader');
 const helpers = require('./helpers');
 const jsigs = require('jsonld-signatures');
-const {CapabilityDelegation} = require('ocapld');
+const {CapabilityDelegation} = require('@digitalbazaar/zcapld');
 const {AsymmetricKey, CapabilityAgent, KmsClient, KeystoreAgent} =
   require('webkms-client');
 const {Ed25519KeyPair} = require('crypto-ld');
