@@ -2,6 +2,14 @@
 
 ## 4.1.0 - TBD
 
+### Changed
+- **BREAKING**: Update to newest dependencies.
+  - `ocapld` to `@digitalbazaar/zcapld`.
+  - `http-signature-zcap-verify` to `v4`.
+  - `jsonld-signatures` to newest `v8`.
+  - `webkms-switch`
+  - `did-io`, `did-method-key` and `did-veres-one`.
+
 ### Added
 - Keystore configurations may now include an optional `ipAllowList` array. If
   specified, the KMS system will only execute requests originating from IPs
