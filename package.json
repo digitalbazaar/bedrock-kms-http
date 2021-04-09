@@ -31,7 +31,7 @@
     "did-method-key": "^0.7.0",
     "did-veres-one": "^12.1.1",
     "forwarded": "^0.1.2",
-    "http-signature-zcap-verify": "digitalbazaar/http-signature-zcap-verify#zcapld",
+    "http-signature-zcap-verify": "^6.0.0",
     "jsonld-signatures": "^8.0.2",
     "netmask": "^2.0.1",
     "webkms-switch": "digitalbazaar/webkms-switch#support-multiple-context-type"
