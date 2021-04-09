@@ -34,3 +34,5 @@ config.karma.config.browserDisconnectTimeout = 120000;
 
 config.express.useSession = false;
 config['https-agent'].keepAlive = true;
+
+config['app-key'].seedBase58 = '5qxvbhNYLTQQxTRUa7ttNZPUmY3WYVgBJXXhhkZnWdyC';
