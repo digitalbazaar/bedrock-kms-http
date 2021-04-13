@@ -10,14 +10,14 @@ const helpers = require('./helpers');
 const jsigs = require('jsonld-signatures');
 const {CapabilityDelegation} = require('ocapld');
 const {AsymmetricKey, CapabilityAgent, KmsClient, KeystoreAgent} =
-  require('webkms-client');
+  require('@digitalbazaar/webkms-client');
 const {Ed25519KeyPair} = require('crypto-ld');
 const {util: {uuid}} = bedrock;
 const {
   purposes: {AssertionProofPurpose},
   sign,
-  suites: {Ed25519Signature2018}
 } = jsigs;
+const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 
 const KMS_MODULE = 'ssm-v1';
 
@@ -61,7 +61,7 @@ describe('revocations API', () => {
     }
     try {
       bobKey = await bobKeystoreAgent.generateKey(
-        {type: 'Ed25519VerificationKey2018', kmsModule: KMS_MODULE});
+        {type: 'Ed25519VerificationKey2020', kmsModule: KMS_MODULE});
     } catch(e) {
       assertNoError(e);
     }
@@ -84,7 +84,7 @@ describe('revocations API', () => {
       {capabilityAgent: carolCapabilityAgent, keystore, kmsClient});
 
     carolKey = await carolKeystoreAgent.generateKey(
-      {type: 'Ed25519VerificationKey2018', kmsModule: KMS_MODULE});
+      {type: 'Ed25519VerificationKey2020', kmsModule: KMS_MODULE});
     await _setKeyId(carolKey);
   });
 
@@ -103,7 +103,7 @@ describe('revocations API', () => {
   it('successfully revokes a delegation', async () => {
     // first generate a new key for alice
     const aliceKey = await aliceKeystoreAgent.generateKey(
-      {type: 'Ed25519VerificationKey2018', kmsModule: KMS_MODULE});
+      {type: 'Ed25519VerificationKey2020', kmsModule: KMS_MODULE});
     await _setKeyId(aliceKey);
 
     // next, delegate authority to bob to use alice's key
@@ -288,7 +288,7 @@ describe('revocations API', () => {
   it('throws error on zcaps validator', async () => {
     // first generate a new key for alice
     const aliceKey = await aliceKeystoreAgent.generateKey(
-      {type: 'Ed25519VerificationKey2018', kmsModule: KMS_MODULE});
+      {type: 'Ed25519VerificationKey2020', kmsModule: KMS_MODULE});
     await _setKeyId(aliceKey);
 
     // next, delegate authority to bob to use alice's key
@@ -393,7 +393,7 @@ async function _delegate({zcap, signer, capabilityChain}) {
   // attach capability delegation proof
   return sign(zcap, {
     // TODO: map `signer.type` to signature suite
-    suite: new Ed25519Signature2018({
+    suite: new Ed25519Signature2020({
       signer,
       verificationMethod: signer.id
     }),
@@ -409,7 +409,7 @@ async function _signWithDelegatedKey({capability, doc, invokeKey}) {
     invocationSigner: invokeKey,
     kmsClient: new KmsClient({httpsAgent})
   });
-  const suite = new Ed25519Signature2018({
+  const suite = new Ed25519Signature2020({
     verificationMethod: capability.invocationTarget.verificationMethod,
     signer: delegatedSigningKey
   });

@@ -1,9 +1,12 @@
 /*
  * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
  */
-import pMap from 'p-map';
-import uuid from 'uuid-random';
-import {CapabilityAgent, KeystoreAgent, KmsClient} from 'webkms-client';
+'use strict';
+
+const pMap = require('p-map');
+const uuid = require('uuid-random');
+const {CapabilityAgent, KeystoreAgent, KmsClient} =
+  require('@digitalbazaar/webkms-client');
 
 const KMS_MODULE = 'ssm-v1';
 
