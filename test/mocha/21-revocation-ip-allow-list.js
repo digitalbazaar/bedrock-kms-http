@@ -10,7 +10,7 @@ const helpers = require('./helpers');
 const jsigs = require('jsonld-signatures');
 const {CapabilityDelegation} = require('ocapld');
 const {AsymmetricKey, CapabilityAgent, KmsClient, KeystoreAgent} =
-  require('webkms-client');
+  require('@digitalbazaar/webkms-client');
 const {Ed25519KeyPair} = require('crypto-ld');
 const {util: {uuid}} = bedrock;
 const {
