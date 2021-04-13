@@ -34,7 +34,8 @@ describe('revocations API', () => {
   before(async () => {
     const secret = '40762a17-1696-428f-a2b2-ddf9fe9b4987';
     const handle = 'testKey2';
-    aliceCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
+    aliceCapabilityAgent = await CapabilityAgent.fromSecret({
+      secret, handle, keyType: 'Ed25519VerificationKey2018'});
 
     const keystore = await helpers.createKeystore(
       {capabilityAgent: aliceCapabilityAgent});
@@ -48,7 +49,8 @@ describe('revocations API', () => {
   before(async () => {
     const secret = '34f2afd1-34ef-4d46-a998-cdc5462dc0d2';
     const handle = 'bobKey';
-    bobCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
+    bobCapabilityAgent = await CapabilityAgent.fromSecret({
+      secret, handle, keyType: 'Ed25519VerificationKey2018'});
     const keystore = await helpers.createKeystore(
       {capabilityAgent: bobCapabilityAgent});
     try {
@@ -76,7 +78,7 @@ describe('revocations API', () => {
     // keystore in the kmsClient is set later
     const kmsClient = new KmsClient({httpsAgent});
     carolCapabilityAgent = await CapabilityAgent.fromSecret({
-      secret, handle, kmsClient
+      secret, handle, kmsClient, keyType: 'Ed25519VerificationKey2020'
     });
     const keystore = await helpers.createKeystore(
       {capabilityAgent: carolCapabilityAgent});
