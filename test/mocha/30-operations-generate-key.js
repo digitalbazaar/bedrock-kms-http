@@ -14,7 +14,7 @@ describe('generateKey with ipAllowList', () => {
     const handle = 'testKeyAllowList';
     const ipAllowList = ['127.0.0.1/32'];
     const keystoreAgent = await helpers.createKeystoreAgent(
-      {handle, ipAllowList, secret});
+      {handle, ipAllowList, secret, keyType: 'Ed25519VerificationKey2020'});
     let err;
     let result;
     try {
@@ -40,7 +40,7 @@ describe('generateKey with ipAllowList', () => {
     const keystoreAgent = await helpers.createKeystoreAgent({
       handle, ipAllowList, secret, kmsClientHeaders: {
         'x-forwarded-for': '8.8.8.8',
-      },
+      }, keyType: 'Ed25519VerificationKey2020'
     });
     let err;
     let result;
@@ -65,7 +65,7 @@ describe('generateKey with ipAllowList', () => {
     const handle = 'testKeyAllowList';
     const ipAllowList = ['8.8.8.8/32', '127.0.0.1/32'];
     const keystoreAgent = await helpers.createKeystoreAgent(
-      {handle, ipAllowList, secret});
+      {handle, ipAllowList, secret, keyType: 'Ed25519VerificationKey2020'});
     let err;
     let result;
     try {
@@ -89,7 +89,7 @@ describe('generateKey with ipAllowList', () => {
     const handle = 'testKeyAllowList';
     const ipAllowList = ['8.8.8.8/32'];
     const keystoreAgent = await helpers.createKeystoreAgent(
-      {handle, ipAllowList, secret});
+      {handle, ipAllowList, secret, keyType: 'Ed25519VerificationKey2020'});
 
     let err;
     let result;
