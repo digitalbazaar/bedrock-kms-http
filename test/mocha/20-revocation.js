@@ -11,14 +11,14 @@ const jsigs = require('jsonld-signatures');
 const {CapabilityDelegation} = require('ocapld');
 const {AsymmetricKey, CapabilityAgent, KmsClient, KeystoreAgent} =
   require('@digitalbazaar/webkms-client');
-const {Ed25519KeyPair} = require('crypto-ld');
 const {util: {uuid}} = bedrock;
 const {
   purposes: {AssertionProofPurpose},
   sign,
 } = jsigs;
 const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
-
+const {Ed25519VerificationKey2020} =
+  require('@digitalbazaar/ed25519-verification-key-2020');
 const KMS_MODULE = 'ssm-v1';
 
 describe('revocations API', () => {
@@ -446,7 +446,8 @@ async function _setKeyId(key) {
   const keyDescription = await key.getKeyDescription();
   // create public ID (did:key) for bob's key
   // TODO: do not use did:key but support a did:v1 based key.
-  const fingerprint = Ed25519KeyPair.fingerprintFromPublicKey(keyDescription);
+  const fingerprint =
+    (await Ed25519VerificationKey2020.from(keyDescription)).fingerprint();
   // invocationTarget.verificationMethod = `did:key:${fingerprint}`;
   key.id = `did:key:${fingerprint}#${fingerprint}`;
 }
