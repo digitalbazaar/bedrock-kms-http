@@ -4,7 +4,8 @@
 'use strict';
 
 const bedrock = require('bedrock');
-const {CapabilityAgent, KeystoreAgent, KmsClient} = require('webkms-client');
+const {CapabilityAgent, KeystoreAgent, KmsClient} =
+  require('@digitalbazaar/webkms-client');
 const {httpsAgent} = require('bedrock-https-agent');
 const brPassport = require('bedrock-passport');
 const sinon = require('sinon');

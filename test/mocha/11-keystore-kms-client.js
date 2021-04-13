@@ -5,7 +5,8 @@
 
 const brHttpsAgent = require('bedrock-https-agent');
 const helpers = require('./helpers');
-const {CapabilityAgent, KmsClient, KeystoreAgent} = require('webkms-client');
+const {CapabilityAgent, KmsClient, KeystoreAgent} =
+  require('@digitalbazaar/webkms-client');
 
 describe('keystore API interactions using webkms-client', () => {
   let aliceCapabilityAgent;
