@@ -39,7 +39,7 @@ describe('keystore API interactions using webkms-client', () => {
     const secret = '34f2afd1-34ef-4d46-a998-cdc5462dc0d2';
     const handle = 'bobKey';
     bobCapabilityAgent = await CapabilityAgent.fromSecret({
-      secret, handle, keyType: 'Ed25519VerificationKey2018'});
+      secret, handle, keyType: 'Ed25519VerificationKey2020'});
     const keystore = await helpers.createKeystore(
       {capabilityAgent: bobCapabilityAgent});
     try {

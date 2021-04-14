@@ -14,7 +14,8 @@
   "dependencies": {
     "@digitalbazaar/ed25519-signature-2020": "^2.1.0",
     "@digitalbazaar/ed25519-verification-key-2020": "^2.1.1",
-    "@digitalbazaar/webkms-client": "^5.0.1",
+    "@digitalbazaar/webkms-client": "digitalbazaar/webkms-client#use-webkms-context",
+    "@transmute/jsonld-document-loader": "^0.2.0",
     "bedrock": "^4.1.1",
     "bedrock-account": "^5.0.0",
     "bedrock-did-context": "^2.0.0",
@@ -38,12 +39,15 @@
     "bedrock-veres-one-context": "^10.0.1",
     "bedrock-zcap-storage": "^3.2.0",
     "cross-env": "^7.0.3",
+    "did-context": "^3.0.0",
     "http-signature-zcap-invoke": "^3.0.0",
     "jsonld-signatures": "^9.0.2",
     "nyc": "^15.1.0",
     "p-map": "^4.0.0",
+    "security-context": "^4.0.0",
     "sinon": "^9.0.2",
-    "uuid-random": "^1.3.2"
+    "uuid-random": "^1.3.2",
+    "zcap-context": "digitalbazaar/zcap-context#initial"
   },
   "nyc": {
     "excludeNodeModules": false,

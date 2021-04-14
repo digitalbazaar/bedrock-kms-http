@@ -18,7 +18,7 @@ describe('bedrock-kms-http API', () => {
       const handle = 'testKey1';
 
       const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2018'});
+        .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
 
       let err;
       let result;

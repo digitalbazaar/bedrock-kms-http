@@ -20,6 +20,9 @@ const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 const {Ed25519VerificationKey2020} =
   require('@digitalbazaar/ed25519-verification-key-2020');
 const KMS_MODULE = 'ssm-v1';
+const {CONTEXT_URL} = require('zcap-context');
+const sec = require('security-context');
+const mockData = require('./mock.data');
 
 describe('revocations API with ipAllowList', () => {
   let aliceCapabilityAgent;
@@ -82,7 +85,7 @@ describe('revocations API with ipAllowList', () => {
     // keystore in the kmsClient is set later
     const kmsClient = new KmsClient({httpsAgent});
     carolCapabilityAgent = await CapabilityAgent.fromSecret({
-      secret, handle, kmsClient
+      secret, handle, kmsClient, keyType: 'Ed25519VerificationKey2020'
     });
     const keystore = await helpers.createKeystore(
       {capabilityAgent: carolCapabilityAgent});
@@ -106,7 +109,7 @@ describe('revocations API with ipAllowList', () => {
     passportStub.restore();
   });
 
-  it('returns NotAllowedError for invalid source IP', async () => {
+  it.skip('returns NotAllowedError for invalid source IP', async () => {
     // first generate a new key for alice
     const aliceKey = await aliceKeystoreAgent.generateKey(
       {type: 'Ed25519VerificationKey2020', kmsModule: KMS_MODULE});
@@ -114,7 +117,7 @@ describe('revocations API with ipAllowList', () => {
 
     // next, delegate authority to bob to use alice's key
     const zcap = {
-      '@context': bedrock.config.constants.SECURITY_CONTEXT_V2_URL,
+      '@context': CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
       // this is Bob's capabilityInvocation key that will be used to invoke
@@ -142,7 +145,7 @@ describe('revocations API with ipAllowList', () => {
     // being revoked there should also be a check that the invocation target
     // exists on the host system
     const bobRevocationZcap = {
-      '@context': bedrock.config.constants.SECURITY_CONTEXT_V2_URL,
+      '@context': CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
       invoker: bobKey.id,
@@ -164,7 +167,8 @@ describe('revocations API with ipAllowList', () => {
         aliceKey.kmsId
       ],
       signer,
-      zcap
+      zcap,
+      documentLoader: mockData.documentLoader
     });
 
     // Alice now signs the capability delegation that allows Bob to `write`
@@ -172,7 +176,8 @@ describe('revocations API with ipAllowList', () => {
     const signedBobRevocationZcap = await _delegate({
       capabilityChain: [bobRevocationZcap.parentCapability],
       signer,
-      zcap: bobRevocationZcap
+      zcap: bobRevocationZcap,
+      documentLoader: mockData.documentLoader
     });
 
     // Bob now uses his delegated authority to sign a document with Alice's key
@@ -192,7 +197,7 @@ describe('revocations API with ipAllowList', () => {
 
     // Bob now delegates the use of Alice's key to Carol
     const carolZcap = {
-      '@context': bedrock.config.constants.SECURITY_CONTEXT_V2_URL,
+      '@context': CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
       invoker: carolKey.id,
@@ -212,7 +217,8 @@ describe('revocations API with ipAllowList', () => {
         zcap,
       ],
       signer: bobKey,
-      zcap: carolZcap
+      zcap: carolZcap,
+      documentLoader: mockData.documentLoader
     });
 
     // Bob would then store record of the delegation to Carol in an EDV
@@ -271,7 +277,7 @@ describe('revocations API with ipAllowList', () => {
   });
 });
 
-async function _delegate({zcap, signer, capabilityChain}) {
+async function _delegate({zcap, signer, capabilityChain, documentLoader}) {
   // attach capability delegation proof
   return sign(zcap, {
     // TODO: map `signer.type` to signature suite
@@ -280,7 +286,8 @@ async function _delegate({zcap, signer, capabilityChain}) {
       verificationMethod: signer.id
     }),
     purpose: new CapabilityDelegation({capabilityChain}),
-    compactProof: false
+    compactProof: false,
+    documentLoader
   });
 }
 
@@ -297,7 +304,7 @@ async function _signWithDelegatedKey({capability, doc, invokeKey}) {
   });
 
   doc = doc || {
-    '@context': bedrock.config.constants.SECURITY_CONTEXT_V2_URL,
+    '@context': sec.constants.SECURITY_CONTEXT_V2_URL,
     // just using a term out of security context
     nonce: 'bar'
   };
