@@ -376,7 +376,10 @@ describe('bedrock-kms-http API', () => {
 
           const capabilityAgent = await CapabilityAgent
             .fromSecret({
-              secret, handle, keyType: 'Ed25519VerificationKey2020'});
+              secret,
+              handle,
+              keyType: 'Ed25519VerificationKey2020'
+            });
 
           const ipAllowList = ['8.8.8.8/32'];
 
@@ -613,7 +616,10 @@ describe('bedrock-kms-http API', () => {
 
           const capabilityAgent = await CapabilityAgent
             .fromSecret({
-              secret, handle, keyType: 'Ed25519VerificationKey2020'});
+              secret,
+              handle,
+              keyType: 'Ed25519VerificationKey2020'
+            });
 
           const secret2 = '82ef7805-21ed-43bb-a604-4ccc7a06eacc';
           const handle2 = 'testKeyUpdate2';
@@ -622,7 +628,8 @@ describe('bedrock-kms-http API', () => {
             .fromSecret({
               secret: secret2,
               handle: handle2,
-              keyType: 'Ed25519VerificationKey2020'});
+              keyType: 'Ed25519VerificationKey2020'
+            });
 
           const ipAllowList = ['127.0.0.1/32'];
 
@@ -695,7 +702,10 @@ describe('bedrock-kms-http API', () => {
 
           const capabilityAgent = await CapabilityAgent
             .fromSecret({
-              secret, handle, keyType: 'Ed25519VerificationKey2020'});
+              secret,
+              handle,
+              keyType: 'Ed25519VerificationKey2020'
+            });
 
           const secret2 = 'ddbbbc38-eb27-4238-8b84-382ada29b8c0';
           const handle2 = 'testKeyUpdate2';
