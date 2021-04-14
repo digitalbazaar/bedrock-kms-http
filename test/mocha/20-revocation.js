@@ -24,7 +24,7 @@ const {CONTEXT_URL} = require('zcap-context');
 const mockData = require('./mock.data');
 const sec = require('security-context');
 
-describe.skip('revocations API', () => {
+describe('revocations API', () => {
   let aliceCapabilityAgent;
   let aliceKeystoreAgent;
   let bobCapabilityAgent;

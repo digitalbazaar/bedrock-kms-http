@@ -20,12 +20,15 @@ data.documentLoader = documentLoaderFactory.pluginFactory
     contexts: {
       ...contexts.W3C_Verifiable_Credentials,
       'https://w3id.org/security/suites/ed25519-2020/v1':
-        Ed25519Signature2020.CONTEXT
+        Ed25519Signature2020.CONTEXT,
     }
   })
   .addContext({
     [didContext.constants.DID_CONTEXT_URL]: didContext
       .contexts.get('https://www.w3.org/ns/did/v1')
+  })
+  .addContext({
+    'https://w3id.org/zcap/v1': CONTEXT_URL
   })
   .buildDocumentLoader();
 
