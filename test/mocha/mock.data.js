@@ -8,7 +8,7 @@ const {
   contexts,
 } = require('@transmute/jsonld-document-loader');
 const didContext = require('did-context');
-const {CONTEXT_URL} = require('zcap-context');
+const {CONTEXT_URL, CONTEXT} = require('zcap-context');
 const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 
 const data = {};
@@ -28,7 +28,7 @@ data.documentLoader = documentLoaderFactory.pluginFactory
       .contexts.get('https://www.w3.org/ns/did/v1')
   })
   .addContext({
-    'https://w3id.org/zcap/v1': CONTEXT_URL
+    'https://w3id.org/zcap/v1': CONTEXT
   })
   .buildDocumentLoader();
 
