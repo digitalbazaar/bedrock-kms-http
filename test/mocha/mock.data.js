@@ -28,7 +28,7 @@ data.documentLoader = documentLoaderFactory.pluginFactory
       .contexts.get('https://www.w3.org/ns/did/v1')
   })
   .addContext({
-    ZCAP_CONTEXT_URL: ZCAP_CONTEXT
+    [ZCAP_CONTEXT_URL]: ZCAP_CONTEXT
   })
   .buildDocumentLoader();
 
