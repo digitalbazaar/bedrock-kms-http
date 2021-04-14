@@ -20,7 +20,7 @@ const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 const {Ed25519VerificationKey2020} =
   require('@digitalbazaar/ed25519-verification-key-2020');
 const KMS_MODULE = 'ssm-v1';
-const {CONTEXT_URL} = require('zcap-context');
+const {CONTEXT_URL: ZCAP_CONTEXT_URL} = require('zcap-context');
 const mockData = require('./mock.data');
 const sec = require('security-context');
 
@@ -112,7 +112,7 @@ describe('revocations API', () => {
     await _setKeyId(aliceKey);
     // next, delegate authority to bob to use alice's key
     const zcap = {
-      '@context': CONTEXT_URL,
+      '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
       // this is Bob's capabilityInvocation key that will be used to invoke
@@ -140,7 +140,7 @@ describe('revocations API', () => {
     // being revoked there should also be a check that the invocation target
     // exists on the host system
     const bobRevocationZcap = {
-      '@context': CONTEXT_URL,
+      '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
       invoker: bobKey.id,
@@ -192,7 +192,7 @@ describe('revocations API', () => {
 
     // Bob now delegates the use of Alice's key to Carol
     const carolZcap = {
-      '@context': CONTEXT_URL,
+      '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
       invoker: carolKey.id,
@@ -300,7 +300,7 @@ describe('revocations API', () => {
 
     // next, delegate authority to bob to use alice's key
     const zcap = {
-      '@context': CONTEXT_URL,
+      '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
       // this is Bob's capabilityInvocation key that will be used to invoke
@@ -328,7 +328,7 @@ describe('revocations API', () => {
     // being revoked there should also be a check that the invocation target
     // exists on the host system
     const bobRevocationZcap = {
-      '@context': CONTEXT_URL,
+      '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
       invoker: bobKey.id,
@@ -355,7 +355,7 @@ describe('revocations API', () => {
 
     // Bob now delegates the use of Alice's key to Carol
     const carolZcap = {
-      '@context': CONTEXT_URL,
+      '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
       invoker: carolKey.id,
