@@ -43,7 +43,7 @@ const zcap0 = {
     id: 'https://bedrock.localhost:18443/kms/keystores/z1AAWWM7Zd4YyyV3NfaCq' +
       'FuzQ/keys/z19wxodgv1UhrToQMvSxGhQG6',
     type: 'Ed25519VerificationKey2020',
-    verificationMethod: 'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwT' +
+    publicAlias: 'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwT' +
       'TTYvg#z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg'
   },
   invoker: 'did:key:z6MkfV83MxASJKXim3eBPoLCDiWDseYUaW84qbVF9k3ngdfg#z6MkfV83' +
@@ -60,9 +60,8 @@ const zcap0 = {
       'https://bedrock.localhost:18443/kms/keystores/z1AAWWM7Zd4YyyV3NfaCqFu' +
         'zQ/keys/z19wxodgv1UhrToQMvSxGhQG6'
     ],
-    jws: 'eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..bWt6_Q65' +
-      'omg8rE44a_1dzWFGcFQbUrVqZ_hnAqIKlWSQ1HpTSV6OyhAQfBlVhPCsrVplqC8oVEJmp' +
-      '4UWqy6gCw'
+    // FIXME: This was a 'jws'; need to find actual proofValue for this zcap
+    proofValue: 'eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19'
   }
 };
 

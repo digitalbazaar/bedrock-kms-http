@@ -8,7 +8,7 @@ const brHttpsAgent = require('bedrock-https-agent');
 const {documentLoader} = require('bedrock-jsonld-document-loader');
 const helpers = require('./helpers');
 const jsigs = require('jsonld-signatures');
-const {CapabilityDelegation} = require('ocapld');
+const {CapabilityDelegation} = require('@digitalbazaar/zcapld');
 const {AsymmetricKey, CapabilityAgent, KmsClient, KeystoreAgent} =
   require('@digitalbazaar/webkms-client');
 const {util: {uuid}} = bedrock;
@@ -21,7 +21,6 @@ const {Ed25519VerificationKey2020} =
   require('@digitalbazaar/ed25519-verification-key-2020');
 const KMS_MODULE = 'ssm-v1';
 const {CONTEXT_URL: ZCAP_CONTEXT_URL} = require('zcap-context');
-const sec = require('security-context');
 const mockData = require('./mock.data');
 
 describe('revocations API with ipAllowList', () => {
@@ -132,7 +131,7 @@ describe('revocations API with ipAllowList', () => {
       parentCapability: aliceKey.kmsId,
       allowedAction: 'sign',
       invocationTarget: {
-        verificationMethod: aliceKey.id,
+        publicAlias: aliceKey.id,
         id: aliceKey.kmsId,
         type: aliceKey.type,
       }
@@ -187,7 +186,7 @@ describe('revocations API with ipAllowList', () => {
     });
 
     bobSignedDocument.should.have.property('@context');
-    bobSignedDocument.should.have.property('nonce');
+    bobSignedDocument.should.have.property('referenceId');
     bobSignedDocument.should.have.property('proof');
     bobSignedDocument.proof.should.have.property('verificationMethod');
     // the document was ultimately signed with alice's key
@@ -205,7 +204,7 @@ describe('revocations API with ipAllowList', () => {
       parentCapability: zcap.id,
       // this is where we need to ensure the allowedAction here is included
       // in the allowedAction of the parentCapability, there is an issue in
-      // ocapld for this.
+      // zcapld for this.
       allowedAction: 'sign',
       invocationTarget: zcap.invocationTarget,
     };
@@ -229,7 +228,7 @@ describe('revocations API with ipAllowList', () => {
       invokeKey: carolKey,
     });
     carolSignedDocument.should.have.property('@context');
-    carolSignedDocument.should.have.property('nonce');
+    carolSignedDocument.should.have.property('referenceId');
     carolSignedDocument.should.have.property('proof');
     carolSignedDocument.proof.should.have.property('verificationMethod');
     // the document was ultimately signed with alice's key
@@ -282,8 +281,7 @@ async function _delegate({zcap, signer, capabilityChain, documentLoader}) {
   return sign(zcap, {
     // TODO: map `signer.type` to signature suite
     suite: new Ed25519Signature2020({
-      signer,
-      verificationMethod: signer.id
+      signer
     }),
     purpose: new CapabilityDelegation({capabilityChain}),
     compactProof: false,
@@ -299,14 +297,13 @@ async function _signWithDelegatedKey({capability, doc, invokeKey}) {
     kmsClient: new KmsClient({httpsAgent})
   });
   const suite = new Ed25519Signature2020({
-    verificationMethod: capability.invocationTarget.verificationMethod,
     signer: delegatedSigningKey
   });
 
   doc = doc || {
-    '@context': sec.constants.SECURITY_CONTEXT_V2_URL,
-    // just using a term out of security context
-    nonce: 'bar'
+    '@context': ZCAP_CONTEXT_URL,
+    // just using a term out of the zcap context
+    referenceId: 'testId'
   };
 
   return sign(doc, {
@@ -335,6 +332,6 @@ async function _setKeyId(key) {
   // TODO: do not use did:key but support a did:v1 based key.
   const fingerprint =
     (await Ed25519VerificationKey2020.from(keyDescription)).fingerprint();
-  // invocationTarget.verificationMethod = `did:key:${fingerprint}`;
+  // invocationTarget.publicAlias = `did:key:${fingerprint}`;
   key.id = `did:key:${fingerprint}#${fingerprint}`;
 }
