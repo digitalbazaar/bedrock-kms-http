@@ -224,7 +224,7 @@ describe('bedrock-kms-http API', () => {
         const url = `${keystore.id}/recover`;
 
         const config = {
-          '@context': 'https://w3id.org/security/v2',
+          '@context': 'https://w3id.org/webkms/v1',
         };
 
         let err;

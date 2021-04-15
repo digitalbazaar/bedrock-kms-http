@@ -137,8 +137,9 @@ const zcap = {
             title: 'controller',
             type: 'string'
           },
-          verificationMethod: {
-            title: 'verificationMethod',
+          // was: verificationMethod
+          publicAlias: {
+            title: 'publicAlias',
             type: 'string'
           }
         }
@@ -177,8 +178,8 @@ const zcap = {
             type: ['string', 'object']
           }
         },
-        jws: {
-          title: 'jws',
+        proofValue: {
+          title: 'proofValue',
           type: 'string'
         },
       }},
