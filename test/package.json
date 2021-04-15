@@ -31,7 +31,7 @@
     "bedrock-package-manager": "^1.0.1",
     "bedrock-passport": "^6.1.0",
     "bedrock-permission": "^3.2.0",
-    "bedrock-security-context": "^4.0.0",
+    "bedrock-security-context": "digitalbazaar/bedrock-security-context#add-contexts",
     "bedrock-server": "^2.7.0",
     "bedrock-ssm-mongodb": "^4.0.0",
     "bedrock-test": "^5.3.2",
