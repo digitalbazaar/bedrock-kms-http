@@ -33,7 +33,7 @@
     "bedrock-permission": "^3.2.0",
     "bedrock-security-context": "digitalbazaar/bedrock-security-context#add-contexts",
     "bedrock-server": "^2.7.0",
-    "bedrock-ssm-mongodb": "^4.0.0",
+    "bedrock-ssm-mongodb": "digitalbazaar/bedrock-ssm-mongodb#webkms-context",
     "bedrock-test": "^5.3.2",
     "bedrock-validation": "^5.0.0",
     "bedrock-veres-one-context": "^10.0.1",
