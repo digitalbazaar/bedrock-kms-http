@@ -25,7 +25,7 @@
   "dependencies": {
     "@digitalbazaar/ed25519-signature-2020": "^2.1.0",
     "@digitalbazaar/ezcap-express": "^3.0.1",
-    "@digitalbazaar/zcapld": "^3.1.0",
+    "@digitalbazaar/zcapld": "digitalbazaar/zcapld#update-skip-compaction",
     "cidr-regex": "^3.1.1",
     "cors": "^2.8.5",
     "forwarded": "^0.1.2",
