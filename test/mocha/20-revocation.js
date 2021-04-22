@@ -5,7 +5,6 @@
 
 const bedrock = require('bedrock');
 const brHttpsAgent = require('bedrock-https-agent');
-const {documentLoader} = require('bedrock-jsonld-document-loader');
 const helpers = require('./helpers');
 const jsigs = require('jsonld-signatures');
 const {CapabilityDelegation} = require('@digitalbazaar/zcapld');
@@ -428,7 +427,7 @@ async function _signWithDelegatedKey({capability, doc, invokeKey}) {
   };
 
   return sign(doc, {
-    documentLoader,
+    documentLoader: mockData.documentLoader,
     suite,
     purpose: new AssertionProofPurpose(),
   });
