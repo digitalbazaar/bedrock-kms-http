@@ -108,7 +108,7 @@ describe('revocations API with ipAllowList', () => {
     passportStub.restore();
   });
 
-  it('returns NotAllowedError for invalid source IP', async () => {
+  it.only('returns NotAllowedError for invalid source IP', async () => {
     // first generate a new key for alice
     const aliceKey = await aliceKeystoreAgent.generateKey(
       {type: 'Ed25519VerificationKey2020', kmsModule: KMS_MODULE});
