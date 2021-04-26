@@ -11,7 +11,6 @@ const {CapabilityAgent, KmsClient, KeystoreAgent} =
 describe('keystore API interactions using webkms-client', () => {
   let aliceCapabilityAgent;
   let aliceKeystoreConfig;
-  let aliceKeystoreAgent;
   let bobCapabilityAgent;
   let bobKeystoreAgent;
 
@@ -23,15 +22,6 @@ describe('keystore API interactions using webkms-client', () => {
 
     aliceKeystoreConfig = await helpers.createKeystore(
       {capabilityAgent: aliceCapabilityAgent});
-    const {httpsAgent} = brHttpsAgent;
-    const kmsClient = new KmsClient({httpsAgent});
-
-    // eslint-disable-next-line no-unused-vars
-    aliceKeystoreAgent = new KeystoreAgent({
-      capabilityAgent: aliceCapabilityAgent,
-      keystore: aliceKeystoreConfig,
-      kmsClient,
-    });
   });
 
   // generate a keystore for Bob
