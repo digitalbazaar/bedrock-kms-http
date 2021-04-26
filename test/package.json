@@ -39,7 +39,7 @@
     "bedrock-veres-one-context": "^10.0.1",
     "bedrock-zcap-storage": "^3.2.0",
     "cross-env": "^7.0.3",
-    "did-context": "^3.0.0",
+    "did-context": "^3.0.1",
     "http-signature-zcap-invoke": "^3.0.0",
     "jsonld-signatures": "^9.0.2",
     "nyc": "^15.1.0",
