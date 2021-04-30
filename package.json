@@ -29,7 +29,7 @@
     "cidr-regex": "^3.1.1",
     "cors": "^2.8.5",
     "forwarded": "^0.1.2",
-    "http-signature-zcap-verify": "^7.0.0",
+    "http-signature-zcap-verify": "digitalbazaar/http-signature-zcap-verify#update-jsonld-sigs",
     "jsonld-signatures": "^9.0.2",
     "netmask": "^2.0.2",
     "webkms-switch": "digitalbazaar/webkms-switch#webkms-context",
@@ -47,7 +47,7 @@
     "bedrock-server": "^2.7.0",
     "bedrock-validation": "^5.0.0",
     "bedrock-zcap-storage": "2.x - 3.x",
-    "bedrock-did-io": "^1.0.0"
+    "bedrock-did-io": "digitalbazaar/bedrock-did-io#update-veres-one"
   },
   "directories": {
     "lib": "./lib"
