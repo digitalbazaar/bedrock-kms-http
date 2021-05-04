@@ -15,7 +15,7 @@
     "@digitalbazaar/ed25519-signature-2020": "^2.1.0",
     "@digitalbazaar/ed25519-verification-key-2020": "^2.1.1",
     "@digitalbazaar/security-document-loader": "^1.0.0",
-    "@digitalbazaar/webkms-client": "digitalbazaar/webkms-client#use-webkms-context",
+    "@digitalbazaar/webkms-client": "^6.0.0",
     "bedrock": "^4.1.1",
     "bedrock-account": "^5.0.0",
     "bedrock-did-context": "^2.0.0",
