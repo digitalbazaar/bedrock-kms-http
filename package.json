@@ -32,7 +32,7 @@
     "http-signature-zcap-verify": "^7.1.0",
     "jsonld-signatures": "^9.0.2",
     "netmask": "^2.0.2",
-    "webkms-switch": "digitalbazaar/webkms-switch#fix-layer-violation",
+    "webkms-switch": "digitalbazaar/webkms-switch#refactor",
     "zcap-context": "^1.1.0"
   },
   "peerDependencies": {
@@ -41,7 +41,7 @@
     "bedrock-did-io": "^2.0.0",
     "bedrock-express": "^3.2.1",
     "bedrock-jsonld-document-loader": "^1.0.1",
-    "bedrock-kms": "^6.0.0",
+    "bedrock-kms": "digitalbazaar/bedrock-kms#use-updated-webkms-switch",
     "bedrock-mongodb": "^8.2.0",
     "bedrock-passport": "^6.1.0",
     "bedrock-permission": "2.x - 3.x",
