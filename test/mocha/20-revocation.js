@@ -20,7 +20,7 @@ const {Ed25519VerificationKey2020} =
   require('@digitalbazaar/ed25519-verification-key-2020');
 const KMS_MODULE = 'ssm-v1';
 const {CONTEXT_URL: ZCAP_CONTEXT_URL} = require('zcap-context');
-const mockData = require('./mock.data');
+const {documentLoader} = require('bedrock-jsonld-document-loader');
 
 describe('revocations API', () => {
   let aliceCapabilityAgent;
@@ -161,7 +161,7 @@ describe('revocations API', () => {
       ],
       signer,
       zcap,
-      documentLoader: mockData.documentLoader
+      documentLoader
     });
 
     // Alice now signs the capability delegation that allows Bob to `write`
@@ -170,7 +170,7 @@ describe('revocations API', () => {
       capabilityChain: [bobRevocationZcap.parentCapability],
       signer,
       zcap: bobRevocationZcap,
-      documentLoader: mockData.documentLoader
+      documentLoader
     });
 
     // Bob now uses his delegated authority to sign a document with Alice's key
@@ -211,7 +211,7 @@ describe('revocations API', () => {
       ],
       signer: bobKey,
       zcap: carolZcap,
-      documentLoader: mockData.documentLoader
+      documentLoader
     });
 
     // Bob would then store record of the delegation to Carol in an EDV
@@ -348,7 +348,7 @@ describe('revocations API', () => {
       capabilityChain: [bobRevocationZcap.parentCapability],
       signer,
       zcap: bobRevocationZcap,
-      documentLoader: mockData.documentLoader
+      documentLoader
     });
 
     // Bob now delegates the use of Alice's key to Carol
@@ -373,7 +373,7 @@ describe('revocations API', () => {
       ],
       signer: bobKey,
       zcap: carolZcap,
-      documentLoader: mockData.documentLoader
+      documentLoader
     });
 
     let err;
@@ -427,7 +427,7 @@ async function _signWithDelegatedKey({capability, doc, invokeKey}) {
   };
 
   return sign(doc, {
-    documentLoader: mockData.documentLoader,
+    documentLoader,
     suite,
     purpose: new AssertionProofPurpose(),
   });

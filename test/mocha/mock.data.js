@@ -2,21 +2,13 @@
  * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
  */
 
-const {CONTEXT_URL: ZCAP_CONTEXT_URL, CONTEXT: ZCAP_CONTEXT} =
-  require('zcap-context');
-const {securityLoader} = require('@digitalbazaar/security-document-loader');
-
-const loader = securityLoader();
-loader.addStatic(ZCAP_CONTEXT_URL, ZCAP_CONTEXT);
-
-const securityDocumentLoader = loader.build();
+const {CONTEXT_URL: ZCAP_CONTEXT_URL} = require('zcap-context');
 
 const data = {};
 
 module.exports = data;
 
 const zcaps = data.zcaps = {};
-data.documentLoader = securityDocumentLoader;
 const zcap0 = {
   '@context': ZCAP_CONTEXT_URL,
   id: 'urn:zcap:z19vWhR8EsNbWqvazp5bg6BTu',
