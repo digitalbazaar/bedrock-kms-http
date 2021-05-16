@@ -5,7 +5,6 @@
 
 const bedrock = require('bedrock');
 const brHttpsAgent = require('bedrock-https-agent');
-const {documentLoader} = require('bedrock-jsonld-document-loader');
 const helpers = require('./helpers');
 const jsigs = require('jsonld-signatures');
 const {CapabilityDelegation} = require('@digitalbazaar/zcapld');
@@ -21,7 +20,7 @@ const {Ed25519VerificationKey2020} =
   require('@digitalbazaar/ed25519-verification-key-2020');
 const KMS_MODULE = 'ssm-v1';
 const {CONTEXT_URL: ZCAP_CONTEXT_URL} = require('zcap-context');
-const mockData = require('./mock.data');
+const {documentLoader} = require('bedrock-jsonld-document-loader');
 
 describe('revocations API with ipAllowList', () => {
   let aliceCapabilityAgent;
@@ -167,7 +166,7 @@ describe('revocations API with ipAllowList', () => {
       ],
       signer,
       zcap,
-      documentLoader: mockData.documentLoader
+      documentLoader
     });
 
     // Alice now signs the capability delegation that allows Bob to `write`
@@ -176,7 +175,7 @@ describe('revocations API with ipAllowList', () => {
       capabilityChain: [bobRevocationZcap.parentCapability],
       signer,
       zcap: bobRevocationZcap,
-      documentLoader: mockData.documentLoader
+      documentLoader
     });
 
     // Bob now uses his delegated authority to sign a document with Alice's key
@@ -217,7 +216,7 @@ describe('revocations API with ipAllowList', () => {
       ],
       signer: bobKey,
       zcap: carolZcap,
-      documentLoader: mockData.documentLoader
+      documentLoader
     });
 
     // Bob would then store record of the delegation to Carol in an EDV
