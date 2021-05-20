@@ -17,7 +17,8 @@ describe('bedrock-kms-http HMAC operations', () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
       const keystoreAgent = await helpers.createKeystoreAgent({
-        handle, secret, keyType: 'Ed25519VerificationKey2020'});
+        handle, secret, keyType: 'Ed25519VerificationKey2020'
+      });
       hmac = await keystoreAgent.generateKey({
         kmsModule: KMS_MODULE,
         type: 'hmac',
@@ -97,7 +98,8 @@ describe('bedrock-kms-http HMAC operations', () => {
       const secret = ' 9b5a0a63-aac2-447c-a60a-8cc79b46418d';
       const handle = 'testKeyBulk';
       const keystoreAgent = await helpers.createKeystoreAgent({
-        handle, secret, keyType: 'Ed25519VerificationKey2020'});
+        handle, secret, keyType: 'Ed25519VerificationKey2020'
+      });
       hmac = await keystoreAgent.generateKey({
         kmsModule: KMS_MODULE,
         type: 'hmac',
