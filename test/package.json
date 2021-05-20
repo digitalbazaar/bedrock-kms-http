@@ -25,7 +25,7 @@
     "bedrock-https-agent": "^2.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
     "bedrock-karma": "^2.2.0",
-    "bedrock-kms": "digitalbazaar/bedrock-kms#support-multiple-signature-suites",
+    "bedrock-kms": "^6.0.0",
     "bedrock-kms-http": "file:..",
     "bedrock-ledger-context": "^18.0.0",
     "bedrock-mongodb": "^8.2.0",
