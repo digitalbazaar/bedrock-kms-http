@@ -8,12 +8,12 @@
 - Update peerDeps and deps
   - [@digitalbazaar/ed25519-signature-2020@2.1.0](https://github.com/digitalbazaar/ed25519-signature-2020/blob/main/CHANGELOG.md)
   - [@digitalbazaar/ezcap-express@3.0.1](https://github.com/digitalbazaar/ezcap-express/blob/main/CHANGELOG.md)
-  - [@digitalbazaar/zcapld@3.1.0](https://github.com/digitalbazaar/zcapld/blob/main/CHANGELOG.md)
-  - [http-signature-zcap-verify@6.0.0](https://github.com/digitalbazaar/http-signature-zcap-verify/blob/main/CHANGELOG.md)
+  - [@digitalbazaar/zcapld@4.0.0](https://github.com/digitalbazaar/zcapld/blob/main/CHANGELOG.md)
+  - [http-signature-zcap-verify@7.1.0](https://github.com/digitalbazaar/http-signature-zcap-verify/blob/main/CHANGELOG.md)
   - [jsonld-signatures@9.0.2](https://github.com/digitalbazaar/jsonld-signatures/blob/master/CHANGELOG.md)
   - [webkms-switch@5.0.0](https://github.com/digitalbazaar/webkms-switch/blob/main/CHANGELOG.md)
   - [bedrock-kms@6.0.0](https://github.com/digitalbazaar/bedrock-kms/blob/master/CHANGELOG.md)
-  - [bedrock-did-io@1.0.0](https://github.com/digitalbazaar/bedrock-did-io/blob/main/CHANGELOG.md)
+  - [bedrock-did-io@2.0.0](https://github.com/digitalbazaar/bedrock-did-io/blob/main/CHANGELOG.md)
 - Update test deps
 
 ### Added

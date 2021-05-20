@@ -41,7 +41,7 @@
     "bedrock-did-io": "^2.0.0",
     "bedrock-express": "^3.2.1",
     "bedrock-jsonld-document-loader": "^1.0.1",
-    "bedrock-kms": "digitalbazaar/bedrock-kms#support-multiple-signature-suites",
+    "bedrock-kms": "^6.0.0",
     "bedrock-mongodb": "^8.2.0",
     "bedrock-passport": "^6.1.0",
     "bedrock-permission": "2.x - 3.x",
