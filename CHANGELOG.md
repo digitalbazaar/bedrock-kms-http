@@ -1,10 +1,12 @@
 # bedrock-kms-http ChangeLog
 
-## 5.0.0 - 2021-04-TBD
+## 5.0.0 - 2021-05-20
 
 ### Changed
-- **BREAKING**: Remove `ed25519-signature-2018` signature suite and use `ed25519-signature-2020`.
-- Remove `did-io`, `did-method-key`, and `did-veres-one` from deps and use `bedrock-did-io`.
+- **BREAKING**: Remove `ed25519-signature-2018` signature suite and use
+  `ed25519-signature-2020`.
+- Remove `did-io`, `did-method-key`, and `did-veres-one` from deps and use
+  `bedrock-did-io`.
 - Update peerDeps and deps
   - [@digitalbazaar/ed25519-signature-2020@2.1.0](https://github.com/digitalbazaar/ed25519-signature-2020/blob/main/CHANGELOG.md)
   - [@digitalbazaar/ezcap-express@3.0.1](https://github.com/digitalbazaar/ezcap-express/blob/main/CHANGELOG.md)
