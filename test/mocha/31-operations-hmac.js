@@ -14,7 +14,7 @@ describe('bedrock-kms-http HMAC operations', () => {
   describe('Sha256HmacKey2019', () => {
     let hmac;
     before(async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+      const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
       const keystoreAgent = await helpers.createKeystoreAgent({
         handle, secret, keyType: 'Ed25519VerificationKey2020'
@@ -41,7 +41,7 @@ describe('bedrock-kms-http HMAC operations', () => {
 
   describe('Sha256HmacKey2019 with ipAllowList', () => {
     it('successfully signs', async () => {
-      const secret = ' 22612679-05ce-4ffd-bf58-22b3c4bc1314';
+      const secret = '22612679-05ce-4ffd-bf58-22b3c4bc1314';
       const handle = 'testKeyAllowList';
       const ipAllowList = ['127.0.0.1/32'];
       const keystoreAgent = await helpers.createKeystoreAgent(
@@ -63,7 +63,7 @@ describe('bedrock-kms-http HMAC operations', () => {
       result.should.be.a('string');
     });
     it('successfully signs with x-forwarded-for header', async () => {
-      const secret = ' 2726f62d-31bb-4688-b54a-1a0b4e50329f';
+      const secret = '2726f62d-31bb-4688-b54a-1a0b4e50329f';
       const handle = 'testKeyAllowList';
       const ipAllowList = ['8.8.8.8/32'];
       const keystoreAgent = await helpers.createKeystoreAgent({
@@ -95,7 +95,7 @@ describe('bedrock-kms-http HMAC operations', () => {
     let hmac;
 
     before(async () => {
-      const secret = ' 9b5a0a63-aac2-447c-a60a-8cc79b46418d';
+      const secret = '9b5a0a63-aac2-447c-a60a-8cc79b46418d';
       const handle = 'testKeyBulk';
       const keystoreAgent = await helpers.createKeystoreAgent({
         handle, secret, keyType: 'Ed25519VerificationKey2020'

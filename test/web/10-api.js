@@ -14,7 +14,7 @@ describe('bedrock-kms-http HMAC operations', () => {
   describe('Sha256HmacKey2019', () => {
     let hmac;
     before(async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+      const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
 
       const capabilityAgent = await CapabilityAgent

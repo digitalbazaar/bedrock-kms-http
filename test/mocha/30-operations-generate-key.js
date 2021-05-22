@@ -10,7 +10,7 @@ const KMS_MODULE = 'ssm-v1';
 describe('generateKey with ipAllowList', () => {
   it('generates a key', async () => {
     // source of requests in the test suite are from 127.0.0.1
-    const secret = ' 22612679-05ce-4ffd-bf58-22b3c4bc1314';
+    const secret = '22612679-05ce-4ffd-bf58-22b3c4bc1314';
     const handle = 'testKeyAllowList';
     const ipAllowList = ['127.0.0.1/32'];
     const keystoreAgent = await helpers.createKeystoreAgent(
@@ -34,7 +34,7 @@ describe('generateKey with ipAllowList', () => {
   });
   it('generates a key with x-forwarded-for header', async () => {
     // source of requests in the test suite are from 127.0.0.1
-    const secret = ' 22612679-05ce-4ffd-bf58-22b3c4bc1314';
+    const secret = '22612679-05ce-4ffd-bf58-22b3c4bc1314';
     const handle = 'testKeyAllowList';
     const ipAllowList = ['8.8.8.8/32'];
     const keystoreAgent = await helpers.createKeystoreAgent({
@@ -61,7 +61,7 @@ describe('generateKey with ipAllowList', () => {
   });
   it('generates a key with multiple ipAllowList entries', async () => {
     // source of requests in the test suite are from 127.0.0.1
-    const secret = ' efef2772-f7aa-4d25-9eac-6228f2a64b3b';
+    const secret = 'efef2772-f7aa-4d25-9eac-6228f2a64b3b';
     const handle = 'testKeyAllowList';
     const ipAllowList = ['8.8.8.8/32', '127.0.0.1/32'];
     const keystoreAgent = await helpers.createKeystoreAgent(

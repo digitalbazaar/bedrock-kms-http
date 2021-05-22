@@ -14,7 +14,7 @@ const {signCapabilityInvocation} = require('http-signature-zcap-invoke');
 describe('bedrock-kms-http API', () => {
   describe('keystores', () => {
     it('creates a keystore', async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+      const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
 
       const capabilityAgent = await CapabilityAgent
@@ -35,7 +35,7 @@ describe('bedrock-kms-http API', () => {
       result.controller.should.equal(capabilityAgentId);
     });
     it('creates a keystore including proper ipAllowList', async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+      const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
 
       const capabilityAgent = await CapabilityAgent
@@ -59,7 +59,7 @@ describe('bedrock-kms-http API', () => {
       result.ipAllowList.should.eql(ipAllowList);
     });
     it('returns error on invalid ipAllowList', async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+      const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
 
       const capabilityAgent = await CapabilityAgent
@@ -84,7 +84,7 @@ describe('bedrock-kms-http API', () => {
       error.details.path.should.equal('.ipAllowList[0]');
     });
     it('returns error on invalid ipAllowList', async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+      const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
 
       const capabilityAgent = await CapabilityAgent
@@ -110,7 +110,7 @@ describe('bedrock-kms-http API', () => {
     });
     it('throws error on no sequence in postKeystoreBody validation',
       async () => {
-        const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+        const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
 
         const capabilityAgent = await CapabilityAgent
@@ -135,7 +135,7 @@ describe('bedrock-kms-http API', () => {
       });
     it('throws error on no controller in getKeystoreQuery validation',
       async () => {
-        const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+        const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
         const referenceId =
           'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
@@ -184,7 +184,7 @@ describe('bedrock-kms-http API', () => {
           'A validation error occured in the \'getKeystoreQuery\' validator.');
       });
     it('throws error with no invoker in zcap validation', async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+      const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
 
       const capabilityAgent = await CapabilityAgent
@@ -213,7 +213,7 @@ describe('bedrock-kms-http API', () => {
     // be refactored along with issue #45.
     it.skip('throws error with no controller in postRecoverBody validation',
       async () => {
-        const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+        const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
 
         const capabilityAgent = await CapabilityAgent
@@ -242,7 +242,7 @@ describe('bedrock-kms-http API', () => {
 
     describe('get keystore config', () => {
       it('gets a keystore', async () => {
-        const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+        const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
 
         const capabilityAgent = await CapabilityAgent
@@ -262,7 +262,7 @@ describe('bedrock-kms-http API', () => {
         result.id.should.equal(keystore.id);
       });
       it('gets a keystore with ipAllowList', async () => {
-        const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+        const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
 
         const capabilityAgent = await CapabilityAgent
@@ -288,7 +288,7 @@ describe('bedrock-kms-http API', () => {
         result.ipAllowList.should.eql(ipAllowList);
       });
       it('returns NotAllowedError for invalid source IP', async () => {
-        const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+        const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
 
         const capabilityAgent = await CapabilityAgent
@@ -314,7 +314,7 @@ describe('bedrock-kms-http API', () => {
 
     describe('find keystore configs', () => {
       it('finds a keystore', async () => {
-        const secret = ' b0f43022-3af1-4f22-ae55-19d70582087a';
+        const secret = 'b0f43022-3af1-4f22-ae55-19d70582087a';
         const handle = 'testKey1';
         const referenceId = 'urn:uuid:4f398f8f-505a-4609-a9df-761f01f4d18b';
 
@@ -340,7 +340,7 @@ describe('bedrock-kms-http API', () => {
         result.referenceId.should.equal(keystore.referenceId);
       });
       it('finds a keystore with ipAllowList', async () => {
-        const secret = ' b0f43022-3af1-4f22-ae55-19d70582087a';
+        const secret = 'b0f43022-3af1-4f22-ae55-19d70582087a';
         const handle = 'testKey1';
         const referenceId = 'urn:uuid:7c8b5e04-bbeb-4267-bdf3-b8ea425f9e32';
 
@@ -370,7 +370,7 @@ describe('bedrock-kms-http API', () => {
       });
       it('find returns null with ipAllowList and invalid source IP',
         async () => {
-          const secret = ' b0f43022-3af1-4f22-ae55-19d70582087a';
+          const secret = 'b0f43022-3af1-4f22-ae55-19d70582087a';
           const handle = 'testKey1';
           const referenceId = 'urn:uuid:17884c10-218d-4398-8f85-58a20cfc4bab';
 
