@@ -35,47 +35,6 @@ const invoker = {
   }]
 };
 
-const ipAllowList = {
-  type: 'array',
-  minItems: 1,
-  items: {
-    type: 'string',
-    // leading and trailing slashes in regex must be removed
-    pattern: cidrRegex.v4({exact: true}).toString().slice(1, -1),
-  }
-};
-
-const sequence = {
-  title: 'sequence',
-  type: 'integer',
-  minimum: 0,
-  maximum: Number.MAX_SAFE_INTEGER - 1
-};
-
-const postKeystoreBody = {
-  title: 'postKeystoreBody',
-  type: 'object',
-  additionalProperties: false,
-  required: ['sequence', 'controller'],
-  properties: {
-    controller,
-    ipAllowList,
-    referenceId,
-    sequence,
-  }
-};
-
-const getKeystoreQuery = {
-  title: 'getKeystoreQuery',
-  type: 'object',
-  additionalProperties: false,
-  required: ['controller', 'referenceId'],
-  properties: {
-    controller,
-    referenceId
-  }
-};
-
 const zcap = {
   title: 'zcap',
   type: 'object',
@@ -183,6 +142,48 @@ const zcap = {
           type: 'string'
         },
       }},
+    referenceId
+  }
+};
+
+const ipAllowList = {
+  type: 'array',
+  minItems: 1,
+  items: {
+    type: 'string',
+    // leading and trailing slashes in regex must be removed
+    pattern: cidrRegex.v4({exact: true}).toString().slice(1, -1),
+  }
+};
+
+const sequence = {
+  title: 'sequence',
+  type: 'integer',
+  minimum: 0,
+  maximum: Number.MAX_SAFE_INTEGER - 1
+};
+
+const postKeystoreBody = {
+  title: 'postKeystoreBody',
+  type: 'object',
+  additionalProperties: false,
+  required: ['sequence', 'controller', 'meterCapability'],
+  properties: {
+    controller,
+    ipAllowList,
+    referenceId,
+    sequence,
+    meterCapability: zcap
+  }
+};
+
+const getKeystoreQuery = {
+  title: 'getKeystoreQuery',
+  type: 'object',
+  additionalProperties: false,
+  required: ['controller', 'referenceId'],
+  properties: {
+    controller,
     referenceId
   }
 };
