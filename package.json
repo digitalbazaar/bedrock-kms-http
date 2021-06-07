@@ -37,14 +37,11 @@
   },
   "peerDependencies": {
     "bedrock": "^4.1.1",
-    "bedrock-account": "3.x - 5.x",
     "bedrock-did-io": "^2.0.0",
     "bedrock-express": "^3.2.1",
     "bedrock-jsonld-document-loader": "^1.0.1",
     "bedrock-kms": "digitalbazaar/bedrock-kms#use-updated-webkms-switch",
     "bedrock-mongodb": "^8.2.0",
-    "bedrock-passport": "^6.1.0",
-    "bedrock-permission": "2.x - 3.x",
     "bedrock-server": "^2.7.0",
     "bedrock-validation": "^5.0.0",
     "bedrock-zcap-storage": "2.x - 3.x"
