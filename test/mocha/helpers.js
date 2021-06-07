@@ -7,8 +7,6 @@ const bedrock = require('bedrock');
 const {CapabilityAgent, KeystoreAgent, KmsClient} =
   require('@digitalbazaar/webkms-client');
 const {httpsAgent} = require('bedrock-https-agent');
-const brPassport = require('bedrock-passport');
-const sinon = require('sinon');
 
 // the `keystores` endpoint uses session based authentication which is
 // mocked
@@ -76,24 +74,4 @@ exports.findKeystore = async ({
   return KmsClient.findKeystore({
     url, controller, referenceId, httpsAgent
   });
-};
-
-exports.enableCapability = async ({
-  capabilityToEnable, capability, invocationSigner
-}) => {
-  return KmsClient.enableCapability({
-    capabilityToEnable, capability, invocationSigner
-  });
-};
-
-exports.stubPassport = ({actor}) => {
-  const passportStub = sinon.stub(brPassport, 'optionallyAuthenticated');
-  passportStub.callsFake((req, res, next) => {
-    req.user = {
-      account: {},
-      actor,
-    };
-    next();
-  });
-  return passportStub;
 };
