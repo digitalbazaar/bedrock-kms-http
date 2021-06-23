@@ -42,6 +42,7 @@
     "bedrock-jsonld-document-loader": "^1.0.1",
     "bedrock-kms": "digitalbazaar/bedrock-kms#use-updated-webkms-switch",
     "bedrock-mongodb": "^8.2.0",
+    "bedrock-meter-usage-reporter": "digitalbazaar/bedrock-meter-usage-reporter#initial",
     "bedrock-server": "^2.7.0",
     "bedrock-validation": "^5.0.0",
     "bedrock-zcap-storage": "2.x - 3.x"
