@@ -40,7 +40,8 @@ const zcap = {
   type: 'object',
   additionalProperties: false,
   required: [
-    'id', 'invoker', 'parentCapability', 'allowedAction', 'invocationTarget'
+    'id', 'controller', 'parentCapability', 'allowedAction', 'invocationTarget',
+    'expires'
   ],
   properties: {
     controller,
@@ -59,9 +60,10 @@ const zcap = {
         items: {type: 'string'}
       }]
     },
-    caveat: {
-      title: 'Caveat',
-      type: 'object'
+    expires: {
+      // FIXME: w3c datetime
+      title: 'expires',
+      type: 'string'
     },
     '@context': {
       title: '@context',
