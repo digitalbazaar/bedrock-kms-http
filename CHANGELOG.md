@@ -1,5 +1,20 @@
 # bedrock-kms-http ChangeLog
 
+## 6.0.0 - 2021-xx-xxx
+
+### Added
+- **BREAKING** - Add storage and operation metering support. A meter capability
+  must be provided to create a new keystore. This capability will be used to
+  report keystore storage and operation usage to the associated meter.
+
+### Changed
+- **BREAKING**: Require `expires` to be set on delegated zcaps.
+- **BREAKING**: Use updated bedrock-kms.
+
+### Removed
+- **BREAKING**: Remove `did-io`, `did-method-key`, and
+  `did-veres-one` from deps and use `bedrock-did-io`.
+
 ## 5.0.0 - 2021-05-20
 
 ### Changed
