@@ -29,7 +29,6 @@
     "cidr-regex": "^3.1.1",
     "cors": "^2.8.5",
     "forwarded": "^0.1.2",
-    "http-signature-zcap-verify": "^7.1.0",
     "jsonld-signatures": "^9.0.2",
     "netmask": "^2.0.2",
     "webkms-switch": "digitalbazaar/webkms-switch#refactor",
