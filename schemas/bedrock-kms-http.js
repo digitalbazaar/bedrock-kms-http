@@ -148,6 +148,88 @@ const zcap = {
   }
 };
 
+// more strict schema than `zcap`
+const meterZcap = {
+  title: 'meterZcap',
+  type: 'object',
+  additionalProperties: false,
+  required: [
+    'id', 'controller', 'parentCapability', 'invocationTarget', 'expires',
+    'proof'
+  ],
+  properties: {
+    controller,
+    id: {
+      title: 'id',
+      type: 'string'
+    },
+    allowedAction: {
+      type: 'array',
+      minItems: 2,
+      // FIXME: require both `read` and `write` actions
+      items: {type: 'string'}
+    },
+    expires: {
+      // FIXME: w3c datetime
+      title: 'expires',
+      type: 'string'
+    },
+    '@context': {
+      title: '@context',
+      type: 'array',
+      minItems: 2,
+      items: {type: 'string'}
+    },
+    invocationTarget: {
+      title: 'Invocation Target',
+      type: 'string'
+    },
+    parentCapability: {
+      title: 'Parent Capability',
+      type: 'string'
+    },
+    proof: {
+      title: 'Proof',
+      type: 'object',
+      additionalProperties: false,
+      required: [
+        'verificationMethod', 'type', 'created', 'proofPurpose',
+        'capabilityChain', 'proofValue'
+      ],
+      properties: {
+        verificationMethod: {
+          title: 'verificationMethod',
+          type: 'string'
+        },
+        type: {
+          title: 'type',
+          type: 'string'
+        },
+        created: {
+          title: 'created',
+          type: 'string'
+        },
+        proofPurpose: {
+          title: 'proofPurpose',
+          type: 'string'
+        },
+        capabilityChain: {
+          title: 'capabilityChain',
+          type: 'array',
+          minItems: 1,
+          items: {
+            type: ['string', 'object']
+          }
+        },
+        proofValue: {
+          title: 'proofValue',
+          type: 'string'
+        },
+      }},
+    referenceId
+  }
+};
+
 const ipAllowList = {
   type: 'array',
   minItems: 1,
@@ -175,7 +257,11 @@ const postKeystoreBody = {
     ipAllowList,
     referenceId,
     sequence,
-    meterCapability: zcap
+    kmsModule: {
+      title: 'kmsModule',
+      type: 'string'
+    },
+    meterCapability: meterZcap
   }
 };
 
@@ -205,6 +291,7 @@ const updateKeystoreConfigBody = {
     ipAllowList,
     referenceId,
     sequence,
+    meterCapability: meterZcap
   }
 };
 
@@ -212,5 +299,6 @@ module.exports = {
   getKeystoreQuery,
   postKeystoreBody,
   zcap,
+  meterZcap,
   updateKeystoreConfigBody
 };
