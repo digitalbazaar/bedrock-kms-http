@@ -23,28 +23,28 @@
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-kms-http",
   "dependencies": {
-    "@digitalbazaar/ed25519-signature-2020": "^2.1.0",
-    "@digitalbazaar/ezcap-express": "^3.0.1",
-    "@digitalbazaar/zcapld": "^4.0.0",
+    "@digitalbazaar/ed25519-signature-2020": "^3.0.0",
+    "@digitalbazaar/ezcap-express": "^3.4.0",
+    "@digitalbazaar/zcapld": "^5.0.0",
     "cidr-regex": "^3.1.1",
     "cors": "^2.8.5",
     "forwarded": "^0.1.2",
-    "jsonld-signatures": "^9.0.2",
+    "jsonld-signatures": "^9.2.1",
     "netmask": "^2.0.2",
     "webkms-switch": "digitalbazaar/webkms-switch#refactor",
-    "zcap-context": "^1.1.0"
+    "zcap-context": "^1.2.1"
   },
   "peerDependencies": {
-    "bedrock": "^4.1.1",
-    "bedrock-did-io": "^2.0.0",
-    "bedrock-express": "^3.2.1",
+    "bedrock": "^4.3.0",
+    "bedrock-did-io": "^3.0.0",
+    "bedrock-express": "^4.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
     "bedrock-kms": "digitalbazaar/bedrock-kms#use-updated-webkms-switch",
     "bedrock-mongodb": "^8.2.0",
     "bedrock-meter-usage-reporter": "digitalbazaar/bedrock-meter-usage-reporter#initial",
     "bedrock-server": "^2.7.0",
-    "bedrock-validation": "^5.0.0",
-    "bedrock-zcap-storage": "2.x - 3.x"
+    "bedrock-validation": "^5.1.0",
+    "bedrock-zcap-storage": "^3.2.0"
   },
   "directories": {
     "lib": "./lib"
