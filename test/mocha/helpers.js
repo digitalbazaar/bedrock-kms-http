@@ -11,13 +11,16 @@ const {httpsAgent} = require('bedrock-https-agent');
 // the `keystores` endpoint uses session based authentication which is
 // mocked
 exports.createKeystore = async ({
-  capabilityAgent, ipAllowList, referenceId,
+  capabilityAgent, ipAllowList, referenceId, meterCapability,
   kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`,
+  kmsModule = 'ssm-v1'
 }) => {
   // create keystore
   const config = {
     sequence: 0,
     controller: capabilityAgent.id,
+    meterCapability,
+    kmsModule
   };
   if(referenceId) {
     config.referenceId = referenceId;
@@ -29,7 +32,7 @@ exports.createKeystore = async ({
   return KmsClient.createKeystore({
     url: `${kmsBaseUrl}/keystores`,
     config,
-    httpsAgent,
+    httpsAgent
   });
 };
 

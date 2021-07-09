@@ -14,6 +14,37 @@ const {signCapabilityInvocation} = require('http-signature-zcap-invoke');
 describe('bedrock-kms-http API', () => {
   describe('keystores', () => {
     it('creates a keystore', async () => {
+      // FIXME: first create a meter and get a meter zcap for it
+      const meterId = `${bedrock.config.server.baseUri}/meters/` +
+        'zSLHvnwnX22DCQ2xo9pX5U6/usage';
+      const did = 'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
+      const parentCapability = `urn:zcap:root:${encodeURIComponent(meterId)}`;
+      const meterCapability = {
+        // FIXME: use constant
+        '@context': [
+          'https://w3id.org/zcap/v1',
+          'https://w3id.org/security/suites/ed25519-2020/v1',
+        ],
+        //id: `urn:${uuid()}`,
+        id: 'urn:6ab157aa-e0e1-11eb-af0f-10bf48838a41',
+        invocationTarget: meterId,
+        controller: did,
+        allowedAction: ['read', 'write'],
+        parentCapability,
+        // FIXME: use second precision
+        expires: new Date().toISOString(),
+        proof: {
+          type: 'Ed25519Signature2020',
+          verificationMethod:
+            `${did}#z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH`,
+          // FIXME: use second precision
+          created: new Date().toISOString(),
+          capabilityChain: [parentCapability],
+          proofPurpose: 'capabilityDelegation',
+          proofValue: 'MOCK'
+        }
+      };
+
       const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
 
@@ -23,13 +54,16 @@ describe('bedrock-kms-http API', () => {
       let err;
       let result;
       try {
-        result = await helpers.createKeystore({capabilityAgent});
+        result = await helpers.createKeystore(
+          {capabilityAgent, meterCapability});
       } catch(e) {
         err = e;
       }
       assertNoError(err);
       should.exist(result);
-      result.should.have.keys(['controller', 'id', 'sequence']);
+      result.should.have.keys([
+        'controller', 'id', 'sequence', 'kmsModule', 'meterId'
+      ]);
       result.sequence.should.equal(0);
       const {id: capabilityAgentId} = capabilityAgent;
       result.controller.should.equal(capabilityAgentId);
