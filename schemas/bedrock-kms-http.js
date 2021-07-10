@@ -247,6 +247,11 @@ const sequence = {
   maximum: Number.MAX_SAFE_INTEGER - 1
 };
 
+const kmsModule = {
+  title: 'kmsModule',
+  type: 'string'
+};
+
 const postKeystoreBody = {
   title: 'postKeystoreBody',
   type: 'object',
@@ -257,10 +262,7 @@ const postKeystoreBody = {
     ipAllowList,
     referenceId,
     sequence,
-    kmsModule: {
-      title: 'kmsModule',
-      type: 'string'
-    },
+    kmsModule,
     meterCapability: meterZcap
   }
 };
@@ -291,6 +293,8 @@ const updateKeystoreConfigBody = {
     ipAllowList,
     referenceId,
     sequence,
+    kmsModule,
+    meterId: {type: 'string'},
     meterCapability: meterZcap
   }
 };
