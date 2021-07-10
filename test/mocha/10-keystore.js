@@ -644,7 +644,6 @@ describe('bedrock-kms-http API', () => {
         should.exist(err);
         should.not.exist(result);
         err.status.should.equal(409);
-        err.data.message.should.contain('sequence does not match');
         err.data.type.should.equal('InvalidStateError');
         err.data.details.should.have.keys(['id', 'sequence', 'httpStatusCode']);
       });
@@ -674,8 +673,9 @@ describe('bedrock-kms-http API', () => {
 
           let err;
           let result;
+          let existingConfig;
           try {
-            result = await helpers.createKeystore(
+            existingConfig = result = await helpers.createKeystore(
               {capabilityAgent, ipAllowList});
           } catch(e) {
             err = e;
@@ -721,9 +721,14 @@ describe('bedrock-kms-http API', () => {
           result.data.should.have.keys(['config', 'success']);
           result.data.success.should.be.a('boolean');
           result.data.success.should.equal(true);
-          result.data.config.should.eql(newConfig);
+          const expectedConfig = {
+            ...existingConfig,
+            ...newConfig
+          };
+          result.data.config.should.eql(expectedConfig);
 
-          // retrieve the keystore config to confirm update was effective
+          // should fail to retrieve the keystore config now that controller
+          // has changed
           err = null;
           result = null;
           try {
@@ -732,9 +737,23 @@ describe('bedrock-kms-http API', () => {
           } catch(e) {
             err = e;
           }
+          should.exist(err);
+          should.not.exist(result);
+          err.status.should.equal(403);
+          err.data.type.should.equal('NotAllowedError');
+
+          // retrieve the keystore config to confirm update was effective
+          err = null;
+          result = null;
+          try {
+            result = await helpers.getKeystore(
+              {id: newConfig.id, capabilityAgent: capabilityAgent2});
+          } catch(e) {
+            err = e;
+          }
           assertNoError(err);
           should.exist(result);
-          result.should.eql(newConfig);
+          result.should.eql(expectedConfig);
         });
         it('returns NotAllowedError for invalid source IP', async () => {
           const secret = '481f41a0-af87-407f-b7ec-38f1fbb10d12';
