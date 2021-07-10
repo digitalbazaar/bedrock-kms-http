@@ -324,7 +324,8 @@ describe('bedrock-kms-http API', () => {
       });
     }); // get keystore config
 
-    describe('find keystore configs', () => {
+    // FIXME: skipped while considering removal of keystore query
+    describe.skip('find keystore configs', () => {
       it('finds a keystore', async () => {
         const secret = ' b0f43022-3af1-4f22-ae55-19d70582087a';
         const handle = 'testKey1';
@@ -433,8 +434,10 @@ describe('bedrock-kms-http API', () => {
 
         let err;
         let result;
+        let existingConfig;
         try {
-          result = await helpers.createKeystore({capabilityAgent});
+          existingConfig = result = await helpers.createKeystore(
+            {capabilityAgent});
         } catch(e) {
           err = e;
         }
@@ -447,6 +450,7 @@ describe('bedrock-kms-http API', () => {
         result.should.have.property('controller');
         result.controller.should.equal(capabilityAgentId);
 
+        // this update does not change the `meterCapability`
         const {id: url} = result;
         const newConfig = {
           // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9
@@ -478,9 +482,14 @@ describe('bedrock-kms-http API', () => {
         result.data.should.have.keys(['config', 'success']);
         result.data.success.should.be.a('boolean');
         result.data.success.should.equal(true);
-        result.data.config.should.eql(newConfig);
+        const expectedConfig = {
+          ...existingConfig,
+          ...newConfig
+        };
+        result.data.config.should.eql(expectedConfig);
 
-        // retrieve the keystore config to confirm update was effective
+        // should fail to retrieve the keystore config now that controller
+        // has changed
         err = null;
         result = null;
         try {
@@ -489,9 +498,23 @@ describe('bedrock-kms-http API', () => {
         } catch(e) {
           err = e;
         }
+        should.exist(err);
+        should.not.exist(result);
+        err.status.should.equal(403);
+        err.data.type.should.equal('NotAllowedError');
+
+        // retrieve the keystore config to confirm update was effective
+        err = null;
+        result = null;
+        try {
+          result = await helpers.getKeystore(
+            {id: newConfig.id, capabilityAgent: capabilityAgent2});
+        } catch(e) {
+          err = e;
+        }
         assertNoError(err);
         should.exist(result);
-        result.should.eql(newConfig);
+        result.should.eql(expectedConfig);
       });
       it('rejects config update for an invalid zcap', async () => {
         const secret = 'd852a72d-013f-4dd6-8ba2-588aaf601b66';
