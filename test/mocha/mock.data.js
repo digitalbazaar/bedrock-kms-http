@@ -23,8 +23,6 @@ const zcap0 = {
     publicAlias: 'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwT' +
       'TTYvg#z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg'
   },
-  invoker: 'did:key:z6MkfV83MxASJKXim3eBPoLCDiWDseYUaW84qbVF9k3ngdfg#z6MkfV83' +
-    'MxASJKXim3eBPoLCDiWDseYUaW84qbVF9k3ngdfg',
   parentCapability: 'https://bedrock.localhost:18443/kms/keystores/z1AAWWM7Zd' +
     '4YyyV3NfaCqFuzQ/keys/z19wxodgv1UhrToQMvSxGhQG6',
   proof: {
@@ -34,8 +32,8 @@ const zcap0 = {
       'TTYvg#z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg',
     proofPurpose: 'capabilityDelegation',
     capabilityChain: [
-      'https://bedrock.localhost:18443/kms/keystores/z1AAWWM7Zd4YyyV3NfaCqFu' +
-        'zQ/keys/z19wxodgv1UhrToQMvSxGhQG6'
+      'urn:zcap:root:' + encodeURIComponent(
+        'https://bedrock.localhost:18443/kms/keystores/z1AAWWM7Zd4YyyV3NfaCqFu')
     ],
     // FIXME: This was a 'jws'; need to find actual proofValue for this zcap
     proofValue: 'eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19'
