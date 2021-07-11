@@ -8,8 +8,6 @@ const uuid = require('uuid-random');
 const {CapabilityAgent, KeystoreAgent, KmsClient} =
   require('@digitalbazaar/webkms-client');
 
-const KMS_MODULE = 'ssm-v1';
-
 describe('bedrock-kms-http HMAC operations', () => {
   describe('Sha256HmacKey2019', () => {
     let hmac;
@@ -34,13 +32,10 @@ describe('bedrock-kms-http HMAC operations', () => {
       const kmsClient = new KmsClient();
       const keystoreAgent = new KeystoreAgent({
         capabilityAgent,
-        keystore,
+        keystoreId: keystore.id,
         kmsClient
       });
-      hmac = await keystoreAgent.generateKey({
-        kmsModule: KMS_MODULE,
-        type: 'hmac',
-      });
+      hmac = await keystoreAgent.generateKey({type: 'hmac'});
     });
     it('successfully signs', async () => {
       const data = new TextEncoder('utf-8').encode('hello');
@@ -93,13 +88,52 @@ describe('bedrock-kms-http HMAC operations', () => {
 });
 
 async function _createKeystore({capabilityAgent, referenceId}) {
+  const {meterCapability} = await createMeter();
+
   // create keystore
   const config = {
     sequence: 0,
     controller: capabilityAgent.id,
+    kmsModule: 'ssm-v1',
+    meterCapability
   };
+
   if(referenceId) {
     config.referenceId = referenceId;
   }
   return KmsClient.createKeystore({config});
+}
+
+async function createMeter({} = {}) {
+  // FIXME: first create a meter and get a meter zcap for it
+  const meterId = `https://localhost:18443/meters/` +
+    'zSLHvnwnX22DCQ2xo9pX5U6/usage';
+  const did = 'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
+  const parentCapability = `urn:zcap:root:${encodeURIComponent(meterId)}`;
+  const meterCapability = {
+    // FIXME: use constant
+    '@context': [
+      'https://w3id.org/zcap/v1',
+      'https://w3id.org/security/suites/ed25519-2020/v1',
+    ],
+    //id: `urn:${uuid()}`,
+    id: 'urn:6ab157aa-e0e1-11eb-af0f-10bf48838a41',
+    invocationTarget: meterId,
+    controller: did,
+    allowedAction: ['read', 'write'],
+    parentCapability,
+    // FIXME: use second precision
+    expires: new Date().toISOString(),
+    proof: {
+      type: 'Ed25519Signature2020',
+      verificationMethod:
+        `${did}#z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH`,
+      // FIXME: use second precision
+      created: new Date().toISOString(),
+      capabilityChain: [parentCapability],
+      proofPurpose: 'capabilityDelegation',
+      proofValue: 'MOCK'
+    }
+  };
+  return {meterCapability};
 }

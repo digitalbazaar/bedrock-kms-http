@@ -5,8 +5,6 @@
 
 const helpers = require('./helpers');
 
-const KMS_MODULE = 'ssm-v1';
-
 describe('generateKey with ipAllowList', () => {
   it('generates a key', async () => {
     // source of requests in the test suite are from 127.0.0.1
@@ -18,10 +16,7 @@ describe('generateKey with ipAllowList', () => {
     let err;
     let result;
     try {
-      result = await keystoreAgent.generateKey({
-        kmsModule: KMS_MODULE,
-        type: 'hmac',
-      });
+      result = await keystoreAgent.generateKey({type: 'hmac'});
     } catch(e) {
       err = e;
     }
@@ -45,10 +40,7 @@ describe('generateKey with ipAllowList', () => {
     let err;
     let result;
     try {
-      result = await keystoreAgent.generateKey({
-        kmsModule: KMS_MODULE,
-        type: 'hmac',
-      });
+      result = await keystoreAgent.generateKey({type: 'hmac'});
     } catch(e) {
       err = e;
     }
@@ -69,10 +61,7 @@ describe('generateKey with ipAllowList', () => {
     let err;
     let result;
     try {
-      result = await keystoreAgent.generateKey({
-        kmsModule: KMS_MODULE,
-        type: 'hmac',
-      });
+      result = await keystoreAgent.generateKey({type: 'hmac'});
     } catch(e) {
       err = e;
     }
@@ -94,10 +83,7 @@ describe('generateKey with ipAllowList', () => {
     let err;
     let result;
     try {
-      result = await keystoreAgent.generateKey({
-        kmsModule: KMS_MODULE,
-        type: 'hmac',
-      });
+      result = await keystoreAgent.generateKey({type: 'hmac'});
     } catch(e) {
       err = e;
     }
