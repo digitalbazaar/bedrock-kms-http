@@ -281,7 +281,7 @@ describe('revocations API', () => {
     should.exist(err.data);
     err.data.type.should.equal('NotAllowedError');
   });
-  it('throws error on zcaps validator', async () => {
+  it('throws error on zcap validator', async () => {
     // first generate a new key for alice
     const aliceKey = await aliceKeystoreAgent.generateKey(
       {type: 'Ed25519VerificationKey2020'});
@@ -384,8 +384,9 @@ describe('revocations API', () => {
       err = e;
     }
     should.exist(err);
+    err.data.type.should.equal('ValidationError');
     err.data.message.should.equal(
-      'A validation error occured in the \'zcap\' validator.');
+      'A validation error occured in the \'delegatedZcap\' validator.');
   });
 });
 
