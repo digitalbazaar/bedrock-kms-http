@@ -39,10 +39,7 @@ const zcap = {
   title: 'zcap',
   type: 'object',
   additionalProperties: false,
-  required: [
-    'id', 'controller', 'parentCapability', 'allowedAction', 'invocationTarget',
-    'expires'
-  ],
+  required: ['id', 'parentCapability', 'invocationTarget'],
   properties: {
     controller,
     invoker,

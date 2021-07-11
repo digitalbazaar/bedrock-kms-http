@@ -18,9 +18,10 @@ const {
 const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 const {Ed25519VerificationKey2020} =
   require('@digitalbazaar/ed25519-verification-key-2020');
-const KMS_MODULE = 'ssm-v1';
 const {CONTEXT_URL: ZCAP_CONTEXT_URL} = require('zcap-context');
 const {documentLoader} = require('bedrock-jsonld-document-loader');
+
+const ZCAP_ROOT_PREFIX = 'urn:zcap:root:';
 
 describe('revocations API', () => {
   let aliceCapabilityAgent;
@@ -36,15 +37,14 @@ describe('revocations API', () => {
     const secret = '40762a17-1696-428f-a2b2-ddf9fe9b4987';
     const handle = 'testKey2';
     aliceCapabilityAgent = await CapabilityAgent.fromSecret({
-      secret, handle, keyType: 'Ed25519VerificationKey2020'
-    });
+      secret, handle, keyType: 'Ed25519VerificationKey2020'});
 
-    const keystore = await helpers.createKeystore(
+    const {id: keystoreId} = await helpers.createKeystore(
       {capabilityAgent: aliceCapabilityAgent});
     const {httpsAgent} = brHttpsAgent;
     const kmsClient = new KmsClient({httpsAgent});
     aliceKeystoreAgent = new KeystoreAgent(
-      {capabilityAgent: aliceCapabilityAgent, keystore, kmsClient});
+      {capabilityAgent: aliceCapabilityAgent, keystoreId, kmsClient});
   });
 
   // generate a keystore for Bob
@@ -52,21 +52,20 @@ describe('revocations API', () => {
     const secret = '34f2afd1-34ef-4d46-a998-cdc5462dc0d2';
     const handle = 'bobKey';
     bobCapabilityAgent = await CapabilityAgent.fromSecret({
-      secret, handle, keyType: 'Ed25519VerificationKey2020'
-    });
-    const keystore = await helpers.createKeystore(
+      secret, handle, keyType: 'Ed25519VerificationKey2020'});
+    const {id: keystoreId} = await helpers.createKeystore(
       {capabilityAgent: bobCapabilityAgent});
     try {
       const {httpsAgent} = brHttpsAgent;
       const kmsClient = new KmsClient({httpsAgent});
       bobKeystoreAgent = new KeystoreAgent(
-        {capabilityAgent: bobCapabilityAgent, keystore, kmsClient});
+        {capabilityAgent: bobCapabilityAgent, keystoreId, kmsClient});
     } catch(e) {
       assertNoError(e);
     }
     try {
       bobKey = await bobKeystoreAgent.generateKey(
-        {type: 'Ed25519VerificationKey2020', kmsModule: KMS_MODULE});
+        {type: 'Ed25519VerificationKey2020'});
     } catch(e) {
       assertNoError(e);
     }
@@ -83,32 +82,20 @@ describe('revocations API', () => {
     carolCapabilityAgent = await CapabilityAgent.fromSecret({
       secret, handle, kmsClient, keyType: 'Ed25519VerificationKey2020'
     });
-    const keystore = await helpers.createKeystore(
+    const {id: keystoreId} = await helpers.createKeystore(
       {capabilityAgent: carolCapabilityAgent});
     carolKeystoreAgent = new KeystoreAgent(
-      {capabilityAgent: carolCapabilityAgent, keystore, kmsClient});
+      {capabilityAgent: carolCapabilityAgent, keystoreId, kmsClient});
 
     carolKey = await carolKeystoreAgent.generateKey(
-      {type: 'Ed25519VerificationKey2020', kmsModule: KMS_MODULE});
+      {type: 'Ed25519VerificationKey2020'});
     await _setKeyId(carolKey);
-  });
-
-  // mock session authentication for delegations endpoint
-  let passportStub;
-  before(() => {
-    const actor = {
-      id: 'urn:uuid:7d1f8aea-5a22-480e-840b-d60bc5705864'
-    };
-    passportStub = helpers.stubPassport({actor});
-  });
-  after(() => {
-    passportStub.restore();
   });
 
   it('successfully revokes a delegation', async () => {
     // first generate a new key for alice
     const aliceKey = await aliceKeystoreAgent.generateKey(
-      {type: 'Ed25519VerificationKey2020', kmsModule: KMS_MODULE});
+      {type: 'Ed25519VerificationKey2020'});
     await _setKeyId(aliceKey);
     // next, delegate authority to bob to use alice's key
     const zcap = {
@@ -121,10 +108,11 @@ describe('revocations API', () => {
       // this provides Bob the ability to delegate the capability again to
       // Carol later
       delegator: bobKey.id,
-      // if parentCapability points to a root capability it must be a
-      // URL that can be dereferenced. In this case, aliceKey.kmsId is a root
-      // capability.
-      parentCapability: aliceKey.kmsId,
+      // there is no root capability at the `invocationTarget` location,
+      // so this alternate URL is used that will automatically generate a
+      // root capability
+      parentCapability: ZCAP_ROOT_PREFIX +
+        encodeURIComponent(aliceKeystoreAgent.keystoreId),
       allowedAction: 'sign',
       invocationTarget: {
         publicAlias: aliceKey.id,
@@ -147,9 +135,10 @@ describe('revocations API', () => {
       // there is no root capability at the `invocationTarget` location,
       // so this alternate URL is used that will automatically generate a
       // root capability
-      parentCapability: `${aliceKeystoreAgent.keystore.id}/zcaps/revocations`,
+      parentCapability: ZCAP_ROOT_PREFIX +
+        encodeURIComponent(aliceKeystoreAgent.keystoreId),
       allowedAction: 'write',
-      invocationTarget: `${aliceKeystoreAgent.keystore.id}/revocations`,
+      invocationTarget: `${aliceKeystoreAgent.keystoreId}/revocations`,
     };
 
     // Alice now signs the capability delegation that allows Bob to `sign`
@@ -157,9 +146,9 @@ describe('revocations API', () => {
     const signer = aliceCapabilityAgent.getSigner();
     const signedCapabilityFromAlice = await _delegate({
       capabilityChain: [
-        // Alice's key is the root capability which is always the first
+        // the root zcap for Alice's key is always the first
         // item in the `capabilityChain`
-        aliceKey.kmsId
+        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId)
       ],
       signer,
       zcap,
@@ -208,7 +197,7 @@ describe('revocations API', () => {
     // finish bobs delegation to carol
     const signedCapabilityFromBobToCarol = await _delegate({
       capabilityChain: [
-        aliceKey.kmsId,
+        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId),
         zcap,
       ],
       signer: bobKey,
@@ -295,7 +284,7 @@ describe('revocations API', () => {
   it('throws error on zcaps validator', async () => {
     // first generate a new key for alice
     const aliceKey = await aliceKeystoreAgent.generateKey(
-      {type: 'Ed25519VerificationKey2020', kmsModule: KMS_MODULE});
+      {type: 'Ed25519VerificationKey2020'});
     await _setKeyId(aliceKey);
 
     // next, delegate authority to bob to use alice's key
@@ -309,10 +298,11 @@ describe('revocations API', () => {
       // this provides Bob the ability to delegate the capability again to
       // Carol later
       delegator: bobKey.id,
-      // if parentCapability points to a root capability it must be a
-      // URL that can be dereferenced. In this case, aliceKey.kmsId is a root
-      // capability.
-      parentCapability: aliceKey.kmsId,
+      // there is no root capability at the `invocationTarget` location,
+      // so this alternate URL is used that will automatically generate a
+      // root capability
+      parentCapability: ZCAP_ROOT_PREFIX +
+        encodeURIComponent(aliceKeystoreAgent.keystoreId),
       allowedAction: 'sign',
       invocationTarget: {
         publicAlias: aliceKey.id,
@@ -335,9 +325,10 @@ describe('revocations API', () => {
       // there is no root capability at the `invocationTarget` location,
       // so this alternate URL is used that will automatically generate a
       // root capability
-      parentCapability: `${aliceKeystoreAgent.keystore.id}/zcaps/revocations`,
+      parentCapability: ZCAP_ROOT_PREFIX +
+        encodeURIComponent(aliceKeystoreAgent.keystoreId),
       allowedAction: 'write',
-      invocationTarget: `${aliceKeystoreAgent.keystore.id}/revocations`,
+      invocationTarget: `${aliceKeystoreAgent.keystoreId}/revocations`,
     };
 
     // Alice now signs the capability delegation that allows Bob to `sign`
@@ -370,7 +361,7 @@ describe('revocations API', () => {
     // finish bobs delegation to carol
     const signedCapabilityFromBobToCarol = await _delegate({
       capabilityChain: [
-        aliceKey.kmsId,
+        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId),
         zcap,
       ],
       signer: bobKey,
