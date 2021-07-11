@@ -56,8 +56,9 @@ describe('bedrock-kms-http HMAC operations', () => {
       const vData = [];
       before(async () => {
         for(let i = 0; i < operationCount; ++i) {
+          // uuids are 37 chars long, * 30 is ~1KiB
           let v = '';
-          for(let n = 0; n < 100; ++n) {
+          for(let n = 0; n < 30; ++n) {
             v += uuid();
           }
           vData.push(new TextEncoder('utf-8').encode(v));

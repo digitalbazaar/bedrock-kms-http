@@ -91,8 +91,9 @@ describe('bedrock-kms-http HMAC operations', () => {
     });
     before(async () => {
       for(let i = 0; i < operationCount; ++i) {
+        // uuids are 37 chars long, * 30 is ~1KiB
         let v = '';
-        for(let n = 0; n < 100; ++n) {
+        for(let n = 0; n < 30; ++n) {
           v += uuid();
         }
         vData.push(new TextEncoder('utf-8').encode(v));
@@ -104,7 +105,7 @@ describe('bedrock-kms-http HMAC operations', () => {
       let err;
       try {
         result = await pMap(
-          vData, data => hmac.sign({data}), {concurrency: 10});
+          vData, data => hmac.sign({data}), {concurrency: 30});
       } catch(e) {
         err = e;
       }
