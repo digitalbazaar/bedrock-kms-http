@@ -97,18 +97,6 @@ describe('revocations API with ipAllowList', () => {
     await _setKeyId(carolKey);
   });
 
-  // mock session authentication for delegations endpoint
-  let passportStub;
-  before(() => {
-    const actor = {
-      id: 'urn:uuid:7d1f8aea-5a22-480e-840b-d60bc5705864'
-    };
-    passportStub = helpers.stubPassport({actor});
-  });
-  after(() => {
-    passportStub.restore();
-  });
-
   it('returns NotAllowedError for invalid source IP', async () => {
     // first generate a new key for alice
     const aliceKey = await aliceKeystoreAgent.generateKey(
