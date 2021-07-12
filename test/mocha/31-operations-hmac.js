@@ -78,7 +78,7 @@ describe('bedrock-kms-http HMAC operations', () => {
   }); // end Sha256HmacKey2019 with ipAllowList
 
   describe('bulk operations', () => {
-    const operationCount = 10000;
+    const operationCount = 1000;
     const vData = [];
     let hmac;
 

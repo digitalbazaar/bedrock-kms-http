@@ -52,7 +52,7 @@ describe('bedrock-kms-http HMAC operations', () => {
     });
 
     describe('bulk operations', () => {
-      const operationCount = 10000;
+      const operationCount = 1000;
       const vData = [];
       before(async () => {
         for(let i = 0; i < operationCount; ++i) {
