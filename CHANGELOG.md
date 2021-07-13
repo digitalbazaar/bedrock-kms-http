@@ -10,6 +10,11 @@
 ### Changed
 - **BREAKING**: Require `expires` to be set on delegated zcaps.
 - **BREAKING**: Use updated bedrock-kms.
+- **BREAKING**: Simplify zcap revocation model. Now any party that has been delegated a zcap can
+  send it to a revocation address: `<keystoreId>/revocations/<zcap ID>` without needing to have an
+  additional zcap delegated to that party. The party must invoke the root zcap for that endpoint,
+  which will be dynamically generated and use the delegator of the zcap as the controller, i.e., the
+  delegator must invoke this root zcap to revoke the zcap they delegated.
 
 ### Removed
 - **BREAKING**: Remove `did-io`, `did-method-key`, and

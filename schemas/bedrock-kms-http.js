@@ -39,7 +39,7 @@ const delegatedZcap = {
   title: 'delegatedZcap',
   type: 'object',
   additionalProperties: false,
-  required: ['id', 'parentCapability', 'invocationTarget'],
+  required: ['id', 'parentCapability', 'invocationTarget', 'proof'],
   anyOf: [{
     required: ['controller']
   }, {
