@@ -190,8 +190,7 @@ describe('revocations API', () => {
     // the document was ultimately signed with alice's key
     carolSignedDocument.proof.verificationMethod.should.equal(aliceKey.id);
 
-    // Bob now submits a revocation using his revocation capability to
-    // revoke the capability he gave to Carol.
+    // Bob now submits a revocation to revoke the capability he gave to Carol.
 
     // in practice bob is going to locate the capability he gave to carol
     // by way of bedrock-web-zcap-storage

@@ -126,26 +126,6 @@ describe('revocations API with ipAllowList', () => {
       }
     };
 
-    // This capability allows Bob to write to this revocations endpoint
-    // This capability is required for Bob to revoke Carol's capability later.
-
-    // the invoker for writing must be the delegator of the capability that is
-    // being revoked there should also be a check that the invocation target
-    // exists on the host system
-    const bobRevocationZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      invoker: bobKey.id,
-      // there is no root capability at the `invocationTarget` location,
-      // so this alternate URL is used that will automatically generate a
-      // root capability
-      parentCapability: ZCAP_ROOT_PREFIX +
-        encodeURIComponent(aliceKeystoreAgent.keystoreId),
-      allowedAction: 'write',
-      invocationTarget: `${aliceKeystoreAgent.keystoreId}/revocations`,
-    };
-
     // Alice now signs the capability delegation that allows Bob to `sign`
     // with her key.
     const signer = aliceCapabilityAgent.getSigner();
@@ -157,15 +137,6 @@ describe('revocations API with ipAllowList', () => {
       ],
       signer,
       zcap,
-      documentLoader
-    });
-
-    // Alice now signs the capability delegation that allows Bob to `write`
-    // to Alice's keystore revocations endpoint
-    const signedBobRevocationZcap = await _delegate({
-      capabilityChain: [bobRevocationZcap.parentCapability],
-      signer,
-      zcap: bobRevocationZcap,
       documentLoader
     });
 
@@ -203,7 +174,7 @@ describe('revocations API with ipAllowList', () => {
     const signedCapabilityFromBobToCarol = await _delegate({
       capabilityChain: [
         zcap.parentCapability,
-        zcap,
+        signedCapabilityFromAlice,
       ],
       signer: bobKey,
       zcap: carolZcap,
@@ -232,8 +203,7 @@ describe('revocations API with ipAllowList', () => {
       {config: aliceKeystoreConfig});
     success.should.equal(true);
 
-    // Bob now submits a revocation using his revocation capability to
-    // revoke the capability he gave to Carol.
+    // Bob now submits a revocation to revoke the capability he gave to Carol.
 
     // in practice bob is going to locate the capability he gave to carol
     // by way of bedrock-web-zcap-storage
@@ -247,9 +217,6 @@ describe('revocations API with ipAllowList', () => {
     let result;
     try {
       result = await _revokeDelegatedCapability({
-        // the capability here is to `write` to a revocations endpoint on
-        // Alice's system
-        capability: signedBobRevocationZcap,
         // the `sign` capability that Bob gave to Carol
         capabilityToRevoke: signedCapabilityFromBobToCarol,
         // bobKey is the `invoker` in `signedBobRevocationZcap`
