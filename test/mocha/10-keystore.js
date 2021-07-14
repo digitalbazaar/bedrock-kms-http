@@ -201,10 +201,10 @@ describe('bedrock-kms-http API', () => {
       const keystore = await helpers.createKeystore({
         capabilityAgent});
 
-      const url = `${keystore.id}/revocations`;
-
       const zcap = mockData.zcaps.zero;
       delete zcap.controller;
+
+      const url = `${keystore.id}/revocations/${encodeURIComponent(zcap.id)}`;
 
       let err;
       let result;
