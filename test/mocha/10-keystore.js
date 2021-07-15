@@ -219,37 +219,6 @@ describe('bedrock-kms-http API', () => {
       err.data.message.should.equal(
         'A validation error occured in the \'delegatedZcap\' validator.');
     });
-    // FIXME: this test uses the obsolete /recovery endpoint, this test will
-    // be refactored along with issue #45.
-    it.skip('throws error with no controller in postRecoverBody validation',
-      async () => {
-        const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
-        const handle = 'testKey1';
-
-        const capabilityAgent = await CapabilityAgent
-          .fromSecret({secret, handle});
-        const keystore = await helpers.createKeystore({
-          capabilityAgent});
-
-        const url = `${keystore.id}/recover`;
-
-        const config = {
-          '@context': 'https://w3id.org/webkms/v1',
-        };
-
-        let err;
-        let result;
-        try {
-          result = await httpClient.post(url, {agent, json: config});
-        } catch(e) {
-          err = e;
-        }
-        should.exist(err);
-        should.not.exist(result);
-        err.data.type.should.equal('ValidationError');
-        err.data.message.should.equal(
-          'A validation error occured in the \'postRecoverBody\' validator.');
-      });
 
     describe('get keystore config', () => {
       it('gets a keystore', async () => {
