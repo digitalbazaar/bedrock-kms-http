@@ -37,8 +37,7 @@ describe('revocations API with ipAllowList', () => {
   before(async () => {
     const secret = '40762a17-1696-428f-a2b2-ddf9fe9b4987';
     const handle = 'testKey2';
-    aliceCapabilityAgent = await CapabilityAgent.fromSecret({
-      secret, handle, keyType: 'Ed25519VerificationKey2020'});
+    aliceCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
 
     aliceKeystoreConfig = await helpers.createKeystore(
       {capabilityAgent: aliceCapabilityAgent});
@@ -55,8 +54,7 @@ describe('revocations API with ipAllowList', () => {
   before(async () => {
     const secret = '34f2afd1-34ef-4d46-a998-cdc5462dc0d2';
     const handle = 'bobKey';
-    bobCapabilityAgent = await CapabilityAgent.fromSecret({
-      secret, handle, keyType: 'Ed25519VerificationKey2020'});
+    bobCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
     const {id: keystoreId} = await helpers.createKeystore(
       {capabilityAgent: bobCapabilityAgent});
     try {
@@ -68,8 +66,7 @@ describe('revocations API with ipAllowList', () => {
       assertNoError(e);
     }
     try {
-      bobKey = await bobKeystoreAgent.generateKey(
-        {type: 'Ed25519VerificationKey2020'});
+      bobKey = await bobKeystoreAgent.generateKey({type: 'asymmetric'});
     } catch(e) {
       assertNoError(e);
     }
@@ -81,25 +78,20 @@ describe('revocations API with ipAllowList', () => {
     const secret = 'ae806cd9-2765-4232-b955-01e1024ac032';
     const handle = 'carolKey';
     const {httpsAgent} = brHttpsAgent;
-    // keystore in the kmsClient is set later
-    const kmsClient = new KmsClient({httpsAgent});
-    carolCapabilityAgent = await CapabilityAgent.fromSecret({
-      secret, handle, kmsClient, keyType: 'Ed25519VerificationKey2020'
-    });
+    carolCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
     const {id: keystoreId} = await helpers.createKeystore(
       {capabilityAgent: carolCapabilityAgent});
+    const kmsClient = new KmsClient({httpsAgent});
     carolKeystoreAgent = new KeystoreAgent(
       {capabilityAgent: carolCapabilityAgent, keystoreId, kmsClient});
 
-    carolKey = await carolKeystoreAgent.generateKey(
-      {type: 'Ed25519VerificationKey2020'});
+    carolKey = await carolKeystoreAgent.generateKey({type: 'asymmetric'});
     await _setKeyId(carolKey);
   });
 
   it('returns NotAllowedError for invalid source IP', async () => {
     // first generate a new key for alice
-    const aliceKey = await aliceKeystoreAgent.generateKey(
-      {type: 'Ed25519VerificationKey2020'});
+    const aliceKey = await aliceKeystoreAgent.generateKey({type: 'asymmetric'});
     await _setKeyId(aliceKey);
 
     // next, delegate authority to bob to use alice's key

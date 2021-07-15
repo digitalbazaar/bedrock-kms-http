@@ -16,9 +16,8 @@ describe('bedrock-kms-http API', () => {
     it('creates a keystore', async () => {
       const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
-
-      const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
+      const capabilityAgent = await CapabilityAgent.fromSecret(
+        {secret, handle});
 
       let err;
       let result;
@@ -39,9 +38,8 @@ describe('bedrock-kms-http API', () => {
     it('creates a keystore including proper ipAllowList', async () => {
       const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
-
-      const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
+      const capabilityAgent = await CapabilityAgent.fromSecret(
+        {secret, handle});
 
       const ipAllowList = ['127.0.0.1/32'];
 
@@ -65,9 +63,8 @@ describe('bedrock-kms-http API', () => {
     it('returns error on invalid ipAllowList', async () => {
       const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
-
-      const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
+      const capabilityAgent = await CapabilityAgent.fromSecret(
+        {secret, handle});
 
       // this is not a valid CIDR
       const ipAllowList = ['127.0.0.1/33'];
@@ -90,9 +87,8 @@ describe('bedrock-kms-http API', () => {
     it('returns error on invalid ipAllowList', async () => {
       const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
-
-      const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
+      const capabilityAgent = await CapabilityAgent.fromSecret(
+        {secret, handle});
 
       // an empty allow list is invalid
       const ipAllowList = [];
@@ -116,9 +112,9 @@ describe('bedrock-kms-http API', () => {
       async () => {
         const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
+        const capabilityAgent = await CapabilityAgent.fromSecret(
+          {secret, handle});
 
-        const capabilityAgent = await CapabilityAgent
-          .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
         const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
         const url = `${kmsBaseUrl}/keystores`;
         const config = {
@@ -143,12 +139,11 @@ describe('bedrock-kms-http API', () => {
       async () => {
         const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
+        const capabilityAgent = await CapabilityAgent.fromSecret(
+          {secret, handle});
+
         const referenceId =
           'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
-
-        const capabilityAgent = await CapabilityAgent
-          .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
-
         const keystore = await helpers.createKeystore({
           capabilityAgent, referenceId});
 
@@ -195,11 +190,10 @@ describe('bedrock-kms-http API', () => {
     it('throws error with no controller in zcap validation', async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
+      const capabilityAgent = await CapabilityAgent.fromSecret(
+        {secret, handle});
 
-      const capabilityAgent = await CapabilityAgent
-        .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
-      const keystore = await helpers.createKeystore({
-        capabilityAgent});
+      const keystore = await helpers.createKeystore({capabilityAgent});
 
       const zcap = mockData.zcaps.zero;
       delete zcap.controller;
@@ -224,9 +218,8 @@ describe('bedrock-kms-http API', () => {
       it('gets a keystore', async () => {
         const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
-
-        const capabilityAgent = await CapabilityAgent
-          .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
+        const capabilityAgent = await CapabilityAgent.fromSecret(
+          {secret, handle});
 
         const keystore = await helpers.createKeystore({capabilityAgent});
         let err;
@@ -247,9 +240,8 @@ describe('bedrock-kms-http API', () => {
       it('gets a keystore with ipAllowList', async () => {
         const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
-
-        const capabilityAgent = await CapabilityAgent
-          .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
+        const capabilityAgent = await CapabilityAgent.fromSecret(
+          {secret, handle});
 
         const ipAllowList = ['127.0.0.1/32'];
 
@@ -275,9 +267,8 @@ describe('bedrock-kms-http API', () => {
       it('returns NotAllowedError for invalid source IP', async () => {
         const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
-
-        const capabilityAgent = await CapabilityAgent
-          .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
+        const capabilityAgent = await CapabilityAgent.fromSecret(
+          {secret, handle});
 
         const ipAllowList = ['8.8.8.8/32'];
 
@@ -303,11 +294,10 @@ describe('bedrock-kms-http API', () => {
       it('finds a keystore', async () => {
         const secret = ' b0f43022-3af1-4f22-ae55-19d70582087a';
         const handle = 'testKey1';
+        const capabilityAgent = await CapabilityAgent.fromSecret(
+          {secret, handle});
+
         const referenceId = 'urn:uuid:4f398f8f-505a-4609-a9df-761f01f4d18b';
-
-        const capabilityAgent = await CapabilityAgent
-          .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
-
         const keystore = await helpers.createKeystore({
           capabilityAgent, referenceId});
         let err;
@@ -330,13 +320,11 @@ describe('bedrock-kms-http API', () => {
       it('finds a keystore with ipAllowList', async () => {
         const secret = ' b0f43022-3af1-4f22-ae55-19d70582087a';
         const handle = 'testKey1';
-        const referenceId = 'urn:uuid:7c8b5e04-bbeb-4267-bdf3-b8ea425f9e32';
-
-        const capabilityAgent = await CapabilityAgent
-          .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
+        const capabilityAgent = await CapabilityAgent.fromSecret(
+          {secret, handle});
 
         const ipAllowList = ['127.0.0.1/32'];
-
+        const referenceId = 'urn:uuid:7c8b5e04-bbeb-4267-bdf3-b8ea425f9e32';
         const keystore = await helpers.createKeystore({
           capabilityAgent, ipAllowList, referenceId});
         let err;
@@ -362,17 +350,11 @@ describe('bedrock-kms-http API', () => {
         async () => {
           const secret = ' b0f43022-3af1-4f22-ae55-19d70582087a';
           const handle = 'testKey1';
-          const referenceId = 'urn:uuid:17884c10-218d-4398-8f85-58a20cfc4bab';
-
-          const capabilityAgent = await CapabilityAgent
-            .fromSecret({
-              secret,
-              handle,
-              keyType: 'Ed25519VerificationKey2020'
-            });
+          const capabilityAgent = await CapabilityAgent.fromSecret(
+            {secret, handle});
 
           const ipAllowList = ['8.8.8.8/32'];
-
+          const referenceId = 'urn:uuid:17884c10-218d-4398-8f85-58a20cfc4bab';
           const keystore = await helpers.createKeystore({
             capabilityAgent, ipAllowList, referenceId});
           let err;
@@ -392,19 +374,13 @@ describe('bedrock-kms-http API', () => {
       it('updates a keystore config', async () => {
         const secret = '69ae7dc3-1d6d-4ff9-9cc0-c07b43d2006b';
         const handle = 'testKeyUpdate';
-
-        const capabilityAgent = await CapabilityAgent
-          .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
+        const capabilityAgent = await CapabilityAgent.fromSecret(
+          {secret, handle});
 
         const secret2 = 'ac36ef8e-560b-4f6c-a454-6bfcb4e31a76';
         const handle2 = 'testKeyUpdate2';
-
-        const capabilityAgent2 = await CapabilityAgent
-          .fromSecret({
-            secret: secret2,
-            handle: handle2,
-            keyType: 'Ed25519VerificationKey2020'
-          });
+        const capabilityAgent2 = await CapabilityAgent.fromSecret(
+          {secret: secret2, handle: handle2});
 
         let err;
         let result;
@@ -493,19 +469,13 @@ describe('bedrock-kms-http API', () => {
       it('rejects config update for an invalid zcap', async () => {
         const secret = 'd852a72d-013f-4dd6-8ba2-588aaf601b66';
         const handle = 'testKeyUpdate';
-
-        const capabilityAgent = await CapabilityAgent
-          .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
+        const capabilityAgent = await CapabilityAgent.fromSecret(
+          {secret, handle});
 
         const secret2 = '4decd824-50e6-45bf-a79e-41af397f499f';
         const handle2 = 'testKeyUpdate2';
-
-        const capabilityAgent2 = await CapabilityAgent
-          .fromSecret({
-            secret: secret2,
-            handle: handle2,
-            keyType: 'Ed25519VerificationKey2020'
-          });
+        const capabilityAgent2 = await CapabilityAgent.fromSecret(
+          {secret: secret2, handle: handle2});
 
         let err;
         let result;
@@ -559,19 +529,13 @@ describe('bedrock-kms-http API', () => {
       it('rejects config update with an invalid sequence', async () => {
         const secret = 'a8256be9-beea-4b05-9fc2-7ad4c1a391e4';
         const handle = 'testKeyUpdate';
-
-        const capabilityAgent = await CapabilityAgent
-          .fromSecret({secret, handle, keyType: 'Ed25519VerificationKey2020'});
+        const capabilityAgent = await CapabilityAgent.fromSecret(
+          {secret, handle});
 
         const secret2 = 'd2896f13-fed0-4122-b984-326dc29c927a';
         const handle2 = 'testKeyUpdate2';
-
-        const capabilityAgent2 = await CapabilityAgent
-          .fromSecret({
-            secret: secret2,
-            handle: handle2,
-            keyType: 'Ed25519VerificationKey2020'
-          });
+        const capabilityAgent2 = await CapabilityAgent.fromSecret(
+          {secret: secret2, handle: handle2});
 
         let err;
         let result;
@@ -625,23 +589,13 @@ describe('bedrock-kms-http API', () => {
         it('updates a keystore config with ipAllowList', async () => {
           const secret = 'e44c4869-2fd7-4f7f-a123-addb05ec9c2a';
           const handle = 'testKeyUpdate';
-
-          const capabilityAgent = await CapabilityAgent
-            .fromSecret({
-              secret,
-              handle,
-              keyType: 'Ed25519VerificationKey2020'
-            });
+          const capabilityAgent = await CapabilityAgent.fromSecret(
+            {secret, handle});
 
           const secret2 = '82ef7805-21ed-43bb-a604-4ccc7a06eacc';
           const handle2 = 'testKeyUpdate2';
-
-          const capabilityAgent2 = await CapabilityAgent
-            .fromSecret({
-              secret: secret2,
-              handle: handle2,
-              keyType: 'Ed25519VerificationKey2020'
-            });
+          const capabilityAgent2 = await CapabilityAgent.fromSecret(
+            {secret: secret2, handle: handle2});
 
           const ipAllowList = ['127.0.0.1/32'];
 
@@ -732,23 +686,13 @@ describe('bedrock-kms-http API', () => {
         it('returns NotAllowedError for invalid source IP', async () => {
           const secret = '481f41a0-af87-407f-b7ec-38f1fbb10d12';
           const handle = 'testKeyUpdate';
-
-          const capabilityAgent = await CapabilityAgent
-            .fromSecret({
-              secret,
-              handle,
-              keyType: 'Ed25519VerificationKey2020'
-            });
+          const capabilityAgent = await CapabilityAgent.fromSecret(
+            {secret, handle});
 
           const secret2 = 'ddbbbc38-eb27-4238-8b84-382ada29b8c0';
           const handle2 = 'testKeyUpdate2';
-
-          const capabilityAgent2 = await CapabilityAgent
-            .fromSecret({
-              secret: secret2,
-              handle: handle2,
-              keyType: 'Ed25519VerificationKey2020'
-            });
+          const capabilityAgent2 = await CapabilityAgent.fromSecret(
+            {secret: secret2, handle: handle2});
 
           const ipAllowList = ['8.8.8.8/32'];
 
