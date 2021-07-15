@@ -47,7 +47,7 @@ describe('bedrock-kms-http HMAC operations', () => {
       }
       should.not.exist(err);
       should.exist(result);
-      result.should.be.a('string');
+      result.should.be.a('Uint8Array');
     });
 
     describe('bulk operations', () => {
