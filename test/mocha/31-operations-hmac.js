@@ -29,7 +29,7 @@ describe('bedrock-kms-http HMAC operations', () => {
       }
       assertNoError(err);
       should.exist(result);
-      result.should.be.a('string');
+      result.should.be.a('Uint8Array');
     });
   }); // end Sha256HmacKey2019
 
@@ -51,7 +51,7 @@ describe('bedrock-kms-http HMAC operations', () => {
       }
       assertNoError(err);
       should.exist(result);
-      result.should.be.a('string');
+      result.should.be.a('Uint8Array');
     });
     it('successfully signs with x-forwarded-for header', async () => {
       const secret = '2726f62d-31bb-4688-b54a-1a0b4e50329f';
@@ -73,7 +73,7 @@ describe('bedrock-kms-http HMAC operations', () => {
       }
       assertNoError(err);
       should.exist(result);
-      result.should.be.a('string');
+      result.should.be.a('Uint8Array');
     });
   }); // end Sha256HmacKey2019 with ipAllowList
 
