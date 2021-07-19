@@ -6,39 +6,26 @@
 const bedrock = require('bedrock');
 const {CapabilityAgent, KeystoreAgent, KmsClient} =
   require('@digitalbazaar/webkms-client');
+const {httpClient} = require('@digitalbazaar/http-client');
 const {httpsAgent} = require('bedrock-https-agent');
 
-exports.createMeter = async ({} = {}) => {
-  // FIXME: first create a meter and get a meter zcap for it
-  const meterId = `${bedrock.config.server.baseUri}/meters/` +
-    'zSLHvnwnX22DCQ2xo9pX5U6/usage';
-  const did = 'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
-  const parentCapability = `urn:zcap:root:${encodeURIComponent(meterId)}`;
-  const meterCapability = {
-    // FIXME: use constant
-    '@context': [
-      'https://w3id.org/zcap/v1',
-      'https://w3id.org/security/suites/ed25519-2020/v1',
-    ],
-    //id: `urn:${uuid()}`,
-    id: 'urn:6ab157aa-e0e1-11eb-af0f-10bf48838a41',
-    invocationTarget: meterId,
-    controller: did,
-    allowedAction: ['read', 'write'],
-    parentCapability,
-    // FIXME: use second precision
-    expires: new Date().toISOString(),
-    proof: {
-      type: 'Ed25519Signature2020',
-      verificationMethod:
-        `${did}#z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH`,
-      // FIXME: use second precision
-      created: new Date().toISOString(),
-      capabilityChain: [parentCapability],
-      proofPurpose: 'capabilityDelegation',
-      proofValue: 'MOCK'
+exports.createMeter = async ({controller} = {}) => {
+  // create a meter
+  const meterService = `${bedrock.config.server.baseUri}/meters`;
+  let meter = {
+    controller,
+    product: {
+      // ID for webkms service
+      id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41'
     }
   };
+  const response = await httpClient.post(meterService, {
+    agent: httpsAgent, json: meter
+  });
+  ({data: {meter}} = response);
+
+  // return usage capability
+  const {usageCapability: meterCapability} = meter;
   return {meterCapability};
 };
 
@@ -49,7 +36,8 @@ exports.createKeystore = async ({
 }) => {
   if(!meterCapability) {
     // create a meter for the keystore
-    ({meterCapability} = await exports.createMeter());
+    ({meterCapability} = await exports.createMeter(
+      {controller: capabilityAgent.id}));
   }
 
   // create keystore
