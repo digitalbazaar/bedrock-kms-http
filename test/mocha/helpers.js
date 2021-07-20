@@ -9,11 +9,11 @@ const {CapabilityAgent, KeystoreAgent, KmsClient} =
 const {httpClient} = require('@digitalbazaar/http-client');
 const {httpsAgent} = require('bedrock-https-agent');
 
-exports.createMeter = async ({controller} = {}) => {
+exports.createMeter = async ({capabilityAgent} = {}) => {
   // create a meter
   const meterService = `${bedrock.config.server.baseUri}/meters`;
   let meter = {
-    controller,
+    controller: capabilityAgent.id,
     product: {
       // ID for webkms service
       id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41'
@@ -36,8 +36,7 @@ exports.createKeystore = async ({
 }) => {
   if(!meterCapability) {
     // create a meter for the keystore
-    ({meterCapability} = await exports.createMeter(
-      {controller: capabilityAgent.id}));
+    ({meterCapability} = await exports.createMeter({capabilityAgent}));
   }
 
   // create keystore
@@ -57,6 +56,7 @@ exports.createKeystore = async ({
   return KmsClient.createKeystore({
     url: `${kmsBaseUrl}/keystores`,
     config,
+    invocationSigner: capabilityAgent.getSigner(),
     httpsAgent
   });
 };
