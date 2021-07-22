@@ -219,17 +219,6 @@ const postKeystoreBody = {
   }
 };
 
-const getKeystoreQuery = {
-  title: 'getKeystoreQuery',
-  type: 'object',
-  additionalProperties: false,
-  required: ['controller', 'referenceId'],
-  properties: {
-    controller,
-    referenceId
-  }
-};
-
 const updateKeystoreConfigBody = {
   title: 'updateKeystoreConfigBody',
   type: 'object',

@@ -229,7 +229,6 @@ describe('revocations API with ipAllowList', () => {
 async function _delegate({zcap, signer, capabilityChain, documentLoader}) {
   // attach capability delegation proof
   return sign(zcap, {
-    // TODO: map `signer.type` to signature suite
     suite: new Ed25519Signature2020({
       signer
     }),
@@ -276,10 +275,9 @@ async function _revokeDelegatedCapability({
 }
 
 async function _setKeyId(key) {
-  // the keyDescription is required to get publicKeyBase58
+  // the keyDescription is required to get fingerprint
   const keyDescription = await key.getKeyDescription();
   // create public ID (did:key) for bob's key
-  // TODO: do not use did:key but support a did:v1 based key.
   const fingerprint =
     (await Ed25519VerificationKey2020.from(keyDescription)).fingerprint();
   // invocationTarget.publicAlias = `did:key:${fingerprint}`;

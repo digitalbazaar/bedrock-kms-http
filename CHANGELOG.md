@@ -19,6 +19,8 @@
 ### Removed
 - **BREAKING**: Remove `did-io`, `did-method-key`, and
   `did-veres-one` from deps and use `bedrock-did-io`.
+- **BREAKING**: Remove query endpoint. It was unused and a new design would need to
+  be introduced in the future that properly handles authz.
 
 ## 5.0.0 - 2021-05-20
 

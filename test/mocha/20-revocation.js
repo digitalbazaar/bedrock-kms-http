@@ -216,7 +216,6 @@ describe('revocations API', () => {
     const {data} = err;
     data.message.should.include('capability delegation is invalid');
     data.type.should.equal('DataError');
-    // TODO: with jsigs@5, err.cause should have additional details for assert
 
     // Bob would then update his delegation record in an EDV to indicate that
     // the delegation is now revoked. This is just a housekeeping measure,
@@ -407,7 +406,6 @@ describe('revocations API', () => {
 async function _delegate({zcap, signer, capabilityChain, documentLoader}) {
   // attach capability delegation proof
   return sign(zcap, {
-    // TODO: map `signer.type` to signature suite
     suite: new Ed25519Signature2020({
       signer
     }),
@@ -456,7 +454,6 @@ async function _setKeyId(key) {
   // the keyDescription is required to get publicKeyBase58
   const keyDescription = await key.getKeyDescription();
   // create public ID (did:key) for bob's key
-  // TODO: do not use did:key but support a did:v1 based key.
   const fingerprint =
     (await Ed25519VerificationKey2020.from(keyDescription)).fingerprint();
   // invocationTarget.publicAlias = `did:key:${fingerprint}`;
