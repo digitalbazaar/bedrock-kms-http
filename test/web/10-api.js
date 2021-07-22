@@ -7,6 +7,7 @@ const pMap = require('p-map');
 const uuid = require('uuid-random');
 const {CapabilityAgent, KeystoreAgent, KmsClient} =
   require('@digitalbazaar/webkms-client');
+const {httpClient} = require('@digitalbazaar/http-client');
 
 describe('bedrock-kms-http HMAC operations', () => {
   describe('Sha256HmacKey2019', () => {
@@ -88,7 +89,7 @@ describe('bedrock-kms-http HMAC operations', () => {
 });
 
 async function _createKeystore({capabilityAgent, referenceId}) {
-  const {meterCapability} = await createMeter();
+  const {meterCapability} = await createMeter({capabilityAgent});
 
   // create keystore
   const config = {
@@ -101,39 +102,27 @@ async function _createKeystore({capabilityAgent, referenceId}) {
   if(referenceId) {
     config.referenceId = referenceId;
   }
-  return KmsClient.createKeystore({config});
+  return KmsClient.createKeystore({
+    url: 'https://localhost:18443/kms/keystores',
+    config,
+    invocationSigner: capabilityAgent.getSigner()
+  });
 }
 
-async function createMeter({} = {}) {
-  // FIXME: first create a meter and get a meter zcap for it
-  const meterId = `https://localhost:18443/meters/` +
-    'zSLHvnwnX22DCQ2xo9pX5U6/usage';
-  const did = 'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
-  const parentCapability = `urn:zcap:root:${encodeURIComponent(meterId)}`;
-  const meterCapability = {
-    // FIXME: use constant
-    '@context': [
-      'https://w3id.org/zcap/v1',
-      'https://w3id.org/security/suites/ed25519-2020/v1',
-    ],
-    //id: `urn:${uuid()}`,
-    id: 'urn:6ab157aa-e0e1-11eb-af0f-10bf48838a41',
-    invocationTarget: meterId,
-    controller: did,
-    allowedAction: ['read', 'write'],
-    parentCapability,
-    // FIXME: use second precision
-    expires: new Date().toISOString(),
-    proof: {
-      type: 'Ed25519Signature2020',
-      verificationMethod:
-        `${did}#z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH`,
-      // FIXME: use second precision
-      created: new Date().toISOString(),
-      capabilityChain: [parentCapability],
-      proofPurpose: 'capabilityDelegation',
-      proofValue: 'MOCK'
+async function createMeter({capabilityAgent} = {}) {
+  // create a meter
+  const meterService = 'https://localhost:18443/meters';
+  let meter = {
+    controller: capabilityAgent.id,
+    product: {
+      // mock ID for webkms service product
+      id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41'
     }
   };
+  const response = await httpClient.post(meterService, {json: meter});
+  ({data: {meter}} = response);
+
+  // return usage capability
+  const {usageCapability: meterCapability} = meter;
   return {meterCapability};
 }

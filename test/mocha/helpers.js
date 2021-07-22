@@ -15,7 +15,7 @@ exports.createMeter = async ({capabilityAgent} = {}) => {
   let meter = {
     controller: capabilityAgent.id,
     product: {
-      // ID for webkms service
+      // mock ID for webkms service product
       id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41'
     }
   };
