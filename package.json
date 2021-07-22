@@ -40,7 +40,7 @@
     "bedrock-did-io": "^3.0.0",
     "bedrock-express": "^4.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
-    "bedrock-kms": "digitalbazaar/bedrock-kms#main",
+    "bedrock-kms": "^7.0.0",
     "bedrock-mongodb": "^8.2.0",
     "bedrock-meter-usage-reporter": "^1.0.0",
     "bedrock-server": "^2.7.0",

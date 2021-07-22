@@ -26,7 +26,7 @@
     "bedrock-https-agent": "^2.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
     "bedrock-karma": "^2.2.0",
-    "bedrock-kms": "digitalbazaar/bedrock-kms#main",
+    "bedrock-kms": "^7.0.0",
     "bedrock-kms-http": "file:..",
     "bedrock-ledger-context": "^18.0.0",
     "bedrock-meter": "^1.0.0",
