@@ -28,11 +28,11 @@
     "@digitalbazaar/zcapld": "^5.1.1",
     "cidr-regex": "^3.1.1",
     "cors": "^2.8.5",
-    "forwarded": "^0.1.2",
+    "forwarded": "^0.2.0",
     "http-signature-zcap-verify": "^8.1.1",
     "jsonld-signatures": "^9.3.0",
     "netmask": "^2.0.2",
-    "webkms-switch": "digitalbazaar/webkms-switch#refactor",
+    "webkms-switch": "^7.0.0",
     "zcap-context": "^1.2.1"
   },
   "peerDependencies": {
@@ -40,9 +40,9 @@
     "bedrock-did-io": "^3.0.0",
     "bedrock-express": "^4.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
-    "bedrock-kms": "digitalbazaar/bedrock-kms#use-updated-webkms-switch",
+    "bedrock-kms": "digitalbazaar/bedrock-kms#main",
     "bedrock-mongodb": "^8.2.0",
-    "bedrock-meter-usage-reporter": "digitalbazaar/bedrock-meter-usage-reporter#initial",
+    "bedrock-meter-usage-reporter": "^1.0.0",
     "bedrock-server": "^2.7.0",
     "bedrock-validation": "^5.1.0",
     "bedrock-zcap-storage": "^3.2.0"
