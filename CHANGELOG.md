@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 6.0.0 - 2021-xx-xxx
+## 6.0.0 - 2021-07-22
 
 ### Added
 - **BREAKING** - Add storage and operation metering support. A meter capability
