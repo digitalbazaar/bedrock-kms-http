@@ -1,6 +1,6 @@
 {
   "name": "bedrock-kms-http",
-  "version": "6.0.0",
+  "version": "6.0.1-0",
   "description": "Bedrock KMS HTTP API",
   "main": "./lib",
   "scripts": {
