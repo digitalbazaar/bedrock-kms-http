@@ -245,7 +245,6 @@ const postRevocationBody = {
 };
 
 module.exports = {
-  getKeystoreQuery,
   postKeystoreBody,
   postRevocationBody,
   updateKeystoreConfigBody
