@@ -1,5 +1,10 @@
 # bedrock-kms-http ChangeLog
 
+## 6.1.0 - 2021-07-xx
+
+### Changed
+- Update peer dependencies; use bedrock-did-io@4.
+
 ## 6.0.0 - 2021-07-22
 
 ### Added
