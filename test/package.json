@@ -12,6 +12,7 @@
     "coverage-report": "nyc report"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.0.2",
     "bedrock": "^3.1.1",
     "bedrock-account": "^5.0.0",
     "bedrock-did-context": "^1.0.0",
