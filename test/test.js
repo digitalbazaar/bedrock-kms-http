@@ -6,7 +6,7 @@ require('bedrock-https-agent');
 require('bedrock-kms-http');
 require('bedrock-meter');
 require('bedrock-security-context');
-require('bedrock-meter');
+require('bedrock-meter-usage-reporter');
 const {handlers} = require('bedrock-meter-http');
 // this is responsible for providing the `ssm-v1` key store
 require('bedrock-ssm-mongodb');
