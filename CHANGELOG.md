@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 7.0.0 - 2021-08-xx
+## 7.0.0 - 2021-08-17
 
 ### Changed
 - **BREAKING**: Updated to work with bedrock-meter-usage-reporter 2.x. This
