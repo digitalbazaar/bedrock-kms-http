@@ -20,7 +20,8 @@ bedrock.events.on('bedrock.init', async () => {
   handlers.setCreateHandler({
     handler({meter} = {}) {
       // use configured meter usage reporter as service ID for tests
-      meter.serviceId = bedrock.config['meter-usage-reporter'].client.id;
+      meter.serviceId = bedrock.config['meter-usage-reporter']
+        .clients.webkms.id;
       return {meter};
     }
   });

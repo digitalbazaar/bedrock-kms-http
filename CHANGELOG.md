@@ -1,5 +1,12 @@
 # bedrock-kms-http ChangeLog
 
+## 7.0.0 - 2021-08-xx
+
+### Changed
+- **BREAKING**: Updated to work with bedrock-meter-usage-reporter 2.x. This
+  new version enables applications to bundle the webkms service with other
+  services instead of requiring a microservices deployment architecture.
+
 ## 6.1.0 - 2021-07-23
 
 ### Changed
