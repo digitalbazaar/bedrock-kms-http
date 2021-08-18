@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 7.0.1 - 2021-08-xx
+## 7.0.1 - 2021-08-18
 
 ### Fixed
 - Ensure promise settles before returning key description.
