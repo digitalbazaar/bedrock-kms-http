@@ -1,5 +1,10 @@
 # bedrock-kms-http ChangeLog
 
+## 5.0.1 - 2021-08-xx
+
+### Fixed
+- Update deps to use ed25519* fixed modules.
+
 ## 5.0.0 - 2021-05-20
 
 ### Changed
