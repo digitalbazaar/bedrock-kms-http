@@ -1,5 +1,11 @@
 # bedrock-kms-http ChangeLog
 
+## 7.1.0 - 2021-08-xx
+
+### Changed
+- Use ezcap-express@4.2 to provide zcap revocation authorization implementation.
+  Remove dependencies that are no longer needed because of this upgrade.
+
 ## 7.0.1 - 2021-08-18
 
 ### Fixed

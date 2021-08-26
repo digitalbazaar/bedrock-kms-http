@@ -211,11 +211,10 @@ describe('revocations API', () => {
       err = e;
     }
     should.exist(err);
-    err.status.should.equal(400);
+    err.status.should.equal(403);
     should.exist(err.data);
     const {data} = err;
-    data.message.should.include('capability delegation is invalid');
-    data.type.should.equal('DataError');
+    data.type.should.equal('NotAllowedError');
 
     // Bob would then update his delegation record in an EDV to indicate that
     // the delegation is now revoked. This is just a housekeeping measure,
@@ -308,9 +307,7 @@ describe('revocations API', () => {
       err = e;
     }
     should.exist(err);
-    err.data.type.should.equal('DataError');
-    err.data.message.should.equal(
-      'The provided capability delegation is invalid.');
+    err.data.type.should.equal('NotAllowedError');
   });
   it('throws error on zcap validator', async () => {
     // first generate a new key for alice
