@@ -89,14 +89,14 @@ describe('bedrock-kms-http HMAC operations', () => {
 });
 
 async function _createKeystore({capabilityAgent, referenceId}) {
-  const {meterCapability} = await createMeter({capabilityAgent});
+  const {id: meterId} = await createMeter({capabilityAgent});
 
   // create keystore
   const config = {
     sequence: 0,
     controller: capabilityAgent.id,
     kmsModule: 'ssm-v1',
-    meterCapability
+    meterId
   };
 
   if(referenceId) {
@@ -122,7 +122,7 @@ async function createMeter({capabilityAgent} = {}) {
   const response = await httpClient.post(meterService, {json: meter});
   ({data: {meter}} = response);
 
-  // return usage capability
-  const {usageCapability: meterCapability} = meter;
-  return {meterCapability};
+  // return full meter ID
+  const {id} = meter;
+  return {id: `${meterService}/${id}`};
 }
