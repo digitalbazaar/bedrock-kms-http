@@ -157,29 +157,9 @@ const delegatedZcap = {
 };
 
 // more strict schema than `delegatedZcap`
-const meterZcap = {
-  ...delegatedZcap,
-  title: 'meterZcap',
-  required: [
-    'id', 'controller', 'parentCapability', 'invocationTarget', 'expires',
-    'proof'
-  ],
-  properties: {
-    ...delegatedZcap.properties,
-    allowedAction: {
-      type: 'array',
-      minItems: 2,
-      // FIXME: require both `read` and `write` actions
-      items: {type: 'string'}
-    },
-    '@context': {
-      title: '@context',
-      type: 'array',
-      minItems: 2,
-      items: {type: 'string'}
-    },
-    proof: {...delegatedZcap.proof}
-  }
+const meterId = {
+  title: 'Meter ID',
+  type: 'string'
 };
 
 const ipAllowList = {
@@ -208,14 +188,14 @@ const postKeystoreBody = {
   title: 'postKeystoreBody',
   type: 'object',
   additionalProperties: false,
-  required: ['sequence', 'controller', 'meterCapability'],
+  required: ['sequence', 'controller', 'meterId'],
   properties: {
     controller,
     ipAllowList,
     referenceId,
     sequence,
     kmsModule,
-    meterCapability: meterZcap
+    meterId
   }
 };
 
@@ -235,8 +215,7 @@ const updateKeystoreConfigBody = {
     referenceId,
     sequence,
     kmsModule,
-    meterId: {type: 'string'},
-    meterCapability: meterZcap
+    meterId
   }
 };
 

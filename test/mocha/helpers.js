@@ -24,26 +24,26 @@ exports.createMeter = async ({capabilityAgent} = {}) => {
   });
   ({data: {meter}} = response);
 
-  // return usage capability
-  const {usageCapability: meterCapability} = meter;
-  return {meterCapability};
+  // return full meter ID
+  const {id} = meter;
+  return {id: `${meterService}/${id}`};
 };
 
 exports.createKeystore = async ({
-  capabilityAgent, ipAllowList, referenceId, meterCapability,
+  capabilityAgent, ipAllowList, referenceId, meterId,
   kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`,
   kmsModule = 'ssm-v1',
 }) => {
-  if(!meterCapability) {
+  if(!meterId) {
     // create a meter for the keystore
-    ({meterCapability} = await exports.createMeter({capabilityAgent}));
+    ({id: meterId} = await exports.createMeter({capabilityAgent}));
   }
 
   // create keystore
   const config = {
     sequence: 0,
     controller: capabilityAgent.id,
-    meterCapability,
+    meterId,
     kmsModule
   };
   if(referenceId) {

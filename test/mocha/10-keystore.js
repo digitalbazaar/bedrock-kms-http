@@ -400,7 +400,7 @@ describe('bedrock-kms-http API', () => {
         result.should.have.property('controller');
         result.controller.should.equal(capabilityAgentId);
 
-        // this update does not change the `meterCapability`
+        // this update does not change the `meterId`
         const {id: url} = result;
         const newConfig = {
           // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9

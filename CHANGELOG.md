@@ -1,5 +1,18 @@
 # bedrock-kms-http ChangeLog
 
+## 8.0.0 - 2021-08-xx
+
+### Changed
+- **BREAKING**: Use bedrock-meter-usage-reporter@3. This new version simplifies
+  meter usage zcap management by eliminating the need for a delegated zcap
+  to allow reporting meter usage. Instead, the KMS service is the root
+  controller for the meter usage endpoint for any meter that is specifically
+  created and coupled to it.
+- **BREAKING**: Creating a keystore now requires sending only the full URL
+  `meterId` for a meter, not a meter capability. The meter will be presumed
+  to be coupled to the KMS service -- and this will be confirmed via a call
+  to retrieve the meter information.
+
 ## 7.1.0 - 2021-08-26
 
 ### Changed
