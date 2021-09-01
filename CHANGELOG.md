@@ -1,5 +1,13 @@
 # bedrock-kms-http ChangeLog
 
+## 8.0.1 - 2021-09-01
+
+### Fixed
+- Do not allow meter ID to be changed when updating keystore config as
+  the keystore controller has insufficient authority to do so. This
+  may be enabled in the future by requiring the root zcap controller
+  to be the meter controller when changing the meter ID.
+
 ## 8.0.0 - 2021-08-31
 
 ### Changed
