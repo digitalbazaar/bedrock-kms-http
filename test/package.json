@@ -20,7 +20,7 @@
     "@digitalbazaar/webkms-client": "^7.0.0",
     "@digitalbazaar/zcapld": "^5.1.0",
     "bedrock": "^4.3.0",
-    "bedrock-app-key": "digitalbazaar/bedrock-app-key#use-namespace",
+    "bedrock-app-identity": "digitalbazaar/bedrock-app-identity#use-namespace",
     "bedrock-did-context": "^2.0.0",
     "bedrock-did-io": "^4.0.0",
     "bedrock-express": "^5.0.1",

@@ -7,7 +7,7 @@ require('bedrock-kms-http');
 require('bedrock-meter');
 require('bedrock-security-context');
 require('bedrock-meter-usage-reporter');
-require('bedrock-app-key');
+require('bedrock-app-identity');
 const {handlers} = require('bedrock-meter-http');
 // this is responsible for providing the `ssm-v1` key store
 require('bedrock-ssm-mongodb');
@@ -21,7 +21,7 @@ bedrock.events.on('bedrock.init', async () => {
   handlers.setCreateHandler({
     handler({meter} = {}) {
       // use configured meter usage reporter as service ID for tests
-      meter.serviceId = bedrock.config['app-key'].seeds.services.webkms.id;
+      meter.serviceId = bedrock.config['app-identity'].seeds.services.webkms.id;
       return {meter};
     }
   });
