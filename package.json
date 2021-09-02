@@ -33,6 +33,7 @@
   },
   "peerDependencies": {
     "bedrock": "^4.3.0",
+    "bedrock-app-key": "digitalbazaar/bedrock-app-key#use-namespace",
     "bedrock-did-io": "^4.0.0",
     "bedrock-express": "^4.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
