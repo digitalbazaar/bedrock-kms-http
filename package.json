@@ -33,13 +33,13 @@
   },
   "peerDependencies": {
     "bedrock": "^4.3.0",
-    "bedrock-app-identity": "digitalbazaar/bedrock-app-identity#use-namespace",
+    "bedrock-app-identity": "^1.0.0",
     "bedrock-did-io": "^4.0.0",
     "bedrock-express": "^4.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
     "bedrock-kms": "^7.0.0",
     "bedrock-mongodb": "^8.2.0",
-    "bedrock-meter-usage-reporter": "digitalbazaar/bedrock-meter-usage-reporter#use-app-key",
+    "bedrock-meter-usage-reporter": "^4.0.0",
     "bedrock-server": "^2.7.0",
     "bedrock-validation": "^5.1.0",
     "bedrock-zcap-storage": "^3.2.0"
