@@ -1,5 +1,12 @@
 # bedrock-kms-http ChangeLog
 
+## 9.0.0 - 2021-09-xx
+
+### Changed
+- **BREAKING**: Use bedrock-meter-usage-reporter@4. This new version now
+  requires bedrock-app-identity to configure the identity for webkms
+  applications.
+
 ## 8.0.1 - 2021-09-01
 
 ### Fixed
