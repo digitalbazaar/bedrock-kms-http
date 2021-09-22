@@ -7,7 +7,7 @@ const pMap = require('p-map');
 const uuid = require('uuid-random');
 const {CapabilityAgent, KeystoreAgent, KmsClient} =
   require('@digitalbazaar/webkms-client');
-const {httpClient} = require('@digitalbazaar/http-client');
+const helpers = require('./helpers');
 
 describe('bedrock-kms-http HMAC operations', () => {
   describe('Sha256HmacKey2019', () => {
@@ -89,7 +89,7 @@ describe('bedrock-kms-http HMAC operations', () => {
 });
 
 async function _createKeystore({capabilityAgent, referenceId}) {
-  const {id: meterId} = await createMeter({capabilityAgent});
+  const {id: meterId} = await helpers.createMeter({capabilityAgent});
 
   // create keystore
   const config = {
@@ -107,22 +107,4 @@ async function _createKeystore({capabilityAgent, referenceId}) {
     config,
     invocationSigner: capabilityAgent.getSigner()
   });
-}
-
-async function createMeter({capabilityAgent} = {}) {
-  // create a meter
-  const meterService = 'https://localhost:18443/meters';
-  let meter = {
-    controller: capabilityAgent.id,
-    product: {
-      // mock ID for webkms service product
-      id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41'
-    }
-  };
-  const response = await httpClient.post(meterService, {json: meter});
-  ({data: {meter}} = response);
-
-  // return full meter ID
-  const {id} = meter;
-  return {id: `${meterService}/${id}`};
 }

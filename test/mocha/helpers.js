@@ -6,10 +6,20 @@
 const bedrock = require('bedrock');
 const {CapabilityAgent, KeystoreAgent, KmsClient} =
   require('@digitalbazaar/webkms-client');
-const {httpClient} = require('@digitalbazaar/http-client');
+const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
+const {getAppIdentity} = require('bedrock-app-identity');
 const {httpsAgent} = require('bedrock-https-agent');
+const {ZcapClient} = require('@digitalbazaar/ezcap');
 
 exports.createMeter = async ({capabilityAgent} = {}) => {
+  // create signer using the application's capability invocation key
+  const {keys: {capabilityInvocationKey}} = getAppIdentity();
+
+  const zcapClient = new ZcapClient({
+    agent: httpsAgent,
+    invocationSigner: capabilityInvocationKey.signer(),
+    SuiteClass: Ed25519Signature2020
+  });
   // create a meter
   const meterService = `${bedrock.config.server.baseUri}/meters`;
   let meter = {
@@ -19,10 +29,7 @@ exports.createMeter = async ({capabilityAgent} = {}) => {
       id: 'urn:uuid:80a82316-e8c2-11eb-9570-10bf48838a41'
     }
   };
-  const response = await httpClient.post(meterService, {
-    agent: httpsAgent, json: meter
-  });
-  ({data: {meter}} = response);
+  ({data: {meter}} = await zcapClient.write({url: meterService, json: meter}));
 
   // return full meter ID
   const {id} = meter;
