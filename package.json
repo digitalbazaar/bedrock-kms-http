@@ -29,7 +29,7 @@
     "cors": "^2.8.5",
     "forwarded": "^0.2.0",
     "netmask": "^2.0.2",
-    "webkms-switch": "^7.0.0"
+    "webkms-switch": "digitalbazaar/webkms-switch#https-request-url"
   },
   "peerDependencies": {
     "bedrock": "^4.3.0",
