@@ -1,5 +1,11 @@
 # bedrock-kms-http ChangeLog
 
+## 10.0.0 - TBD
+
+### Changed
+- **BREAKING**: Use `webkms-switch@8` which changes the way key IDs are
+  generated. See the [changelog](https://github.com/digitalbazaar/webkms-switch/blob/main/CHANGELOG.md).
+
 ## 9.0.0 - 2021-09-02
 
 ### Changed
