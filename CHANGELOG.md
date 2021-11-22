@@ -1,5 +1,15 @@
 # bedrock-kms-http ChangeLog
 
+## 10.1.0 - 2021-11-xx
+
+### Added
+- Do not allow zcap revocations to be stored if the meter associated with
+  a keystore has been disabled. Storage of zcap revocations is permitted if
+  there is no available storage to prevent potential security issues, however,
+  the meter MUST not be disabled to make use of this feature. Very robust
+  rate limiting MUST be applied to the revocation submission endpoint in
+  a deployment to avoid significant storage overflow.
+
 ## 10.0.0 - 2021-10-07
 
 ### Changed
