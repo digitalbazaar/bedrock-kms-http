@@ -42,7 +42,7 @@
     "bedrock-meter-usage-reporter": "^4.2.0",
     "bedrock-server": "^2.7.0",
     "bedrock-validation": "^5.1.0",
-    "bedrock-zcap-storage": "^3.2.0"
+    "bedrock-zcap-storage": "^4.0.0"
   },
   "directories": {
     "lib": "./lib"
