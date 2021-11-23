@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 10.1.0 - 2021-11-xx
+## 10.1.0 - 2021-11-23
 
 ### Added
 - Do not allow zcap revocations to be stored if the meter associated with
