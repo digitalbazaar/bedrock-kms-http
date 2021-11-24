@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 10.1.1 - 2021-11-xx
+## 10.1.1 - 2021-11-24
 
 ### Fixed
 - Fix bug in meter usage aggregation.
