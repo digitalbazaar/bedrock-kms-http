@@ -208,8 +208,26 @@ This module exposes the following API endpoints.
 
 #### Get Public Key Description - `GET /kms/keystores/:keystoreId/keys/:keyId`
 
+#### Request Example:
+
+#### Headers
+```
+{
+  accept: 'application/ld+json, application/json',
+  host: 'localhost:18443',
+  'capability-invocation': 'zcap id="urn:zcap:root:https%3A%2F%2Flocalhost%3A18443%2Fkms%2Fkeystores%2Fz1AEdRUJm7Ld4xBNBKkAGHjzZ%2Fkeys%2Fz1A5vBtppSSaS1svFyQb6Ezwj",action="read"',
+  authorization: 'Signature keyId="did:key:z6MkhRjrvpEAxh8oSWsPgMdP28xvrotsDBCvcwTtbUuUEp38#z6MkhRjrvpEAxh8oSWsPgMdP28xvrotsDBCvcwTtbUuUEp38",headers="(key-id) (created) (expires) (request-target) host capability-invocation",signature="gmB9DXTu29QKO4FlHXcEJGHMjaRpvXosRw+KeShiDB9YU2kwjMdd7eMT15TgeKzN3K5eqbEyEWh0NCgT/ULFAA==",created="1638539438",expires="1638540038"'
+}
+```
+
 #### Response Example:
 ```
+{
+  '@context': 'https://w3id.org/security/suites/ed25519-2020/v1',
+  id: 'https://localhost:18443/kms/keystores/z1AEdRUJm7Ld4xBNBKkAGHjzZ/keys/z1A5vBtppSSaS1svFyQb6Ezwj',
+  type: 'Ed25519VerificationKey2020',
+  publicKeyMultibase: 'z6MkuP4PkTPZy2KvictPAsAHAbH6Umw9tsRJzmpGR65brddP'
+}
 ```
 
 #### Insert a Revocation - `POST /kms/keystores/:keystoreId/revocations/:zcapId`
