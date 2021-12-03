@@ -100,16 +100,3 @@ exports.getKeystore = async ({id, capabilityAgent}) => {
   const invocationSigner = capabilityAgent.getSigner();
   return kmsClient.getKeystore({invocationSigner});
 };
-
-// FIXME: consider removal
-/*exports.findKeystore = async ({
-  controller, referenceId,
-  kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`
-}) => {
-  const url = `${kmsBaseUrl}/keystores` +
-    `/?controller=${controller}&referenceId=${referenceId}`;
-  return KmsClient.findKeystore({
-    url, controller, referenceId, httpsAgent
-  });
-};
-*/
