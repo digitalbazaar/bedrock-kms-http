@@ -4,9 +4,7 @@
 'use strict';
 
 const bedrock = require('bedrock');
-const brHttpsAgent = require('bedrock-https-agent');
-const {CapabilityAgent, KmsClient, KeystoreAgent} =
-  require('@digitalbazaar/webkms-client');
+const {CapabilityAgent} = require('@digitalbazaar/webkms-client');
 const helpers = require('./helpers');
 const {agent} = require('bedrock-https-agent');
 const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
@@ -238,47 +236,6 @@ describe('bedrock-kms-http API', () => {
           'controller', 'id', 'sequence', 'kmsModule', 'meterId'
         ]);
         result.id.should.equal(keystore.id);
-      });
-      it('gets public key decription', async () => {
-        const secret = '34f2afd1-34ef-4d46-a998-cdc5462dc0d2';
-        const handle = 'bobKey';
-        const capabilityAgent = await CapabilityAgent.fromSecret(
-          {secret, handle});
-        const {id: keystoreId} = await helpers.createKeystore(
-          {capabilityAgent});
-        const {httpsAgent} = brHttpsAgent;
-        const kmsClient = new KmsClient({keystoreId, httpsAgent});
-
-        let keystoreAgent;
-        try {
-          keystoreAgent = new KeystoreAgent(
-            {capabilityAgent, keystoreId, kmsClient});
-        } catch(e) {
-          assertNoError(e);
-        }
-        const key = await keystoreAgent.generateKey({type: 'asymmetric'});
-
-        const url = key.id;
-        const headers = await signCapabilityInvocation({
-          url, method: 'get',
-          headers: DEFAULT_HEADERS,
-          capability: 'urn:zcap:root:' + encodeURIComponent(url),
-          invocationSigner: capabilityAgent.getSigner(),
-          capabilityAction: 'read'
-        });
-
-        let err;
-        let result;
-        try {
-          result = await httpClient.get(url, {agent, headers});
-        } catch(e) {
-          err = e;
-        }
-        assertNoError(err);
-        should.exist(result);
-        result.data.should.have.keys([
-          '@context', 'id', 'type', 'publicKeyMultibase'
-        ]);
       });
       it('gets a keystore with ipAllowList', async () => {
         const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
