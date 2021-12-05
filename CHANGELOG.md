@@ -1,5 +1,10 @@
 # bedrock-kms-http ChangeLog
 
+## 10.2.0 - 2021-TBD
+
+### Added
+- Add tests and update `README.md`.
+
 ## 10.1.1 - 2021-11-24
 
 ### Fixed
