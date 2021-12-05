@@ -1,6 +1,9 @@
 # bedrock-kms-http ChangeLog
 
-## 10.1.4 - 2021-12-xx
+## 10.2.0 - 2021-12-xx
+
+### Added
+- Add tests and update `README.md`.
 
 ### Changed
 - Require ezcap-express 4.3.x.
