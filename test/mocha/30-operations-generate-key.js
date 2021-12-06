@@ -101,7 +101,7 @@ describe('generateKey with ipAllowList', () => {
 }); // generateKey with ipAllowList∏∏
 
 describe('get public key description', () => {
-  it('gets public key decription', async () => {
+  it('gets public key description', async () => {
     const secret = '34f2afd1-34ef-4d46-a998-cdc5462dc0d2';
     const handle = 'bobKey';
     const capabilityAgent = await CapabilityAgent.fromSecret(

@@ -36,9 +36,8 @@ npm install
 In `lib/index.js` (or `main.js`, as appropriate):
 
 ```js
-require('bedrock-kms-http');
+import 'bedrock-kms-http';
 ```
-
 
 ### KMS HTTP API
 
