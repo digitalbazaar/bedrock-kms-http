@@ -8,7 +8,6 @@ const {CapabilityAgent, KmsClient, KeystoreAgent} =
   require('@digitalbazaar/webkms-client');
 const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
 const {signCapabilityInvocation} = require('http-signature-zcap-invoke');
-const {agent} = require('bedrock-https-agent');
 const helpers = require('./helpers');
 
 describe('generateKey with ipAllowList', () => {
@@ -110,7 +109,6 @@ describe('get public key description', () => {
       {capabilityAgent});
     const {httpsAgent} = brHttpsAgent;
     const kmsClient = new KmsClient({keystoreId, httpsAgent});
-
     let keystoreAgent;
     try {
       keystoreAgent = new KeystoreAgent(
@@ -132,7 +130,7 @@ describe('get public key description', () => {
     let err;
     let result;
     try {
-      result = await httpClient.get(url, {agent, headers});
+      result = await httpClient.get(url, {agent: httpsAgent, headers});
     } catch(e) {
       err = e;
     }
