@@ -5,6 +5,11 @@
 ### Added
 - Add tests and update `README.md`.
 
+### Changed
+- Use `bedrock-express@6` in test suite.
+- Specify `bedrock-express@6` as peer dep.
+- Remove legacy test config overrides.
+
 ## 10.1.1 - 2021-11-24
 
 ### Fixed
