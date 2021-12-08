@@ -21,7 +21,7 @@
     "@digitalbazaar/webkms-client": "^7.0.0",
     "@digitalbazaar/zcapld": "^5.1.0",
     "base58-universal": "^1.0.0",
-    "bedrock": "^4.3.0",
+    "bedrock": "4.4.1",
     "bedrock-app-identity": "^1.0.0",
     "bedrock-did-context": "^2.0.0",
     "bedrock-did-io": "^4.0.0",
