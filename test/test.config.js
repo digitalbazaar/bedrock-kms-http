@@ -31,5 +31,3 @@ config.karma.config.proxies = {
 config.karma.config.proxyValidateSSL = false;
 config.karma.config.browserNoActivityTimeout = 120000;
 config.karma.config.browserDisconnectTimeout = 120000;
-
-config['https-agent'].keepAlive = true;
