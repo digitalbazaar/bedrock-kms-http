@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 10.1.2 - 2021-12-xx
+## 10.1.2 - 2021-12-09
 
 ### Fixed
 - Load keystore config for a particular request only once to create more
