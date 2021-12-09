@@ -221,8 +221,7 @@ describe('revocations API with ipAllowList', () => {
     should.exist(err);
     err.status.should.equal(403);
     err.data.type.should.equal('NotAllowedError');
-    err.data.cause.type.should.equal('NotAllowedError');
-    err.data.cause.message.should.contain('Source IP');
+    err.data.message.should.contain('Source IP');
   });
 });
 

@@ -1,5 +1,17 @@
 # bedrock-kms-http ChangeLog
 
+## 10.1.2 - 2021-12-xx
+
+### Fixed
+- Load keystore config for a particular request only once to create more
+  consistent behavior. Multiple retrievals of the same keystore config during
+  the lifetime of a request may result in loading different configs without
+  this patch. This patch makes behavior more consistent by reusing the same
+  loaded keystore config for the entire request. Note that there is a change
+  to an assertion in a test on a returned error, however, that error was
+  not going to be consistent in previous versions regardless. This fix makes
+  it more consistent.
+
 ## 10.1.1 - 2021-11-24
 
 ### Fixed
