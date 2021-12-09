@@ -18,7 +18,7 @@
     "@digitalbazaar/ed25519-verification-key-2020": "^3.1.0",
     "@digitalbazaar/ezcap": "^1.0.0",
     "@digitalbazaar/http-client": "^2.0.1",
-    "@digitalbazaar/webkms-client": "^7.0.0",
+    "@digitalbazaar/webkms-client": "^8.0.1",
     "@digitalbazaar/zcapld": "^5.1.0",
     "base58-universal": "^1.0.0",
     "bedrock": "^4.3.0",
