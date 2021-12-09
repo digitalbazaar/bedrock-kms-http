@@ -95,11 +95,8 @@ describe('revocations API', () => {
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
       // this is Bob's capabilityInvocation key that will be used to invoke
-      // the capability
-      invoker: bobKey.id,
-      // this provides Bob the ability to delegate the capability again to
-      // Carol later
-      delegator: bobKey.id,
+      // or delegate the capability
+      controller: bobKey.id,
       // there is no root capability at the `invocationTarget` location,
       // so this alternate URL is used that will automatically generate a
       // root capability
@@ -147,7 +144,7 @@ describe('revocations API', () => {
       '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
-      invoker: carolKey.id,
+      controller: carolKey.id,
       // the capability Alice gave to Bob
       parentCapability: zcap.id,
       // this is where we need to ensure the allowedAction here is included
@@ -192,7 +189,7 @@ describe('revocations API', () => {
     await _revokeDelegatedCapability({
       // the `sign` capability that Bob gave to Carol
       capabilityToRevoke: signedCapabilityFromBobToCarol,
-      // bobKey is the `invoker` in `signedBobRevocationZcap`
+      // bobKey is the `controller` in `signedBobRevocationZcap`
       invocationSigner: bobKey
     });
 
@@ -247,10 +244,7 @@ describe('revocations API', () => {
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
       // this is Bob's capabilityInvocation key that will be used to invoke
-      // the capability
-      invoker: bobKey.id,
-      // this provides Bob the ability to delegate the capability again to
-      // Carol later
+      // or delegate the capability
       delegator: bobKey.id,
       // there is no root capability at the `invocationTarget` location,
       // so this alternate URL is used that will automatically generate a
@@ -273,7 +267,7 @@ describe('revocations API', () => {
       '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
-      invoker: carolKey.id,
+      controller: carolKey.id,
       // the capability Alice gave to Bob
       parentCapability: zcap.id,
       // this is where we need to ensure the allowedAction here is included
@@ -320,11 +314,8 @@ describe('revocations API', () => {
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
       // this is Bob's capabilityInvocation key that will be used to invoke
-      // the capability
-      invoker: bobKey.id,
-      // this provides Bob the ability to delegate the capability again to
-      // Carol later
-      delegator: bobKey.id,
+      // or delegate the capability
+      controller: bobKey.id,
       // there is no root capability at the `invocationTarget` location,
       // so this alternate URL is used that will automatically generate a
       // root capability
@@ -357,7 +348,7 @@ describe('revocations API', () => {
       '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
-      invoker: carolKey.id,
+      controller: carolKey.id,
       // the capability Alice gave to Bob
       parentCapability: zcap.id,
       // this is where we need to ensure the allowedAction here is included
