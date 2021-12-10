@@ -59,7 +59,7 @@ describe('keystore API interactions using webkms-client', () => {
     err.data.should.include.keys('message', 'type', 'details', 'cause');
     err.data.type.should.equal('URLMismatchError');
     err.data.details.should.include.keys(
-      ['expected', 'httpStatusCode', 'actual']);
+      ['expected', 'httpStatusCode', 'actual', 'configId', 'requestUrl']);
     err.data.details.actual.should.equal(aliceKeystoreConfig.id);
     err.data.details.expected.should.equal(
       bobKeystoreAgent.keystoreId);
