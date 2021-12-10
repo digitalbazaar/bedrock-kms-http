@@ -23,7 +23,7 @@ const {documentLoader} = require('bedrock-jsonld-document-loader');
 
 const ZCAP_ROOT_PREFIX = 'urn:zcap:root:';
 
-describe.only('revocations API', () => {
+describe('revocations API', () => {
   let aliceCapabilityAgent;
   let aliceKeystoreAgent;
   let bobCapabilityAgent;
@@ -205,7 +205,7 @@ describe.only('revocations API', () => {
     should.exist(err.data);
     err.data.type.should.equal('NotAllowedError');
   });
-  it.only('successfully demonstrates self-revocation of a delegation', async () => {
+  it('successfully demonstrates self-revocation of a delegation', async () => {
     // first generate a new key for alice
     const aliceKey = await aliceKeystoreAgent.generateKey({type: 'asymmetric'});
     await _setKeyId(aliceKey);
@@ -580,14 +580,13 @@ describe.only('revocations API', () => {
     try {
       await _revokeDelegatedCapability({
         // the `sign` capability that Carol gave to Diego
-        capabilityToRevoke: signedCapabilityFromBobToCarol,
+        capabilityToRevoke: signedCapabilityFromCarolToDiego,
         // carol is doing the revocation
         invocationSigner: carolCapabilityAgent.getSigner()
       });
     } catch(e) {
       err = e;
     }
-    console.log('err', err);
     should.exist(err);
     err.status.should.equal(403);
     should.exist(err.data);
