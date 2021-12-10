@@ -1,5 +1,12 @@
 # bedrock-kms-http ChangeLog
 
+## 10.1.3 - 2021-12-xx
+
+### Fixed
+- Combined duplicate error code paths to simplify; the relevant code ensures
+  that when a client sends a keystore config with an ID that does not match
+  the config ID in the request URL, an exception will be thrown.
+
 ## 10.1.2 - 2021-12-09
 
 ### Fixed
