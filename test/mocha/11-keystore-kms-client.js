@@ -55,14 +55,13 @@ describe('keystore API interactions using webkms-client', () => {
     }
     should.not.exist(result);
     should.exist(err);
-    err.status.should.equal(403);
-    err.data.type.should.equal('NotAllowedError');
-    err.data.details.should.have.keys('httpStatusCode');
-    err.data.cause.should.have.keys('message', 'type', 'details', 'cause');
-    err.data.cause.details.should.have.keys(
-      ['configId', 'httpStatusCode', 'requestUrl']);
-    err.data.cause.details.configId.should.equal(aliceKeystoreConfig.id);
-    err.data.cause.details.requestUrl.should.equal(
+    err.status.should.equal(400);
+    err.data.should.have.keys('message', 'type', 'details', 'cause');
+    err.data.type.should.equal('URLMismatchError');
+    err.data.details.should.have.keys(
+      ['configId', 'expected', 'httpStatusCode', 'actual', 'requestUrl']);
+    err.data.details.actual.should.equal(aliceKeystoreConfig.id);
+    err.data.details.expected.should.equal(
       bobKeystoreAgent.keystoreId);
   });
 });
