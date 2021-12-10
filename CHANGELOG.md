@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 10.1.3 - 2021-12-xx
+## 10.1.3 - 2021-12-10
 
 ### Fixed
 - Combined duplicate error code paths to simplify; the relevant code ensures
