@@ -445,6 +445,48 @@ describe('bedrock-kms-http API', () => {
         err.data.cause.message.should.contain(
           'authorized invoker does not match');
       });
+      it('throws error when configuration "id" does not match request URL.',
+        async () => {
+          const secret = '69ae7dc3-1d6d-4ff9-9cc0-c07b43d2006b';
+          const handle = 'testKeyUpdate';
+          const capabilityAgent = await CapabilityAgent.fromSecret(
+            {secret, handle});
+
+          const result = await helpers.createKeystore({capabilityAgent});
+
+          // this update does not change the `meterId`
+          const {id: url} = result;
+          const newConfig = {
+            // use an unmatching url
+            id: 'unmatching-url',
+            sequence: 1,
+            controller: capabilityAgent.id,
+          };
+
+          const headers = await signCapabilityInvocation({
+            url, method: 'post',
+            headers: DEFAULT_HEADERS,
+            json: newConfig,
+            capability: 'urn:zcap:root:' + encodeURIComponent(url),
+            invocationSigner: capabilityAgent.getSigner(),
+            capabilityAction: 'write'
+          });
+
+          let res;
+          let err;
+          try {
+            res = await httpClient.post(
+              url, {agent, headers, json: newConfig});
+          } catch(e) {
+            err = e;
+          }
+          should.exist(err);
+          should.not.exist(res);
+          err.status.should.equal(400);
+          err.data.type.should.equal('URLMismatchError');
+          err.data.message.should.equal(
+            'Configuration "id" does not match request URL.');
+        });
       it('rejects config update with an invalid sequence', async () => {
         const secret = 'a8256be9-beea-4b05-9fc2-7ad4c1a391e4';
         const handle = 'testKeyUpdate';
