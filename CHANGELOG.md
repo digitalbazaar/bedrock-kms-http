@@ -1,5 +1,10 @@
 # bedrock-kms-http ChangeLog
 
+## 10.1.4 - 2021-12-xx
+
+### Changed
+- Require ezcap-express 4.3.x.
+
 ## 10.1.3 - 2021-12-10
 
 ### Fixed
