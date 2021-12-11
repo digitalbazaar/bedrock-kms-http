@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 10.2.0 - 2021-12-xx
+## 10.2.0 - 2021-12-11
 
 ### Added
 - Add tests and update `README.md`.
