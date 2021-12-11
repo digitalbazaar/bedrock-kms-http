@@ -28,15 +28,11 @@ describe('revocations API with ipAllowList', () => {
   let aliceKeystoreConfig;
   let aliceKeystoreAgent;
   let bobCapabilityAgent;
-  let bobKeystoreAgent;
-  let bobKey;
   let carolCapabilityAgent;
-  let carolKey;
-  let carolKeystoreAgent;
 
   before(async () => {
     const secret = '40762a17-1696-428f-a2b2-ddf9fe9b4987';
-    const handle = 'testKey2';
+    const handle = 'alice';
     aliceCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
 
     aliceKeystoreConfig = await helpers.createKeystore(
@@ -50,43 +46,18 @@ describe('revocations API with ipAllowList', () => {
     });
   });
 
-  // generate a keystore for Bob
+  // generate a capability agent for Bob
   before(async () => {
     const secret = '34f2afd1-34ef-4d46-a998-cdc5462dc0d2';
-    const handle = 'bobKey';
+    const handle = 'bob';
     bobCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
-    const {id: keystoreId} = await helpers.createKeystore(
-      {capabilityAgent: bobCapabilityAgent});
-    try {
-      const {httpsAgent} = brHttpsAgent;
-      const kmsClient = new KmsClient({httpsAgent});
-      bobKeystoreAgent = new KeystoreAgent(
-        {capabilityAgent: bobCapabilityAgent, keystoreId, kmsClient});
-    } catch(e) {
-      assertNoError(e);
-    }
-    try {
-      bobKey = await bobKeystoreAgent.generateKey({type: 'asymmetric'});
-    } catch(e) {
-      assertNoError(e);
-    }
-    await _setKeyId(bobKey);
   });
 
-  // generate a keystore for Carol
+  // generate a capability agent for Carol
   before(async () => {
     const secret = 'ae806cd9-2765-4232-b955-01e1024ac032';
-    const handle = 'carolKey';
-    const {httpsAgent} = brHttpsAgent;
+    const handle = 'carol';
     carolCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
-    const {id: keystoreId} = await helpers.createKeystore(
-      {capabilityAgent: carolCapabilityAgent});
-    const kmsClient = new KmsClient({httpsAgent});
-    carolKeystoreAgent = new KeystoreAgent(
-      {capabilityAgent: carolCapabilityAgent, keystoreId, kmsClient});
-
-    carolKey = await carolKeystoreAgent.generateKey({type: 'asymmetric'});
-    await _setKeyId(carolKey);
   });
 
   it('returns NotAllowedError for invalid source IP', async () => {
@@ -95,16 +66,12 @@ describe('revocations API with ipAllowList', () => {
     await _setKeyId(aliceKey);
 
     // next, delegate authority to bob to use alice's key
-    const zcap = {
+    const bobZcap = {
       '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
-      // this is Bob's capabilityInvocation key that will be used to invoke
-      // the capability
-      invoker: bobKey.id,
-      // this provides Bob the ability to delegate the capability again to
-      // Carol later
-      delegator: bobKey.id,
+      // this is Bob's zcap
+      controller: bobCapabilityAgent.id,
       // there is no root capability at the `invocationTarget` location,
       // so this alternate URL is used that will automatically generate a
       // root capability
@@ -120,22 +87,23 @@ describe('revocations API with ipAllowList', () => {
 
     // Alice now signs the capability delegation that allows Bob to `sign`
     // with her key.
-    const signer = aliceCapabilityAgent.getSigner();
-    const signedCapabilityFromAlice = await _delegate({
+    const signedCapabilityFromAliceToBob = await _delegate({
       capabilityChain: [
         // Alice's root keystore zcap is always the first
         // item in the `capabilityChain`
-        zcap.parentCapability
+        bobZcap.parentCapability
       ],
-      signer,
-      zcap,
+      signer: aliceCapabilityAgent.getSigner(),
+      zcap: bobZcap,
       documentLoader
     });
 
     // Bob now uses his delegated authority to sign a document with Alice's key
     const bobSignedDocument = await _signWithDelegatedKey({
-      capability: signedCapabilityFromAlice,
-      invokeKey: bobKey,
+      capability: signedCapabilityFromAliceToBob,
+      // bob signs the invocation to use alice's key (and alice's key will
+      // sign the document)
+      invocationSigner: bobCapabilityAgent.getSigner()
     });
 
     bobSignedDocument.should.have.property('@context');
@@ -152,23 +120,20 @@ describe('revocations API with ipAllowList', () => {
       '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
-      invoker: carolKey.id,
-      // the capability Alice gave to Bob
-      parentCapability: zcap.id,
-      // this is where we need to ensure the allowedAction here is included
-      // in the allowedAction of the parentCapability, there is an issue in
-      // zcapld for this.
+      // this is Carol's zcap
+      controller: carolCapabilityAgent.id,
+      parentCapability: signedCapabilityFromAliceToBob.id,
       allowedAction: 'sign',
-      invocationTarget: zcap.invocationTarget,
+      invocationTarget: signedCapabilityFromAliceToBob.invocationTarget
     };
 
-    // finish bobs delegation to carol
+    // finish bob's delegation to carol
     const signedCapabilityFromBobToCarol = await _delegate({
       capabilityChain: [
-        zcap.parentCapability,
-        signedCapabilityFromAlice,
+        signedCapabilityFromAliceToBob.parentCapability,
+        signedCapabilityFromAliceToBob
       ],
-      signer: bobKey,
+      signer: bobCapabilityAgent.getSigner(),
       zcap: carolZcap,
       documentLoader
     });
@@ -178,7 +143,9 @@ describe('revocations API with ipAllowList', () => {
     // demonstrate that Carol can also sign with Alice's key
     const carolSignedDocument = await _signWithDelegatedKey({
       capability: signedCapabilityFromBobToCarol,
-      invokeKey: carolKey,
+      // carol signs the invocation to use alice's key (and alice's key
+      // will sign the document)
+      invocationSigner: carolCapabilityAgent.getSigner()
     });
     carolSignedDocument.should.have.property('@context');
     carolSignedDocument.should.have.property('referenceId');
@@ -211,8 +178,8 @@ describe('revocations API with ipAllowList', () => {
       result = await _revokeDelegatedCapability({
         // the `sign` capability that Bob gave to Carol
         capabilityToRevoke: signedCapabilityFromBobToCarol,
-        // bobKey is the `invoker` in `signedBobRevocationZcap`
-        invocationSigner: bobKey
+        // bob is revoking the capability he gave to carol
+        invocationSigner: bobCapabilityAgent.getSigner()
       });
     } catch(e) {
       err = e;
@@ -237,11 +204,11 @@ async function _delegate({zcap, signer, capabilityChain, documentLoader}) {
   });
 }
 
-async function _signWithDelegatedKey({capability, doc, invokeKey}) {
+async function _signWithDelegatedKey({capability, doc, invocationSigner}) {
   const {httpsAgent} = brHttpsAgent;
   const delegatedSigningKey = new AsymmetricKey({
     capability,
-    invocationSigner: invokeKey,
+    invocationSigner,
     kmsClient: new KmsClient({httpsAgent})
   });
   const suite = new Ed25519Signature2020({
