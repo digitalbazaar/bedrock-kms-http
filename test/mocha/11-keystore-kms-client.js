@@ -16,7 +16,7 @@ describe('keystore API interactions using webkms-client', () => {
 
   before(async () => {
     const secret = '40762a17-1696-428f-a2b2-ddf9fe9b4987';
-    const handle = 'testKey2';
+    const handle = 'alice';
     aliceCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
 
     aliceKeystoreConfig = await helpers.createKeystore(
@@ -26,7 +26,7 @@ describe('keystore API interactions using webkms-client', () => {
   // generate a keystore for Bob
   before(async () => {
     const secret = '34f2afd1-34ef-4d46-a998-cdc5462dc0d2';
-    const handle = 'bobKey';
+    const handle = 'bob';
     bobCapabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
     const {id: keystoreId} = await helpers.createKeystore(
       {capabilityAgent: bobCapabilityAgent});

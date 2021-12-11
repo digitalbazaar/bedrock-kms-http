@@ -68,8 +68,9 @@ describe('revocations API', () => {
     // first generate a new key for alice
     const aliceKey = await aliceKeystoreAgent.generateKey({type: 'asymmetric'});
     await _setKeyId(aliceKey);
+
     // next, delegate authority to bob to use alice's key
-    const zcap = {
+    const bobZcap = {
       '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
@@ -94,10 +95,10 @@ describe('revocations API', () => {
       capabilityChain: [
         // the root zcap for Alice's key is always the first
         // item in the `capabilityChain`
-        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId)
+        bobZcap.parentCapability
       ],
       signer: aliceCapabilityAgent.getSigner(),
-      zcap,
+      zcap: bobZcap,
       documentLoader
     });
 
@@ -121,6 +122,7 @@ describe('revocations API', () => {
       '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
+      // this is Carol's zcap
       controller: carolCapabilityAgent.id,
       parentCapability: signedCapabilityFromAliceToBob.id,
       allowedAction: 'sign',
@@ -130,7 +132,7 @@ describe('revocations API', () => {
     // finish bob's delegation to carol
     const signedCapabilityFromBobToCarol = await _delegate({
       capabilityChain: [
-        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId),
+        signedCapabilityFromAliceToBob.parentCapability,
         signedCapabilityFromAliceToBob
       ],
       signer: bobCapabilityAgent.getSigner(),
@@ -209,8 +211,9 @@ describe('revocations API', () => {
     // first generate a new key for alice
     const aliceKey = await aliceKeystoreAgent.generateKey({type: 'asymmetric'});
     await _setKeyId(aliceKey);
+
     // next, delegate authority to bob to use alice's key
-    const zcap = {
+    const bobZcap = {
       '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
@@ -235,10 +238,10 @@ describe('revocations API', () => {
       capabilityChain: [
         // the root zcap for Alice's key is always the first
         // item in the `capabilityChain`
-        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId)
+        bobZcap.parentCapability
       ],
       signer: aliceCapabilityAgent.getSigner(),
-      zcap,
+      zcap: bobZcap,
       documentLoader
     });
 
@@ -271,7 +274,7 @@ describe('revocations API', () => {
     // finish bob's delegation to carol
     const signedCapabilityFromBobToCarol = await _delegate({
       capabilityChain: [
-        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId),
+        signedCapabilityFromAliceToBob.parentCapability,
         signedCapabilityFromAliceToBob
       ],
       signer: bobCapabilityAgent.getSigner(),
@@ -343,8 +346,9 @@ describe('revocations API', () => {
     // first generate a new key for alice
     const aliceKey = await aliceKeystoreAgent.generateKey({type: 'asymmetric'});
     await _setKeyId(aliceKey);
+
     // next, delegate authority to bob to use alice's key
-    const zcap = {
+    const bobZcap = {
       '@context': ZCAP_CONTEXT_URL,
       // this is a unique ID
       id: `urn:zcap:${uuid()}`,
@@ -369,10 +373,10 @@ describe('revocations API', () => {
       capabilityChain: [
         // the root zcap for Alice's key is always the first
         // item in the `capabilityChain`
-        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId)
+        bobZcap.parentCapability
       ],
       signer: aliceCapabilityAgent.getSigner(),
-      zcap,
+      zcap: bobZcap,
       documentLoader
     });
 
@@ -405,7 +409,7 @@ describe('revocations API', () => {
     // finish bob's delegation to carol
     const signedCapabilityFromBobToCarol = await _delegate({
       capabilityChain: [
-        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId),
+        signedCapabilityFromAliceToBob.parentCapability,
         signedCapabilityFromAliceToBob
       ],
       signer: bobCapabilityAgent.getSigner(),
@@ -476,7 +480,7 @@ describe('revocations API', () => {
       capabilityChain: [
         // the root zcap for Alice's key is always the first
         // item in the `capabilityChain`
-        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId)
+        bobZcap.parentCapability
       ],
       signer: aliceCapabilityAgent.getSigner(),
       zcap: bobZcap,
@@ -513,7 +517,7 @@ describe('revocations API', () => {
     // finish bob's delegation to carol
     const signedCapabilityFromBobToCarol = await _delegate({
       capabilityChain: [
-        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId),
+        signedCapabilityFromAliceToBob.parentCapability,
         signedCapabilityFromAliceToBob
       ],
       signer: bobCapabilityAgent.getSigner(),
@@ -550,7 +554,7 @@ describe('revocations API', () => {
     // finish carol's delegation to diego
     const signedCapabilityFromCarolToDiego = await _delegate({
       capabilityChain: [
-        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId),
+        signedCapabilityFromAliceToBob.parentCapability,
         signedCapabilityFromAliceToBob.id,
         signedCapabilityFromBobToCarol
       ],
@@ -657,7 +661,7 @@ describe('revocations API', () => {
     // finish bob's delegation to carol
     const signedCapabilityFromBobToCarol = await _delegate({
       capabilityChain: [
-        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId),
+        bobZcap.parentCapability,
         // bob's zcap is erroneously unsigned
         bobZcap
       ],
@@ -711,7 +715,7 @@ describe('revocations API', () => {
       capabilityChain: [
         // the root zcap for Alice's key is always the first
         // item in the `capabilityChain`
-        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId)
+        bobZcap.parentCapability
       ],
       signer: aliceCapabilityAgent.getSigner(),
       zcap: bobZcap,
@@ -733,7 +737,7 @@ describe('revocations API', () => {
     // finish bob's delegation to carol
     const signedCapabilityFromBobToCarol = await _delegate({
       capabilityChain: [
-        ZCAP_ROOT_PREFIX + encodeURIComponent(aliceKeystoreAgent.keystoreId),
+        signedCapabilityFromAliceToBob.parentCapability,
         signedCapabilityFromAliceToBob
       ],
       signer: bobCapabilityAgent.getSigner(),
