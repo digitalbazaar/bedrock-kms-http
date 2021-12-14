@@ -385,6 +385,70 @@ describe('bedrock-kms-http API', () => {
         should.exist(result);
         result.should.eql(expectedConfig);
       });
+      it('throw internal server error when attempting to update "meterId"',
+        async () => {
+          // TODO: Remove or update this test when the following is fixed
+          // eslint-disable-next-line max-len
+          // https://github.com/digitalbazaar/bedrock-kms-http/blob/main/lib/http.js#L182
+          const secret = '69ae7dc3-1d6d-4ff9-9cc0-c07b43d2006b';
+          const handle = 'testKeyUpdate';
+          const capabilityAgent = await CapabilityAgent.fromSecret(
+            {secret, handle});
+
+          const secret2 = 'ac36ef8e-560b-4f6c-a454-6bfcb4e31a76';
+          const handle2 = 'testKeyUpdate2';
+          const capabilityAgent2 = await CapabilityAgent.fromSecret(
+            {secret: secret2, handle: handle2});
+
+          let err;
+          let existingConfig;
+          try {
+            existingConfig = await helpers.createKeystore(
+              {capabilityAgent});
+          } catch(e) {
+            err = e;
+          }
+          assertNoError(err);
+          should.exist(existingConfig);
+          existingConfig.should.have.property('id');
+          existingConfig.should.have.property('sequence');
+          existingConfig.sequence.should.equal(0);
+          const {id: capabilityAgentId} = capabilityAgent;
+          existingConfig.should.have.property('controller');
+          existingConfig.controller.should.equal(capabilityAgentId);
+
+          const {id: url} = existingConfig;
+          const newConfig = {
+            // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9
+            controller: capabilityAgent2.id,
+            id: url,
+            sequence: 1,
+            // try updating meterId
+            meterId: 'meterId-not-equal-to-meterId-in-existing-config'
+          };
+
+          const headers = await signCapabilityInvocation({
+            url, method: 'post',
+            headers: DEFAULT_HEADERS,
+            json: newConfig,
+            capability: 'urn:zcap:root:' + encodeURIComponent(url),
+            invocationSigner: capabilityAgent.getSigner(),
+            capabilityAction: 'write'
+          });
+
+          err = null;
+          let result = null;
+          try {
+            result = await httpClient.post(
+              url, {agent, headers, json: newConfig});
+          } catch(e) {
+            err = e;
+          }
+          should.not.exist(result);
+          should.exist(err);
+          err.status.should.equal(500);
+          err.data.type.should.equal('bedrock.InternalServerError');
+        });
       it('rejects config update for an invalid zcap', async () => {
         const secret = 'd852a72d-013f-4dd6-8ba2-588aaf601b66';
         const handle = 'testKeyUpdate';
