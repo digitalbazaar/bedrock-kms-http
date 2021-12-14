@@ -10,6 +10,8 @@ const {agent} = require('bedrock-https-agent');
 const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
 const mockData = require('./mock.data');
 const {signCapabilityInvocation} = require('http-signature-zcap-invoke');
+const {ZcapClient} = require('@digitalbazaar/ezcap');
+const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 
 describe('bedrock-kms-http API', () => {
   describe('keystores', () => {
@@ -395,11 +397,6 @@ describe('bedrock-kms-http API', () => {
           const capabilityAgent = await CapabilityAgent.fromSecret(
             {secret, handle});
 
-          const secret2 = 'ac36ef8e-560b-4f6c-a454-6bfcb4e31a76';
-          const handle2 = 'testKeyUpdate2';
-          const capabilityAgent2 = await CapabilityAgent.fromSecret(
-            {secret: secret2, handle: handle2});
-
           let err;
           let existingConfig;
           try {
@@ -419,28 +416,22 @@ describe('bedrock-kms-http API', () => {
 
           const {id: url} = existingConfig;
           const newConfig = {
-            // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9
-            controller: capabilityAgent2.id,
+            controller: capabilityAgent.id,
             id: url,
             sequence: 1,
             // try updating meterId
             meterId: 'meterId-not-equal-to-meterId-in-existing-config'
           };
 
-          const headers = await signCapabilityInvocation({
-            url, method: 'post',
-            headers: DEFAULT_HEADERS,
-            json: newConfig,
-            capability: 'urn:zcap:root:' + encodeURIComponent(url),
+          const zcapClient = new ZcapClient({
+            agent,
             invocationSigner: capabilityAgent.getSigner(),
-            capabilityAction: 'write'
+            SuiteClass: Ed25519Signature2020
           });
-
           err = null;
           let result = null;
           try {
-            result = await httpClient.post(
-              url, {agent, headers, json: newConfig});
+            result = await zcapClient.write({url, json: newConfig});
           } catch(e) {
             err = e;
           }
