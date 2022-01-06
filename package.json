@@ -24,9 +24,11 @@
   "homepage": "https://github.com/digitalbazaar/bedrock-kms-http",
   "dependencies": {
     "@digitalbazaar/ed25519-signature-2020": "^3.0.0",
+    "@digitalbazaar/ed25519-verification-key-2020": "^3.2.0",
     "@digitalbazaar/ezcap-express": "digitalbazaar/ezcap-express#zcapld-update",
     "cidr-regex": "^3.1.1",
     "cors": "^2.8.5",
+    "crypto-ld": "^6.0.0",
     "forwarded": "^0.2.0",
     "netmask": "^2.0.2",
     "webkms-switch": "digitalbazaar/webkms-switch#zcapld-update"
