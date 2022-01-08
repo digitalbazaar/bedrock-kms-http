@@ -6,10 +6,15 @@
 const bedrock = require('bedrock');
 const {CapabilityAgent, KeystoreAgent, KmsClient} =
   require('@digitalbazaar/webkms-client');
+const {CapabilityDelegation} = require('@digitalbazaar/zcapld');
 const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 const {getAppIdentity} = require('bedrock-app-identity');
 const {httpsAgent} = require('bedrock-https-agent');
+const jsigs = require('jsonld-signatures');
 const {ZcapClient} = require('@digitalbazaar/ezcap');
+const {util: {uuid}} = bedrock;
+const {CONTEXT_URL: ZCAP_CONTEXT_URL} = require('zcap-context');
+const {documentLoader} = require('bedrock-jsonld-document-loader');
 
 exports.createMeter = async ({capabilityAgent} = {}) => {
   // create signer using the application's capability invocation key
@@ -99,4 +104,26 @@ exports.getKeystore = async ({id, capabilityAgent}) => {
   const kmsClient = new KmsClient({keystoreId: id, httpsAgent});
   const invocationSigner = capabilityAgent.getSigner();
   return kmsClient.getKeystore({invocationSigner});
+};
+
+exports.delegate = async ({
+  parentCapability, controller, invocationTarget, expires, allowedAction,
+  delegator, purposeOptions = {}
+}) => {
+  const newCapability = {
+    '@context': ZCAP_CONTEXT_URL,
+    id: `urn:zcap:${uuid()}`,
+    controller,
+    parentCapability: parentCapability.id || parentCapability,
+    invocationTarget: invocationTarget || parentCapability.invocationTarget,
+    expires: expires || parentCapability.expires ||
+      new Date(Date.now() + 5000).toISOString().slice(0, -5) + 'Z',
+    allowedAction: allowedAction || parentCapability.allowedAction
+  };
+  // attach capability delegation proof
+  return jsigs.sign(newCapability, {
+    documentLoader,
+    purpose: new CapabilityDelegation({parentCapability, ...purposeOptions}),
+    suite: new Ed25519Signature2020({signer: delegator.getSigner()}),
+  });
 };

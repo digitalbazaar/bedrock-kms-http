@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
@@ -498,7 +498,7 @@ describe('bedrock-kms-http API', () => {
         err.status.should.equal(403);
         err.data.type.should.equal('NotAllowedError');
         err.data.cause.message.should.contain(
-          'authorized invoker does not match');
+          'capability controller does not match');
       });
 
       it('rejects config update with an invalid sequence', async () => {
