@@ -52,9 +52,11 @@ describe('revocations API', () => {
   });
 
   it('successfully revokes a delegation', async () => {
-    // first generate a new key for alice
-    const aliceKey = await aliceKeystoreAgent.generateKey({type: 'asymmetric'});
-    await helpers.setKeyId({key: aliceKey});
+    // first generate a new key for alice; use a did:key ID for its public ID
+    const aliceKey = await aliceKeystoreAgent.generateKey({
+      type: 'asymmetric',
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+    });
 
     // next, delegate authority to bob to use alice's key
     const rootCapability = ZCAP_ROOT_PREFIX +
@@ -157,9 +159,11 @@ describe('revocations API', () => {
     err.data.type.should.equal('NotAllowedError');
   });
   it('successfully demonstrates self-revocation of a delegation', async () => {
-    // first generate a new key for alice
-    const aliceKey = await aliceKeystoreAgent.generateKey({type: 'asymmetric'});
-    await helpers.setKeyId({key: aliceKey});
+    // first generate a new key for alice; use a did:key ID for its public ID
+    const aliceKey = await aliceKeystoreAgent.generateKey({
+      type: 'asymmetric',
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+    });
 
     // next, delegate authority to bob to use alice's key
     const rootCapability = ZCAP_ROOT_PREFIX +
@@ -255,9 +259,11 @@ describe('revocations API', () => {
     err.data.type.should.equal('NotAllowedError');
   });
   it('stops an unauthorized party from revoking a delegation', async () => {
-    // first generate a new key for alice
-    const aliceKey = await aliceKeystoreAgent.generateKey({type: 'asymmetric'});
-    await helpers.setKeyId({key: aliceKey});
+    // first generate a new key for alice; use a did:key ID for its public ID
+    const aliceKey = await aliceKeystoreAgent.generateKey({
+      type: 'asymmetric',
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+    });
 
     // next, delegate authority to bob to use alice's key
     const rootCapability = ZCAP_ROOT_PREFIX +
@@ -325,9 +331,11 @@ describe('revocations API', () => {
     data.type.should.equal('NotAllowedError');
   });
   it('successfully revokes a delegation with a deeper chain', async () => {
-    // first generate a new key for alice
-    const aliceKey = await aliceKeystoreAgent.generateKey({type: 'asymmetric'});
-    await helpers.setKeyId({key: aliceKey});
+    // first generate a new key for alice; use a did:key ID for its public ID
+    const aliceKey = await aliceKeystoreAgent.generateKey({
+      type: 'asymmetric',
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+    });
 
     // next, delegate authority to bob to use alice's key
     const rootCapability = ZCAP_ROOT_PREFIX +
@@ -438,9 +446,11 @@ describe('revocations API', () => {
     err.data.type.should.equal('NotAllowedError');
   });
   it('throws error on zcap that was not properly delegated', async () => {
-    // first generate a new key for alice
-    const aliceKey = await aliceKeystoreAgent.generateKey({type: 'asymmetric'});
-    await helpers.setKeyId({key: aliceKey});
+    // first generate a new key for alice; use a did:key ID for its public ID
+    const aliceKey = await aliceKeystoreAgent.generateKey({
+      type: 'asymmetric',
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+    });
 
     // next, delegate authority to bob to use alice's key
     const rootCapability = ZCAP_ROOT_PREFIX +
@@ -490,9 +500,11 @@ describe('revocations API', () => {
     err.data.type.should.equal('NotAllowedError');
   });
   it('throws error on zcap validator', async () => {
-    // first generate a new key for alice
-    const aliceKey = await aliceKeystoreAgent.generateKey({type: 'asymmetric'});
-    await helpers.setKeyId({key: aliceKey});
+    // first generate a new key for alice; use a did:key ID for its public ID
+    const aliceKey = await aliceKeystoreAgent.generateKey({
+      type: 'asymmetric',
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+    });
 
     // next, delegate authority to bob to use alice's key
     const rootCapability = ZCAP_ROOT_PREFIX +

@@ -151,8 +151,6 @@ exports.signWithDelegatedKey = async ({capability, doc, invocationSigner}) => {
     invocationSigner,
     kmsClient: new KmsClient({httpsAgent})
   });
-  // FIXME: remove me; determine another way to set key ID
-  await exports.setKeyId({key: delegatedSigningKey});
   const suite = new Ed25519Signature2020({signer: delegatedSigningKey});
 
   doc = doc || {'example:foo': 'test'};
@@ -162,14 +160,4 @@ exports.signWithDelegatedKey = async ({capability, doc, invocationSigner}) => {
     purpose: new AssertionProofPurpose(),
     suite
   });
-};
-
-exports.setKeyId = async ({key}) => {
-  // `getKeyDescription()` gets public key material for fingerprint
-  const keyDescription = await key.getKeyDescription();
-  // create public ID (did:key) for bob's key
-  const fingerprint =
-    (await Ed25519VerificationKey2020.from(keyDescription)).fingerprint();
-  // invocationTarget.publicAlias = `did:key:${fingerprint}`;
-  key.id = `did:key:${fingerprint}#${fingerprint}`;
 };

@@ -48,9 +48,11 @@ describe('revocations API with ipAllowList', () => {
   });
 
   it('returns NotAllowedError for invalid source IP', async () => {
-    // first generate a new key for alice
-    const aliceKey = await aliceKeystoreAgent.generateKey({type: 'asymmetric'});
-    await helpers.setKeyId({key: aliceKey});
+    // first generate a new key for alice; use a did:key ID for its public ID
+    const aliceKey = await aliceKeystoreAgent.generateKey({
+      type: 'asymmetric',
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+    });
 
     // next, delegate authority to bob to use alice's key
     const rootCapability = ZCAP_ROOT_PREFIX +
