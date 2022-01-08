@@ -136,59 +136,6 @@ describe('bedrock-kms-http API', () => {
         err.data.message.should.equal(
           'A validation error occured in the \'postKeystoreBody\' validator.');
       });
-    // FIXME: skipped while considering removal of keystore query
-    it.skip('throws error on no controller in getKeystoreQuery validation',
-      async () => {
-        const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
-        const handle = 'testKey1';
-        const capabilityAgent = await CapabilityAgent.fromSecret(
-          {secret, handle});
-
-        const referenceId =
-          'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
-        const keystore = await helpers.createKeystore({
-          capabilityAgent, referenceId});
-
-        const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
-        const url = `${kmsBaseUrl}/keystores` +
-          `/?r?controller=${keystore.controller}`;
-
-        let err;
-        let result;
-        try {
-          result = await httpClient.get(url, {agent});
-        } catch(e) {
-          err = e;
-        }
-        should.exist(err);
-        should.not.exist(result);
-        err.data.type.should.equal('ValidationError');
-        err.data.message.should.equal(
-          'A validation error occured in the \'getKeystoreQuery\' validator.');
-      });
-    // FIXME: skipped while considering removal of keystore query
-    it.skip('throws error on no referenceId in getKeystoreQuery validation',
-      async () => {
-        const referenceId =
-          'did:key:z6MkkrtV7wnBpXKBtiZjxaSghCo8ttb5kZUJTk8bEwTTTYvg';
-
-        const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
-        const url = `${kmsBaseUrl}/keystores` +
-          `/?referenceId=${referenceId}`;
-
-        let err;
-        let result;
-        try {
-          result = await httpClient.get(url, {agent});
-        } catch(e) {
-          err = e;
-        }
-        should.exist(err);
-        should.not.exist(result);
-        err.data.type.should.equal('ValidationError');
-        err.data.message.should.equal(
-          'A validation error occured in the \'getKeystoreQuery\' validator.');
-      });
     it('throws error with no controller in zcap validation', async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
