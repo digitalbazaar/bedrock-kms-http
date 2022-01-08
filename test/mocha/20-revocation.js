@@ -1,16 +1,13 @@
 /*
- * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
-const bedrock = require('bedrock');
 const brHttpsAgent = require('bedrock-https-agent');
 const helpers = require('./helpers');
 const jsigs = require('jsonld-signatures');
-const {CapabilityDelegation} = require('@digitalbazaar/zcapld');
 const {AsymmetricKey, CapabilityAgent, KmsClient, KeystoreAgent} =
   require('@digitalbazaar/webkms-client');
-const {util: {uuid}} = bedrock;
 const {
   purposes: {AssertionProofPurpose},
   sign,
@@ -18,7 +15,6 @@ const {
 const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 const {Ed25519VerificationKey2020} =
   require('@digitalbazaar/ed25519-verification-key-2020');
-const {CONTEXT_URL: ZCAP_CONTEXT_URL} = require('zcap-context');
 const {documentLoader} = require('bedrock-jsonld-document-loader');
 
 const ZCAP_ROOT_PREFIX = 'urn:zcap:root:';
@@ -70,46 +66,24 @@ describe('revocations API', () => {
     await _setKeyId(aliceKey);
 
     // next, delegate authority to bob to use alice's key
-    const bobZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Bob's zcap
+    const rootCapability = ZCAP_ROOT_PREFIX +
+      encodeURIComponent(aliceKeystoreAgent.keystoreId);
+    const bobZcap = await helpers.delegate({
+      parentCapability: rootCapability,
       controller: bobCapabilityAgent.id,
-      // there is no root capability at the `invocationTarget` location,
-      // so this alternate URL is used that will automatically generate a
-      // root capability
-      parentCapability: ZCAP_ROOT_PREFIX +
-        encodeURIComponent(aliceKeystoreAgent.keystoreId),
+      invocationTarget: aliceKey.kmsId,
       allowedAction: 'sign',
-      invocationTarget: {
-        publicAlias: aliceKey.id,
-        id: aliceKey.kmsId,
-        type: aliceKey.type,
-      }
-    };
-
-    // Alice now signs the capability delegation that allows Bob to `sign`
-    // with her key.
-    const signedCapabilityFromAliceToBob = await _delegate({
-      capabilityChain: [
-        // the root zcap for Alice's key is always the first
-        // item in the `capabilityChain`
-        bobZcap.parentCapability
-      ],
-      signer: aliceCapabilityAgent.getSigner(),
-      zcap: bobZcap,
-      documentLoader
+      delegator: aliceCapabilityAgent
     });
 
     // Bob now uses his delegated authority to sign a document with Alice's key
     const bobSignedDocument = await _signWithDelegatedKey({
-      capability: signedCapabilityFromAliceToBob,
+      capability: bobZcap,
       invocationSigner: bobCapabilityAgent.getSigner()
     });
 
     bobSignedDocument.should.have.property('@context');
-    bobSignedDocument.should.have.property('referenceId');
+    bobSignedDocument.should.have.property('example:foo');
     bobSignedDocument.should.have.property('proof');
     bobSignedDocument.proof.should.have.property('verificationMethod');
     // the document was ultimately signed with alice's key
@@ -118,37 +92,21 @@ describe('revocations API', () => {
     // Bob has successfully used alice's key to sign a document!
 
     // Bob now delegates the use of Alice's key to Carol
-    const carolZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Carol's zcap
+    const carolZcap = await helpers.delegate({
+      parentCapability: bobZcap,
       controller: carolCapabilityAgent.id,
-      parentCapability: signedCapabilityFromAliceToBob.id,
-      allowedAction: 'sign',
-      invocationTarget: signedCapabilityFromAliceToBob.invocationTarget,
-    };
-
-    // finish bob's delegation to carol
-    const signedCapabilityFromBobToCarol = await _delegate({
-      capabilityChain: [
-        signedCapabilityFromAliceToBob.parentCapability,
-        signedCapabilityFromAliceToBob
-      ],
-      signer: bobCapabilityAgent.getSigner(),
-      zcap: carolZcap,
-      documentLoader
+      delegator: bobCapabilityAgent
     });
 
     // Bob would then store record of the delegation to Carol in an EDV
 
     // demonstrate that Carol can also sign with Alice's key
     const carolSignedDocument = await _signWithDelegatedKey({
-      capability: signedCapabilityFromBobToCarol,
+      capability: carolZcap,
       invocationSigner: carolCapabilityAgent.getSigner()
     });
     carolSignedDocument.should.have.property('@context');
-    carolSignedDocument.should.have.property('referenceId');
+    carolSignedDocument.should.have.property('example:foo');
     carolSignedDocument.should.have.property('proof');
     carolSignedDocument.proof.should.have.property('verificationMethod');
     // the document was ultimately signed with alice's key
@@ -163,7 +121,7 @@ describe('revocations API', () => {
     // kms system
     await _revokeDelegatedCapability({
       // the `sign` capability that Bob gave to Carol
-      capabilityToRevoke: signedCapabilityFromBobToCarol,
+      capabilityToRevoke: carolZcap,
       // bob is doing the revocation
       invocationSigner: bobCapabilityAgent.getSigner()
     });
@@ -174,7 +132,7 @@ describe('revocations API', () => {
     try {
       await _revokeDelegatedCapability({
         // the `sign` capability that Bob gave to Carol
-        capabilityToRevoke: signedCapabilityFromBobToCarol,
+        capabilityToRevoke: carolZcap,
         // bob is doing the revocation
         invocationSigner: bobCapabilityAgent.getSigner()
       });
@@ -196,7 +154,7 @@ describe('revocations API', () => {
     err = null;
     try {
       result = await _signWithDelegatedKey({
-        capability: signedCapabilityFromBobToCarol,
+        capability: carolZcap,
         invocationSigner: carolCapabilityAgent.getSigner()
       });
     } catch(e) {
@@ -213,46 +171,24 @@ describe('revocations API', () => {
     await _setKeyId(aliceKey);
 
     // next, delegate authority to bob to use alice's key
-    const bobZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Bob's zcap
+    const rootCapability = ZCAP_ROOT_PREFIX +
+      encodeURIComponent(aliceKeystoreAgent.keystoreId);
+    const bobZcap = await helpers.delegate({
+      parentCapability: rootCapability,
       controller: bobCapabilityAgent.id,
-      // there is no root capability at the `invocationTarget` location,
-      // so this alternate URL is used that will automatically generate a
-      // root capability
-      parentCapability: ZCAP_ROOT_PREFIX +
-        encodeURIComponent(aliceKeystoreAgent.keystoreId),
+      invocationTarget: aliceKey.kmsId,
       allowedAction: 'sign',
-      invocationTarget: {
-        publicAlias: aliceKey.id,
-        id: aliceKey.kmsId,
-        type: aliceKey.type,
-      }
-    };
-
-    // Alice now signs the capability delegation that allows Bob to `sign`
-    // with her key.
-    const signedCapabilityFromAliceToBob = await _delegate({
-      capabilityChain: [
-        // the root zcap for Alice's key is always the first
-        // item in the `capabilityChain`
-        bobZcap.parentCapability
-      ],
-      signer: aliceCapabilityAgent.getSigner(),
-      zcap: bobZcap,
-      documentLoader
+      delegator: aliceCapabilityAgent
     });
 
     // Bob now uses his delegated authority to sign a document with Alice's key
     const bobSignedDocument = await _signWithDelegatedKey({
-      capability: signedCapabilityFromAliceToBob,
+      capability: bobZcap,
       invocationSigner: bobCapabilityAgent.getSigner()
     });
 
     bobSignedDocument.should.have.property('@context');
-    bobSignedDocument.should.have.property('referenceId');
+    bobSignedDocument.should.have.property('example:foo');
     bobSignedDocument.should.have.property('proof');
     bobSignedDocument.proof.should.have.property('verificationMethod');
     // the document was ultimately signed with alice's key
@@ -261,36 +197,21 @@ describe('revocations API', () => {
     // Bob has successfully used alice's key to sign a document!
 
     // Bob now delegates the use of Alice's key to Carol
-    const carolZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
+    const carolZcap = await helpers.delegate({
+      parentCapability: bobZcap,
       controller: carolCapabilityAgent.id,
-      parentCapability: signedCapabilityFromAliceToBob.id,
-      allowedAction: 'sign',
-      invocationTarget: signedCapabilityFromAliceToBob.invocationTarget,
-    };
-
-    // finish bob's delegation to carol
-    const signedCapabilityFromBobToCarol = await _delegate({
-      capabilityChain: [
-        signedCapabilityFromAliceToBob.parentCapability,
-        signedCapabilityFromAliceToBob
-      ],
-      signer: bobCapabilityAgent.getSigner(),
-      zcap: carolZcap,
-      documentLoader
+      delegator: bobCapabilityAgent
     });
 
     // Bob would then store record of the delegation to Carol in an EDV
 
     // demonstrate that Carol can also sign with Alice's key
     const carolSignedDocument = await _signWithDelegatedKey({
-      capability: signedCapabilityFromBobToCarol,
+      capability: carolZcap,
       invocationSigner: carolCapabilityAgent.getSigner()
     });
     carolSignedDocument.should.have.property('@context');
-    carolSignedDocument.should.have.property('referenceId');
+    carolSignedDocument.should.have.property('example:foo');
     carolSignedDocument.should.have.property('proof');
     carolSignedDocument.proof.should.have.property('verificationMethod');
     // the document was ultimately signed with alice's key
@@ -302,7 +223,7 @@ describe('revocations API', () => {
     // kms system
     await _revokeDelegatedCapability({
       // the `sign` capability that Bob gave to Carol
-      capabilityToRevoke: signedCapabilityFromBobToCarol,
+      capabilityToRevoke: carolZcap,
       // carol is doing the revocation
       invocationSigner: carolCapabilityAgent.getSigner()
     });
@@ -313,7 +234,7 @@ describe('revocations API', () => {
     try {
       await _revokeDelegatedCapability({
         // the `sign` capability that Bob gave to Carol
-        capabilityToRevoke: signedCapabilityFromBobToCarol,
+        capabilityToRevoke: carolZcap,
         // carol is doing the revocation
         invocationSigner: carolCapabilityAgent.getSigner()
       });
@@ -331,7 +252,7 @@ describe('revocations API', () => {
     err = null;
     try {
       result = await _signWithDelegatedKey({
-        capability: signedCapabilityFromBobToCarol,
+        capability: carolZcap,
         invocationSigner: carolCapabilityAgent.getSigner()
       });
     } catch(e) {
@@ -348,46 +269,24 @@ describe('revocations API', () => {
     await _setKeyId(aliceKey);
 
     // next, delegate authority to bob to use alice's key
-    const bobZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Bob's zcap
+    const rootCapability = ZCAP_ROOT_PREFIX +
+      encodeURIComponent(aliceKeystoreAgent.keystoreId);
+    const bobZcap = await helpers.delegate({
+      parentCapability: rootCapability,
       controller: bobCapabilityAgent.id,
-      // there is no root capability at the `invocationTarget` location,
-      // so this alternate URL is used that will automatically generate a
-      // root capability
-      parentCapability: ZCAP_ROOT_PREFIX +
-        encodeURIComponent(aliceKeystoreAgent.keystoreId),
+      invocationTarget: aliceKey.kmsId,
       allowedAction: 'sign',
-      invocationTarget: {
-        publicAlias: aliceKey.id,
-        id: aliceKey.kmsId,
-        type: aliceKey.type,
-      }
-    };
-
-    // Alice now signs the capability delegation that allows Bob to `sign`
-    // with her key.
-    const signedCapabilityFromAliceToBob = await _delegate({
-      capabilityChain: [
-        // the root zcap for Alice's key is always the first
-        // item in the `capabilityChain`
-        bobZcap.parentCapability
-      ],
-      signer: aliceCapabilityAgent.getSigner(),
-      zcap: bobZcap,
-      documentLoader
+      delegator: aliceCapabilityAgent
     });
 
     // Bob now uses his delegated authority to sign a document with Alice's key
     const bobSignedDocument = await _signWithDelegatedKey({
-      capability: signedCapabilityFromAliceToBob,
+      capability: bobZcap,
       invocationSigner: bobCapabilityAgent.getSigner()
     });
 
     bobSignedDocument.should.have.property('@context');
-    bobSignedDocument.should.have.property('referenceId');
+    bobSignedDocument.should.have.property('example:foo');
     bobSignedDocument.should.have.property('proof');
     bobSignedDocument.proof.should.have.property('verificationMethod');
     // the document was ultimately signed with alice's key
@@ -396,36 +295,21 @@ describe('revocations API', () => {
     // Bob has successfully used alice's key to sign a document!
 
     // Bob now delegates the use of Alice's key to Carol
-    const carolZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
+    const carolZcap = await helpers.delegate({
+      parentCapability: bobZcap,
       controller: carolCapabilityAgent.id,
-      parentCapability: signedCapabilityFromAliceToBob.id,
-      allowedAction: 'sign',
-      invocationTarget: signedCapabilityFromAliceToBob.invocationTarget,
-    };
-
-    // finish bob's delegation to carol
-    const signedCapabilityFromBobToCarol = await _delegate({
-      capabilityChain: [
-        signedCapabilityFromAliceToBob.parentCapability,
-        signedCapabilityFromAliceToBob
-      ],
-      signer: bobCapabilityAgent.getSigner(),
-      zcap: carolZcap,
-      documentLoader
+      delegator: bobCapabilityAgent
     });
 
     // Bob would then store record of the delegation to Carol in an EDV
 
     // demonstrate that Carol can also sign with Alice's key
     const carolSignedDocument = await _signWithDelegatedKey({
-      capability: signedCapabilityFromBobToCarol,
+      capability: carolZcap,
       invocationSigner: carolCapabilityAgent.getSigner()
     });
     carolSignedDocument.should.have.property('@context');
-    carolSignedDocument.should.have.property('referenceId');
+    carolSignedDocument.should.have.property('example:foo');
     carolSignedDocument.should.have.property('proof');
     carolSignedDocument.proof.should.have.property('verificationMethod');
     // the document was ultimately signed with alice's key
@@ -436,7 +320,7 @@ describe('revocations API', () => {
     try {
       await _revokeDelegatedCapability({
         // the `sign` capability that Bob gave to Carol
-        capabilityToRevoke: signedCapabilityFromBobToCarol,
+        capabilityToRevoke: carolZcap,
         // diego is doing the revocation
         invocationSigner: diegoCapabilityAgent.getSigner()
       });
@@ -455,46 +339,24 @@ describe('revocations API', () => {
     await _setKeyId(aliceKey);
 
     // next, delegate authority to bob to use alice's key
-    const bobZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Bob's zcap
+    const rootCapability = ZCAP_ROOT_PREFIX +
+      encodeURIComponent(aliceKeystoreAgent.keystoreId);
+    const bobZcap = await helpers.delegate({
+      parentCapability: rootCapability,
       controller: bobCapabilityAgent.id,
-      // there is no root capability at the `invocationTarget` location,
-      // so this alternate URL is used that will automatically generate a
-      // root capability
-      parentCapability: ZCAP_ROOT_PREFIX +
-        encodeURIComponent(aliceKeystoreAgent.keystoreId),
+      invocationTarget: aliceKey.kmsId,
       allowedAction: 'sign',
-      invocationTarget: {
-        publicAlias: aliceKey.id,
-        id: aliceKey.kmsId,
-        type: aliceKey.type,
-      }
-    };
-
-    // Alice now signs the capability delegation that allows Bob to `sign`
-    // with her key.
-    const signedCapabilityFromAliceToBob = await _delegate({
-      capabilityChain: [
-        // the root zcap for Alice's key is always the first
-        // item in the `capabilityChain`
-        bobZcap.parentCapability
-      ],
-      signer: aliceCapabilityAgent.getSigner(),
-      zcap: bobZcap,
-      documentLoader
+      delegator: aliceCapabilityAgent
     });
 
     // Bob now uses his delegated authority to sign a document with Alice's key
     const bobSignedDocument = await _signWithDelegatedKey({
-      capability: signedCapabilityFromAliceToBob,
+      capability: bobZcap,
       invocationSigner: bobCapabilityAgent.getSigner()
     });
 
     bobSignedDocument.should.have.property('@context');
-    bobSignedDocument.should.have.property('referenceId');
+    bobSignedDocument.should.have.property('example:foo');
     bobSignedDocument.should.have.property('proof');
     bobSignedDocument.proof.should.have.property('verificationMethod');
     // the document was ultimately signed with alice's key
@@ -503,64 +365,31 @@ describe('revocations API', () => {
     // Bob has successfully used alice's key to sign a document!
 
     // Bob now delegates the use of Alice's key to Carol
-    const carolZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Carol's zcap
+    const carolZcap = await helpers.delegate({
+      parentCapability: bobZcap,
       controller: carolCapabilityAgent.id,
-      parentCapability: signedCapabilityFromAliceToBob.id,
-      allowedAction: 'sign',
-      invocationTarget: signedCapabilityFromAliceToBob.invocationTarget,
-    };
-
-    // finish bob's delegation to carol
-    const signedCapabilityFromBobToCarol = await _delegate({
-      capabilityChain: [
-        signedCapabilityFromAliceToBob.parentCapability,
-        signedCapabilityFromAliceToBob
-      ],
-      signer: bobCapabilityAgent.getSigner(),
-      zcap: carolZcap,
-      documentLoader
+      delegator: bobCapabilityAgent
     });
 
     // Bob would then store record of the delegation to Carol in an EDV
 
     // demonstrate that Carol can also sign with Alice's key
     const carolSignedDocument = await _signWithDelegatedKey({
-      capability: signedCapabilityFromBobToCarol,
+      capability: carolZcap,
       invocationSigner: carolCapabilityAgent.getSigner()
     });
     carolSignedDocument.should.have.property('@context');
-    carolSignedDocument.should.have.property('referenceId');
+    carolSignedDocument.should.have.property('example:foo');
     carolSignedDocument.should.have.property('proof');
     carolSignedDocument.proof.should.have.property('verificationMethod');
     // the document was ultimately signed with alice's key
     carolSignedDocument.proof.verificationMethod.should.equal(aliceKey.id);
 
     // Carol now delegates the use of Alice's key to Diego
-    const diegoZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Diego's zcap
+    const diegoZcap = await helpers.delegate({
+      parentCapability: carolZcap,
       controller: diegoCapabilityAgent.id,
-      parentCapability: signedCapabilityFromBobToCarol.id,
-      allowedAction: 'sign',
-      invocationTarget: signedCapabilityFromBobToCarol.invocationTarget,
-    };
-
-    // finish carol's delegation to diego
-    const signedCapabilityFromCarolToDiego = await _delegate({
-      capabilityChain: [
-        signedCapabilityFromAliceToBob.parentCapability,
-        signedCapabilityFromAliceToBob.id,
-        signedCapabilityFromBobToCarol
-      ],
-      signer: carolCapabilityAgent.getSigner(),
-      zcap: diegoZcap,
-      documentLoader
+      delegator: carolCapabilityAgent
     });
 
     // Carol now submits a revocation to revoke the capability she gave to
@@ -573,7 +402,7 @@ describe('revocations API', () => {
     // kms system
     await _revokeDelegatedCapability({
       // the `sign` capability that Carol gave to Diego
-      capabilityToRevoke: signedCapabilityFromCarolToDiego,
+      capabilityToRevoke: diegoZcap,
       // carol is doing the revocation
       invocationSigner: carolCapabilityAgent.getSigner()
     });
@@ -584,7 +413,7 @@ describe('revocations API', () => {
     try {
       await _revokeDelegatedCapability({
         // the `sign` capability that Carol gave to Diego
-        capabilityToRevoke: signedCapabilityFromCarolToDiego,
+        capabilityToRevoke: diegoZcap,
         // carol is doing the revocation
         invocationSigner: carolCapabilityAgent.getSigner()
       });
@@ -606,7 +435,7 @@ describe('revocations API', () => {
     err = null;
     try {
       result = await _signWithDelegatedKey({
-        capability: signedCapabilityFromCarolToDiego,
+        capability: diegoZcap,
         invocationSigner: diegoCapabilityAgent.getSigner()
       });
     } catch(e) {
@@ -623,58 +452,43 @@ describe('revocations API', () => {
     await _setKeyId(aliceKey);
 
     // next, delegate authority to bob to use alice's key
-    const bobZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Bob's zcap
+    const rootCapability = ZCAP_ROOT_PREFIX +
+      encodeURIComponent(aliceKeystoreAgent.keystoreId);
+    const bobZcap = await helpers.delegate({
+      parentCapability: rootCapability,
       controller: bobCapabilityAgent.id,
-      // there is no root capability at the `invocationTarget` location,
-      // so this alternate URL is used that will automatically generate a
-      // root capability
-      parentCapability: ZCAP_ROOT_PREFIX +
-        encodeURIComponent(aliceKeystoreAgent.keystoreId),
+      invocationTarget: aliceKey.kmsId,
       allowedAction: 'sign',
-      invocationTarget: {
-        publicAlias: aliceKey.id,
-        id: aliceKey.kmsId,
-        type: aliceKey.type,
-      }
-    };
+      delegator: aliceCapabilityAgent
+    });
 
     // Alice now DOES NOT sign the capability delegation; Bob is NOT
     // allowed to `sign` with her key.
+    // this is simulated by deleting the proof on bob's zcap
+    delete bobZcap.proof;
 
     // Bob now delegates the use of Alice's key to Carol
-    const carolZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Carol's zcap
+    const carolZcap = await helpers.delegate({
+      parentCapability: bobZcap,
       controller: carolCapabilityAgent.id,
-      // the capability Alice gave to Bob (but we failed to sign it)
-      parentCapability: bobZcap.id,
-      allowedAction: 'sign',
-      invocationTarget: bobZcap.invocationTarget
-    };
-
-    // finish bob's delegation to carol
-    const signedCapabilityFromBobToCarol = await _delegate({
-      capabilityChain: [
-        bobZcap.parentCapability,
-        // bob's zcap is erroneously unsigned
-        bobZcap
-      ],
-      signer: bobCapabilityAgent.getSigner(),
-      zcap: carolZcap,
-      documentLoader
+      delegator: bobCapabilityAgent,
+      purposeOptions: {
+        // since `bobZcap` is intentionally not signed, we must disable local
+        // validation to allow bad zcap to be created so it can be tested by
+        // the verifier and manually specify the capability chain
+        _skipLocalValidationForTesting: true,
+        _capabilityChain: [
+          bobZcap.parentCapability,
+          bobZcap
+        ]
+      }
     });
 
     let err;
     try {
       await _revokeDelegatedCapability({
         // the `sign` capability that Bob gave to Carol
-        capabilityToRevoke: signedCapabilityFromBobToCarol,
+        capabilityToRevoke: carolZcap,
         // bob is doing the revocation
         invocationSigner: bobCapabilityAgent.getSigner()
       });
@@ -690,69 +504,31 @@ describe('revocations API', () => {
     await _setKeyId(aliceKey);
 
     // next, delegate authority to bob to use alice's key
-    const bobZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Bob's zcap
+    const rootCapability = ZCAP_ROOT_PREFIX +
+      encodeURIComponent(aliceKeystoreAgent.keystoreId);
+    const bobZcap = await helpers.delegate({
+      parentCapability: rootCapability,
       controller: bobCapabilityAgent.id,
-      // there is no root capability at the `invocationTarget` location,
-      // so this alternate URL is used that will automatically generate a
-      // root capability
-      parentCapability: ZCAP_ROOT_PREFIX +
-        encodeURIComponent(aliceKeystoreAgent.keystoreId),
+      invocationTarget: aliceKey.kmsId,
       allowedAction: 'sign',
-      invocationTarget: {
-        publicAlias: aliceKey.id,
-        id: aliceKey.kmsId,
-        type: aliceKey.type,
-      }
-    };
-
-    // Alice now signs the capability delegation that allows Bob to `sign`
-    // with her key.
-    const signedCapabilityFromAliceToBob = await _delegate({
-      capabilityChain: [
-        // the root zcap for Alice's key is always the first
-        // item in the `capabilityChain`
-        bobZcap.parentCapability
-      ],
-      signer: aliceCapabilityAgent.getSigner(),
-      zcap: bobZcap,
-      documentLoader
+      delegator: aliceCapabilityAgent
     });
 
     // Bob now delegates the use of Alice's key to Carol
-    const carolZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Carol's zcap
+    const carolZcap = await helpers.delegate({
+      parentCapability: bobZcap,
       controller: carolCapabilityAgent.id,
-      parentCapability: signedCapabilityFromAliceToBob.id,
-      allowedAction: 'sign',
-      invocationTarget: signedCapabilityFromAliceToBob.invocationTarget
-    };
-
-    // finish bob's delegation to carol
-    const signedCapabilityFromBobToCarol = await _delegate({
-      capabilityChain: [
-        signedCapabilityFromAliceToBob.parentCapability,
-        signedCapabilityFromAliceToBob
-      ],
-      signer: bobCapabilityAgent.getSigner(),
-      zcap: carolZcap,
-      documentLoader
+      delegator: bobCapabilityAgent
     });
 
     // now remove `proof` from carol's zcap to create a validation error
-    delete signedCapabilityFromBobToCarol.proof;
+    delete carolZcap.proof;
 
     let err;
     try {
       await _revokeDelegatedCapability({
         // the `sign` capability that Bob gave to Carol
-        capabilityToRevoke: signedCapabilityFromBobToCarol,
+        capabilityToRevoke: carolZcap,
         // bob is doing the revocation
         invocationSigner: bobCapabilityAgent.getSigner()
       });
@@ -766,18 +542,6 @@ describe('revocations API', () => {
   });
 });
 
-async function _delegate({zcap, signer, capabilityChain, documentLoader}) {
-  // attach capability delegation proof
-  return sign(zcap, {
-    suite: new Ed25519Signature2020({
-      signer
-    }),
-    purpose: new CapabilityDelegation({capabilityChain}),
-    compactProof: false,
-    documentLoader
-  });
-}
-
 async function _signWithDelegatedKey({capability, doc, invocationSigner}) {
   const {httpsAgent} = brHttpsAgent;
   const delegatedSigningKey = new AsymmetricKey({
@@ -785,15 +549,13 @@ async function _signWithDelegatedKey({capability, doc, invocationSigner}) {
     invocationSigner,
     kmsClient: new KmsClient({httpsAgent})
   });
+  // FIXME: remove me; determine another way to set key ID
+  await _setKeyId(delegatedSigningKey);
   const suite = new Ed25519Signature2020({
     signer: delegatedSigningKey
   });
 
-  doc = doc || {
-    '@context': ZCAP_CONTEXT_URL,
-    // just using a term out of the zcap context
-    referenceId: 'testId'
-  };
+  doc = doc || {'example:foo': 'test'};
 
   return sign(doc, {
     documentLoader,

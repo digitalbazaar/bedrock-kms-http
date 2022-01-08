@@ -1,16 +1,13 @@
 /*
- * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
-const bedrock = require('bedrock');
 const brHttpsAgent = require('bedrock-https-agent');
 const helpers = require('./helpers');
 const jsigs = require('jsonld-signatures');
-const {CapabilityDelegation} = require('@digitalbazaar/zcapld');
 const {AsymmetricKey, CapabilityAgent, KmsClient, KeystoreAgent} =
   require('@digitalbazaar/webkms-client');
-const {util: {uuid}} = bedrock;
 const {
   purposes: {AssertionProofPurpose},
   sign,
@@ -18,7 +15,6 @@ const {
 const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 const {Ed25519VerificationKey2020} =
   require('@digitalbazaar/ed25519-verification-key-2020');
-const {CONTEXT_URL: ZCAP_CONTEXT_URL} = require('zcap-context');
 const {documentLoader} = require('bedrock-jsonld-document-loader');
 
 const ZCAP_ROOT_PREFIX = 'urn:zcap:root:';
@@ -66,48 +62,26 @@ describe('revocations API with ipAllowList', () => {
     await _setKeyId(aliceKey);
 
     // next, delegate authority to bob to use alice's key
-    const bobZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Bob's zcap
+    const rootCapability = ZCAP_ROOT_PREFIX +
+      encodeURIComponent(aliceKeystoreAgent.keystoreId);
+    const bobZcap = await helpers.delegate({
+      parentCapability: rootCapability,
       controller: bobCapabilityAgent.id,
-      // there is no root capability at the `invocationTarget` location,
-      // so this alternate URL is used that will automatically generate a
-      // root capability
-      parentCapability: ZCAP_ROOT_PREFIX +
-        encodeURIComponent(aliceKeystoreAgent.keystoreId),
+      invocationTarget: aliceKey.kmsId,
       allowedAction: 'sign',
-      invocationTarget: {
-        publicAlias: aliceKey.id,
-        id: aliceKey.kmsId,
-        type: aliceKey.type,
-      }
-    };
-
-    // Alice now signs the capability delegation that allows Bob to `sign`
-    // with her key.
-    const signedCapabilityFromAliceToBob = await _delegate({
-      capabilityChain: [
-        // Alice's root keystore zcap is always the first
-        // item in the `capabilityChain`
-        bobZcap.parentCapability
-      ],
-      signer: aliceCapabilityAgent.getSigner(),
-      zcap: bobZcap,
-      documentLoader
+      delegator: aliceCapabilityAgent
     });
 
     // Bob now uses his delegated authority to sign a document with Alice's key
     const bobSignedDocument = await _signWithDelegatedKey({
-      capability: signedCapabilityFromAliceToBob,
+      capability: bobZcap,
       // bob signs the invocation to use alice's key (and alice's key will
       // sign the document)
       invocationSigner: bobCapabilityAgent.getSigner()
     });
 
     bobSignedDocument.should.have.property('@context');
-    bobSignedDocument.should.have.property('referenceId');
+    bobSignedDocument.should.have.property('example:foo');
     bobSignedDocument.should.have.property('proof');
     bobSignedDocument.proof.should.have.property('verificationMethod');
     // the document was ultimately signed with alice's key
@@ -116,39 +90,23 @@ describe('revocations API with ipAllowList', () => {
     // Bob has successfully used alice's key to sign a document!
 
     // Bob now delegates the use of Alice's key to Carol
-    const carolZcap = {
-      '@context': ZCAP_CONTEXT_URL,
-      // this is a unique ID
-      id: `urn:zcap:${uuid()}`,
-      // this is Carol's zcap
+    const carolZcap = await helpers.delegate({
+      parentCapability: bobZcap,
       controller: carolCapabilityAgent.id,
-      parentCapability: signedCapabilityFromAliceToBob.id,
-      allowedAction: 'sign',
-      invocationTarget: signedCapabilityFromAliceToBob.invocationTarget
-    };
-
-    // finish bob's delegation to carol
-    const signedCapabilityFromBobToCarol = await _delegate({
-      capabilityChain: [
-        signedCapabilityFromAliceToBob.parentCapability,
-        signedCapabilityFromAliceToBob
-      ],
-      signer: bobCapabilityAgent.getSigner(),
-      zcap: carolZcap,
-      documentLoader
+      delegator: bobCapabilityAgent
     });
 
     // Bob would then store record of the delegation to Carol in an EDV
 
     // demonstrate that Carol can also sign with Alice's key
     const carolSignedDocument = await _signWithDelegatedKey({
-      capability: signedCapabilityFromBobToCarol,
+      capability: carolZcap,
       // carol signs the invocation to use alice's key (and alice's key
       // will sign the document)
       invocationSigner: carolCapabilityAgent.getSigner()
     });
     carolSignedDocument.should.have.property('@context');
-    carolSignedDocument.should.have.property('referenceId');
+    carolSignedDocument.should.have.property('example:foo');
     carolSignedDocument.should.have.property('proof');
     carolSignedDocument.proof.should.have.property('verificationMethod');
     // the document was ultimately signed with alice's key
@@ -177,7 +135,7 @@ describe('revocations API with ipAllowList', () => {
     try {
       result = await _revokeDelegatedCapability({
         // the `sign` capability that Bob gave to Carol
-        capabilityToRevoke: signedCapabilityFromBobToCarol,
+        capabilityToRevoke: carolZcap,
         // bob is revoking the capability he gave to carol
         invocationSigner: bobCapabilityAgent.getSigner()
       });
@@ -192,18 +150,6 @@ describe('revocations API with ipAllowList', () => {
   });
 });
 
-async function _delegate({zcap, signer, capabilityChain, documentLoader}) {
-  // attach capability delegation proof
-  return sign(zcap, {
-    suite: new Ed25519Signature2020({
-      signer
-    }),
-    purpose: new CapabilityDelegation({capabilityChain}),
-    compactProof: false,
-    documentLoader
-  });
-}
-
 async function _signWithDelegatedKey({capability, doc, invocationSigner}) {
   const {httpsAgent} = brHttpsAgent;
   const delegatedSigningKey = new AsymmetricKey({
@@ -211,15 +157,13 @@ async function _signWithDelegatedKey({capability, doc, invocationSigner}) {
     invocationSigner,
     kmsClient: new KmsClient({httpsAgent})
   });
+  // FIXME: remove me; determine another way to set key ID
+  await _setKeyId(delegatedSigningKey);
   const suite = new Ed25519Signature2020({
     signer: delegatedSigningKey
   });
 
-  doc = doc || {
-    '@context': ZCAP_CONTEXT_URL,
-    // just using a term out of the zcap context
-    referenceId: 'testId'
-  };
+  doc = doc || {'example:foo': 'test'};
 
   return sign(doc, {
     documentLoader,
@@ -246,6 +190,6 @@ async function _setKeyId(key) {
   // create public ID (did:key) for bob's key
   const fingerprint =
     (await Ed25519VerificationKey2020.from(keyDescription)).fingerprint();
-  // invocationTarget.publicAlias = `did:key:${fingerprint}`;
+  // publicAlias = `did:key:${fingerprint}`;
   key.id = `did:key:${fingerprint}#${fingerprint}`;
 }
