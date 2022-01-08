@@ -146,7 +146,7 @@ exports.revokeDelegatedCapability = async ({
 
 exports.signWithDelegatedKey = async ({capability, doc, invocationSigner}) => {
   const {httpsAgent} = brHttpsAgent;
-  const delegatedSigningKey = new AsymmetricKey({
+  const delegatedSigningKey = await AsymmetricKey.fromCapability({
     capability,
     invocationSigner,
     kmsClient: new KmsClient({httpsAgent})
