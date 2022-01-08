@@ -1,13 +1,16 @@
 /*
- * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
 const bedrock = require('bedrock');
-const {CapabilityAgent, KeystoreAgent, KmsClient} =
+const brHttpsAgent = require('bedrock-https-agent');
+const {AsymmetricKey, CapabilityAgent, KeystoreAgent, KmsClient} =
   require('@digitalbazaar/webkms-client');
 const {CapabilityDelegation} = require('@digitalbazaar/zcapld');
 const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
+const {Ed25519VerificationKey2020} =
+  require('@digitalbazaar/ed25519-verification-key-2020');
 const {getAppIdentity} = require('bedrock-app-identity');
 const {httpsAgent} = require('bedrock-https-agent');
 const jsigs = require('jsonld-signatures');
@@ -15,6 +18,8 @@ const {ZcapClient} = require('@digitalbazaar/ezcap');
 const {util: {uuid}} = bedrock;
 const {CONTEXT_URL: ZCAP_CONTEXT_URL} = require('zcap-context');
 const {documentLoader} = require('bedrock-jsonld-document-loader');
+
+const {purposes: {AssertionProofPurpose}} = jsigs;
 
 exports.createMeter = async ({capabilityAgent} = {}) => {
   // create signer using the application's capability invocation key
@@ -126,4 +131,45 @@ exports.delegate = async ({
     purpose: new CapabilityDelegation({parentCapability, ...purposeOptions}),
     suite: new Ed25519Signature2020({signer: delegator.getSigner()}),
   });
+};
+
+exports.revokeDelegatedCapability = async ({
+  capabilityToRevoke, invocationSigner
+}) => {
+  const {httpsAgent} = brHttpsAgent;
+  const kmsClient = new KmsClient({httpsAgent});
+  await kmsClient.revokeCapability({
+    capabilityToRevoke,
+    invocationSigner
+  });
+};
+
+exports.signWithDelegatedKey = async ({capability, doc, invocationSigner}) => {
+  const {httpsAgent} = brHttpsAgent;
+  const delegatedSigningKey = new AsymmetricKey({
+    capability,
+    invocationSigner,
+    kmsClient: new KmsClient({httpsAgent})
+  });
+  // FIXME: remove me; determine another way to set key ID
+  await exports.setKeyId({key: delegatedSigningKey});
+  const suite = new Ed25519Signature2020({signer: delegatedSigningKey});
+
+  doc = doc || {'example:foo': 'test'};
+
+  return jsigs.sign(doc, {
+    documentLoader,
+    purpose: new AssertionProofPurpose(),
+    suite
+  });
+};
+
+exports.setKeyId = async ({key}) => {
+  // `getKeyDescription()` gets public key material for fingerprint
+  const keyDescription = await key.getKeyDescription();
+  // create public ID (did:key) for bob's key
+  const fingerprint =
+    (await Ed25519VerificationKey2020.from(keyDescription)).fingerprint();
+  // invocationTarget.publicAlias = `did:key:${fingerprint}`;
+  key.id = `did:key:${fingerprint}#${fingerprint}`;
 };
