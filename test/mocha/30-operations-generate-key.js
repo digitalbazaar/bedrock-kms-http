@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
@@ -97,7 +97,7 @@ describe('generateKey with ipAllowList', () => {
     err.status.should.equal(403);
     err.data.type.should.equal('NotAllowedError');
   });
-}); // generateKey with ipAllowList∏∏
+}); // generateKey with ipAllowList
 
 describe('get public key description', () => {
   it('gets public key description', async () => {
@@ -137,7 +137,7 @@ describe('get public key description', () => {
     assertNoError(err);
     should.exist(result);
     result.data.should.have.keys([
-      '@context', 'id', 'type', 'publicKeyMultibase'
+      '@context', 'id', 'type', 'publicKeyMultibase', 'controller'
     ]);
     result.data.id.should.equal(key.id);
     result.data.type.should.equal(key.type);
