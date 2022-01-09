@@ -1,5 +1,11 @@
 # bedrock-kms-http ChangeLog
 
+## 11.0.0 - 2022-01-xx
+
+### Changed
+- **BREAKING**: Use ezcap-express@5 and webkms-switch@9. These changes
+  include major breaking simplifications to ZCAP-LD (zcapld@6).
+
 ## 10.2.0 - 2021-12-11
 
 ### Added
