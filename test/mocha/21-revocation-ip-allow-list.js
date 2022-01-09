@@ -109,9 +109,9 @@ describe('revocations API with ipAllowList', () => {
     aliceKeystoreConfig.sequence++;
     aliceKeystoreConfig.ipAllowList = ['8.8.8.8/32'];
 
-    const {success} = await aliceKeystoreAgent.updateConfig(
+    const {config} = await aliceKeystoreAgent.updateConfig(
       {config: aliceKeystoreConfig});
-    success.should.equal(true);
+    config.should.eql(aliceKeystoreConfig);
 
     // Bob now submits a revocation to revoke the capability he gave to Carol.
 
