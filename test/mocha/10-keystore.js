@@ -297,9 +297,7 @@ describe('bedrock-kms-http API', () => {
         assertNoError(err);
         should.exist(result.data);
         result.status.should.equal(200);
-        result.data.should.have.keys(['config', 'success']);
-        result.data.success.should.be.a('boolean');
-        result.data.success.should.equal(true);
+        result.data.should.have.keys(['config']);
         const expectedConfig = {
           ...existingConfig,
           ...newConfig
@@ -568,9 +566,7 @@ describe('bedrock-kms-http API', () => {
           assertNoError(err);
           should.exist(result.data);
           result.status.should.equal(200);
-          result.data.should.have.keys(['config', 'success']);
-          result.data.success.should.be.a('boolean');
-          result.data.success.should.equal(true);
+          result.data.should.have.keys(['config']);
           const expectedConfig = {
             ...existingConfig,
             ...newConfig
