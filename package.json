@@ -25,7 +25,7 @@
   "dependencies": {
     "@digitalbazaar/ed25519-signature-2020": "^3.0.0",
     "@digitalbazaar/ed25519-verification-key-2020": "^3.2.0",
-    "@digitalbazaar/ezcap-express": "digitalbazaar/ezcap-express#zcapld-update",
+    "@digitalbazaar/ezcap-express": "^5.0.0",
     "cidr-regex": "^3.1.1",
     "cors": "^2.8.5",
     "crypto-ld": "^6.0.0",
@@ -37,14 +37,14 @@
     "bedrock": "^4.3.0",
     "bedrock-app-identity": "^1.0.0",
     "bedrock-did-io": "^4.0.0",
-    "bedrock-express": "digitalbazaar/bedrock-express#fix-asyncHandler",
+    "bedrock-express": "^6.2.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
     "bedrock-kms": "^7.0.0",
     "bedrock-mongodb": "^8.2.0",
     "bedrock-meter-usage-reporter": "^4.2.0",
     "bedrock-server": "^2.7.0",
     "bedrock-validation": "^5.1.0",
-    "bedrock-zcap-storage": "^4.0.0"
+    "bedrock-zcap-storage": "digitalbazaar/bedrock-zcap-storage#zcapld-update"
   },
   "directories": {
     "lib": "./lib"
