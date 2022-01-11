@@ -36,13 +36,13 @@
   "peerDependencies": {
     "bedrock": "^4.3.0",
     "bedrock-app-identity": "^1.0.0",
-    "bedrock-did-io": "^4.0.0",
+    "bedrock-did-io": "^5.0.0",
     "bedrock-express": "^6.2.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
     "bedrock-kms": "^7.0.0",
     "bedrock-mongodb": "^8.2.0",
     "bedrock-meter-usage-reporter": "^4.2.0",
-    "bedrock-server": "^2.7.0",
+    "bedrock-server": "^3.0.0",
     "bedrock-validation": "^5.1.0",
     "bedrock-zcap-storage": "digitalbazaar/bedrock-zcap-storage#zcapld-update"
   },
