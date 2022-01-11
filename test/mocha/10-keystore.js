@@ -9,7 +9,8 @@ const helpers = require('./helpers');
 const {agent} = require('bedrock-https-agent');
 const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
 const mockData = require('./mock.data');
-const {signCapabilityInvocation} = require('http-signature-zcap-invoke');
+const {signCapabilityInvocation} = require(
+  '@digitalbazaar/http-signature-zcap-invoke');
 const {ZcapClient} = require('@digitalbazaar/ezcap');
 const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 
