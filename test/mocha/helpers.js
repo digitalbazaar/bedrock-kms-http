@@ -7,7 +7,7 @@ const bedrock = require('bedrock');
 const brHttpsAgent = require('bedrock-https-agent');
 const {AsymmetricKey, CapabilityAgent, KeystoreAgent, KmsClient} =
   require('@digitalbazaar/webkms-client');
-const {CapabilityDelegation} = require('@digitalbazaar/zcapld');
+const {CapabilityDelegation} = require('@digitalbazaar/zcap');
 const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 const {Ed25519VerificationKey2020} =
   require('@digitalbazaar/ed25519-verification-key-2020');
