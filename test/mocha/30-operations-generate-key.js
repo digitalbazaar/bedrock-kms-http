@@ -7,7 +7,8 @@ const brHttpsAgent = require('bedrock-https-agent');
 const {CapabilityAgent, KmsClient, KeystoreAgent} =
   require('@digitalbazaar/webkms-client');
 const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
-const {signCapabilityInvocation} = require('http-signature-zcap-invoke');
+const {signCapabilityInvocation} = require(
+  '@digitalbazaar/http-signature-zcap-invoke');
 const helpers = require('./helpers');
 
 describe('generateKey with ipAllowList', () => {

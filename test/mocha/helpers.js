@@ -7,7 +7,10 @@ const bedrock = require('bedrock');
 const brHttpsAgent = require('bedrock-https-agent');
 const {AsymmetricKey, CapabilityAgent, KeystoreAgent, KmsClient} =
   require('@digitalbazaar/webkms-client');
-const {CapabilityDelegation} = require('@digitalbazaar/zcap');
+const {
+  CapabilityDelegation,
+  constants: zcapConstants
+} = require('@digitalbazaar/zcap');
 const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 const {Ed25519VerificationKey2020} =
   require('@digitalbazaar/ed25519-verification-key-2020');
@@ -16,10 +19,10 @@ const {httpsAgent} = require('bedrock-https-agent');
 const jsigs = require('jsonld-signatures');
 const {ZcapClient} = require('@digitalbazaar/ezcap');
 const {util: {uuid}} = bedrock;
-const {CONTEXT_URL: ZCAP_CONTEXT_URL} = require('zcap-context');
 const {documentLoader} = require('bedrock-jsonld-document-loader');
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
+const {ZCAP_CONTEXT_URL} = zcapConstants;
 
 exports.createMeter = async ({capabilityAgent} = {}) => {
   // create signer using the application's capability invocation key

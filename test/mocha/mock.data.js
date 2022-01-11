@@ -1,7 +1,9 @@
 /*
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-const {CONTEXT_URL: ZCAP_CONTEXT_URL} = require('zcap-context');
+const {constants: zcapConstants} = require('@digitalbazaar/zcap');
+
+const {ZCAP_CONTEXT_URL} = zcapConstants;
 
 const data = {};
 
