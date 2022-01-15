@@ -11,8 +11,27 @@ const {signCapabilityInvocation} = require(
   '@digitalbazaar/http-signature-zcap-invoke');
 const helpers = require('./helpers');
 
-describe('generateKey with ipAllowList', () => {
+describe('generateKey', () => {
   it('generates a key', async () => {
+    const secret = '0628a44e-7599-11ec-989d-10bf48838a41';
+    const handle = 'testKey';
+    const keystoreAgent = await helpers.createKeystoreAgent(
+      {handle, secret});
+    let err;
+    let result;
+    try {
+      result = await keystoreAgent.generateKey({type: 'hmac'});
+    } catch(e) {
+      err = e;
+    }
+    assertNoError(err);
+    should.exist(result);
+    result.should.have.keys([
+      'algorithm', 'capability', 'id', 'type', 'invocationSigner', 'kmsClient',
+      'cache', '_pruneCacheTimer'
+    ]);
+  });
+  it('generates a key with ipAllowList', async () => {
     // source of requests in the test suite are from 127.0.0.1
     const secret = '22612679-05ce-4ffd-bf58-22b3c4bc1314';
     const handle = 'testKeyAllowList';
@@ -97,6 +116,27 @@ describe('generateKey with ipAllowList', () => {
     should.not.exist(result);
     err.status.should.equal(403);
     err.data.type.should.equal('NotAllowedError');
+  });
+  it('generates a key with "maxCapabilityChainLength=1"', async () => {
+    const secret = '0ad59134-7583-11ec-b16e-10bf48838a41';
+    const handle = 'testKeyMaxCapabilityChainLength';
+    const keystoreAgent = await helpers.createKeystoreAgent(
+      {handle, secret});
+    let err;
+    let result;
+    try {
+      result = await keystoreAgent.generateKey({
+        type: 'asymmetric', maxCapabilityChainLength: 1
+      });
+    } catch(e) {
+      err = e;
+    }
+    assertNoError(err);
+    should.exist(result);
+    result.should.have.keys([
+      'capability', 'id', 'type', 'invocationSigner', 'kmsClient',
+      'kmsId', '_keyDescription'
+    ]);
   });
 }); // generateKey with ipAllowList
 

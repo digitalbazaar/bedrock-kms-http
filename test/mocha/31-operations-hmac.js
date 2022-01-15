@@ -1,12 +1,16 @@
 /*
- * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
-const {util: {uuid}} = require('bedrock');
-const pMap = require('p-map');
-
+const {httpsAgent} = require('bedrock-https-agent');
+const {CapabilityAgent, Hmac, KmsClient} = require(
+  '@digitalbazaar/webkms-client');
 const helpers = require('./helpers');
+const pMap = require('p-map');
+const {util: {uuid}} = require('bedrock');
+
+const ZCAP_ROOT_PREFIX = 'urn:zcap:root:';
 
 describe('bedrock-kms-http HMAC operations', () => {
   describe('Sha256HmacKey2019', () => {
@@ -51,6 +55,62 @@ describe('bedrock-kms-http HMAC operations', () => {
       assertNoError(err);
       should.exist(result);
       result.should.be.a('Uint8Array');
+    });
+    it('fails when "maxCapabilityChainLength" is exceeded', async () => {
+      const secret = '22612679-05ce-4ffd-bf58-22b3c4bc1314';
+      const handle = 'testKeyMaxCapabilityChainLength';
+      const keystoreAgent = await helpers.createKeystoreAgent(
+        {handle, secret});
+      const hmac = await keystoreAgent.generateKey({
+        type: 'hmac', maxCapabilityChainLength: 1
+      });
+      const data = new TextEncoder('utf-8').encode('hello');
+
+      let err;
+      let result;
+      try {
+        result = await hmac.sign({data});
+      } catch(e) {
+        err = e;
+      }
+      assertNoError(err);
+      should.exist(result);
+      result.should.be.a('Uint8Array');
+
+      // now delegate and try to invoke
+      const delegatee = await CapabilityAgent.fromSecret({
+        secret: uuid(),
+        handle: uuid()
+      });
+      const rootCapability = ZCAP_ROOT_PREFIX +
+        encodeURIComponent(keystoreAgent.keystoreId);
+      const delegatedZcap = await helpers.delegate({
+        parentCapability: rootCapability,
+        controller: delegatee.id,
+        invocationTarget: hmac.id,
+        allowedAction: 'sign',
+        delegator: keystoreAgent.capabilityAgent
+      });
+      const hmac2 = await Hmac.fromCapability({
+        capability: delegatedZcap,
+        invocationSigner: delegatee.getSigner(),
+        kmsClient: new KmsClient({httpsAgent})
+      });
+
+      let err2;
+      let result2;
+      try {
+        result2 = await hmac2.sign({data});
+      } catch(e) {
+        err2 = e;
+      }
+      should.exist(err2);
+      should.not.exist(result2);
+      should.exist(err2.data);
+      err2.data.type.should.equal('NotAllowedError');
+      should.exist(err2.data.cause);
+      err2.data.cause.message.should.equal(
+        'Maximum zcap invocation capability chain length (1) exceeded.');
     });
     it('successfully signs with x-forwarded-for header', async () => {
       const secret = '2726f62d-31bb-4688-b54a-1a0b4e50329f';

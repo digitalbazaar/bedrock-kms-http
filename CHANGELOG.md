@@ -1,5 +1,12 @@
 # bedrock-kms-http ChangeLog
 
+## 11.1.0 - 2022-01-xx
+
+### Added
+- Use webkms-switch@9.1 to enable passing `zcapInvocation` to KMS
+  modules. This enables KMS modules to disallow key operations based
+  on zcap invocation information, if desired.
+
 ## 11.0.0 - 2022-01-11
 
 ### Changed
