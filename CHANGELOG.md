@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 11.1.0 - 2022-01-xx
+## 11.1.0 - 2022-01-14
 
 ### Added
 - Use webkms-switch@9.1 to enable passing `zcapInvocation` to KMS
