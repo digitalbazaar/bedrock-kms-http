@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 11.1.1 - 2022-01-xx
+## 11.1.1 - 2022-01-20
 
 ### Fixed
 - Do not expose details from errors that aren't marked public.
