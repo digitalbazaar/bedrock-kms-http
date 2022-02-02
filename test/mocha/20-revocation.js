@@ -55,7 +55,7 @@ describe('revocations API', () => {
     // first generate a new key for alice; use a did:key ID for its public ID
     const aliceKey = await aliceKeystoreAgent.generateKey({
       type: 'asymmetric',
-      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#{publicKeyMultibase}'
     });
 
     // next, delegate authority to bob to use alice's key
@@ -162,7 +162,7 @@ describe('revocations API', () => {
     // first generate a new key for alice; use a did:key ID for its public ID
     const aliceKey = await aliceKeystoreAgent.generateKey({
       type: 'asymmetric',
-      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#{publicKeyMultibase}'
     });
 
     // next, delegate authority to bob to use alice's key
@@ -262,7 +262,7 @@ describe('revocations API', () => {
     // first generate a new key for alice; use a did:key ID for its public ID
     const aliceKey = await aliceKeystoreAgent.generateKey({
       type: 'asymmetric',
-      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#{publicKeyMultibase}'
     });
 
     // next, delegate authority to bob to use alice's key
@@ -334,7 +334,7 @@ describe('revocations API', () => {
     // first generate a new key for alice; use a did:key ID for its public ID
     const aliceKey = await aliceKeystoreAgent.generateKey({
       type: 'asymmetric',
-      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#{publicKeyMultibase}'
     });
 
     // next, delegate authority to bob to use alice's key
@@ -449,7 +449,7 @@ describe('revocations API', () => {
     // first generate a new key for alice; use a did:key ID for its public ID
     const aliceKey = await aliceKeystoreAgent.generateKey({
       type: 'asymmetric',
-      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#{publicKeyMultibase}'
     });
 
     // next, delegate authority to bob to use alice's key
@@ -503,7 +503,7 @@ describe('revocations API', () => {
     // first generate a new key for alice; use a did:key ID for its public ID
     const aliceKey = await aliceKeystoreAgent.generateKey({
       type: 'asymmetric',
-      publicAliasTemplate: 'did:key:{publicKeyMultibase}#${publicKeyMultibase}'
+      publicAliasTemplate: 'did:key:{publicKeyMultibase}#{publicKeyMultibase}'
     });
 
     // next, delegate authority to bob to use alice's key
