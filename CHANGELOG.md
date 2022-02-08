@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 11.2.0 - 2022-02-xx
+## 11.2.0 - 2022-02-08
 
 ### Added
 - Allow KMS operations to be configured via config system and
