@@ -1,5 +1,11 @@
 # bedrock-kms-http ChangeLog
 
+## 11.2.0 - 2022-02-xx
+
+### Added
+- Allow KMS operations to be configured via config system and
+  set defaults to allow long-lived zcaps.
+
 ## 11.1.1 - 2022-01-20
 
 ### Fixed
