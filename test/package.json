@@ -24,7 +24,7 @@
     "bedrock": "^4.3.0",
     "bedrock-app-identity": "^1.0.0",
     "bedrock-did-context": "^2.0.0",
-    "bedrock-did-io": "^5.0.0",
+    "bedrock-did-io": "^6.0.2",
     "bedrock-express": "^6.2.0",
     "bedrock-https-agent": "^2.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
