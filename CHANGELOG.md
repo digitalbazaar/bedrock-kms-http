@@ -1,5 +1,10 @@
 # bedrock-kms-http ChangeLog
 
+## 11.3.0 - 2022-02-xx
+
+### Changed
+- Use `bedrock-validation@5.4` with better schema compilation.
+
 ## 11.2.0 - 2022-02-08
 
 ### Added
