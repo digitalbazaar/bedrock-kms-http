@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2020-2021 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2020-2022 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
@@ -10,51 +10,27 @@ const controller = {
   type: 'string'
 };
 
-const referenceId = {
-  title: 'referenceId',
+const id = {
+  title: 'id',
   type: 'string'
 };
 
-const delegator = {
-  anyOf: [{
-    type: 'string'
-  }, {
-    type: 'array',
-    minItems: 1,
-    items: {type: 'string'}
-  }]
-};
-
-const invoker = {
-  anyOf: [{
-    type: 'string'
-  }, {
-    type: 'array',
-    minItems: 1,
-    items: {type: 'string'}
-  }]
+const referenceId = {
+  title: 'referenceId',
+  type: 'string'
 };
 
 const delegatedZcap = {
   title: 'delegatedZcap',
   type: 'object',
   additionalProperties: false,
-  required: ['id', 'parentCapability', 'invocationTarget', 'proof'],
-  anyOf: [{
-    required: ['controller']
-  }, {
-    required: ['delegator']
-  }, {
-    required: ['invoker']
-  }],
+  required: [
+    '@context', 'controller', 'expires', 'id', 'invocationTarget',
+    'parentCapability', 'proof'
+  ],
   properties: {
     controller,
-    invoker,
-    delegator,
-    id: {
-      title: 'id',
-      type: 'string'
-    },
+    id,
     allowedAction: {
       anyOf: [{
         type: 'string'
@@ -81,34 +57,7 @@ const delegatedZcap = {
     },
     invocationTarget: {
       title: 'Invocation Target',
-      anyOf: [{
-        type: 'string'
-      }, {
-        type: 'object',
-        required: [
-          'type', 'id'
-        ],
-        additionalProperties: false,
-        properties: {
-          id: {
-            title: 'Invocation Target Id',
-            type: 'string'
-          },
-          type: {
-            title: 'Invocation Target Type',
-            type: 'string'
-          },
-          controller: {
-            title: 'controller',
-            type: 'string'
-          },
-          // was: verificationMethod
-          publicAlias: {
-            title: 'publicAlias',
-            type: 'string'
-          }
-        }
-      }]
+      type: 'string'
     },
     parentCapability: {
       title: 'Parent Capability',
@@ -151,12 +100,11 @@ const delegatedZcap = {
           title: 'proofValue',
           type: 'string'
         },
-      }},
-    referenceId
+      }
+    }
   }
 };
 
-// more strict schema than `delegatedZcap`
 const meterId = {
   title: 'Meter ID',
   type: 'string'
@@ -210,7 +158,7 @@ const updateKeystoreConfigBody = {
   ],
   properties: {
     controller,
-    id: {type: 'string'},
+    id,
     ipAllowList,
     referenceId,
     sequence,
