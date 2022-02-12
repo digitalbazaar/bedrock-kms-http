@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 11.3.1 - 2022-02-xx
+## 11.3.1 - 2022-02-12
 
 ### Changed
 - Improve internal implementation of JSON schema validators.
