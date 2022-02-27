@@ -26,9 +26,8 @@ describe('generateKey', () => {
     }
     assertNoError(err);
     should.exist(result);
-    result.should.have.keys([
-      'algorithm', 'capability', 'id', 'type', 'invocationSigner', 'kmsClient',
-      'cache', '_pruneCacheTimer'
+    result.should.include.keys([
+      'algorithm', 'capability', 'id', 'type', 'invocationSigner', 'kmsClient'
     ]);
   });
   it('generates a key with ipAllowList', async () => {
@@ -47,9 +46,8 @@ describe('generateKey', () => {
     }
     assertNoError(err);
     should.exist(result);
-    result.should.have.keys([
-      'algorithm', 'capability', 'id', 'type', 'invocationSigner', 'kmsClient',
-      'cache', '_pruneCacheTimer'
+    result.should.include.keys([
+      'algorithm', 'capability', 'id', 'type', 'invocationSigner', 'kmsClient'
     ]);
   });
   it('generates a key with x-forwarded-for header', async () => {
@@ -71,9 +69,8 @@ describe('generateKey', () => {
     }
     assertNoError(err);
     should.exist(result);
-    result.should.have.keys([
-      'algorithm', 'capability', 'id', 'type', 'invocationSigner', 'kmsClient',
-      'cache', '_pruneCacheTimer'
+    result.should.include.keys([
+      'algorithm', 'capability', 'id', 'type', 'invocationSigner', 'kmsClient'
     ]);
   });
   it('generates a key with multiple ipAllowList entries', async () => {
@@ -92,9 +89,8 @@ describe('generateKey', () => {
     }
     assertNoError(err);
     should.exist(result);
-    result.should.have.keys([
-      'algorithm', 'capability', 'id', 'type', 'invocationSigner', 'kmsClient',
-      'cache', '_pruneCacheTimer'
+    result.should.include.keys([
+      'algorithm', 'capability', 'id', 'type', 'invocationSigner', 'kmsClient'
     ]);
   });
   it('returns NotAllowedError for invalid source IP', async () => {
@@ -133,9 +129,8 @@ describe('generateKey', () => {
     }
     assertNoError(err);
     should.exist(result);
-    result.should.have.keys([
-      'capability', 'id', 'type', 'invocationSigner', 'kmsClient',
-      'kmsId', '_keyDescription'
+    result.should.include.keys([
+      'capability', 'id', 'type', 'invocationSigner', 'kmsClient', 'kmsId'
     ]);
   });
 }); // generateKey with ipAllowList
@@ -177,7 +172,7 @@ describe('get public key description', () => {
     }
     assertNoError(err);
     should.exist(result);
-    result.data.should.have.keys([
+    result.data.should.include.keys([
       '@context', 'id', 'type', 'publicKeyMultibase', 'controller'
     ]);
     result.data.id.should.equal(key.id);
