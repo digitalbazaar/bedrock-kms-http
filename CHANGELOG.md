@@ -6,6 +6,8 @@
 - **BREAKING**: Move zcap revocations to `/zcaps/revocations` to better
   future proof.
 - **BREAKING**: Use `@digitalbazaar/ezcap-express@6`.
+- **BREAKING**: This version is compatible with
+  `@digitalbazaar/webkms-client@10`.
 
 ## 11.3.1 - 2022-02-12
 
