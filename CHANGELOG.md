@@ -1,5 +1,12 @@
 # bedrock-kms-http ChangeLog
 
+## 12.0.0 - 2022-03-xx
+
+### Changed
+- **BREAKING**: Move zcap revocations to `/zcaps/revocations` to better
+  future proof.
+- **BREAKING**: Use `@digitalbazaar/ezcap-express@6`.
+
 ## 11.3.1 - 2022-02-12
 
 ### Changed

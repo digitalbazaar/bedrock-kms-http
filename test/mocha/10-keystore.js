@@ -148,7 +148,8 @@ describe('bedrock-kms-http API', () => {
       const zcap = mockData.zcaps.zero;
       delete zcap.controller;
 
-      const url = `${keystore.id}/revocations/${encodeURIComponent(zcap.id)}`;
+      const url =
+        `${keystore.id}/zcaps/revocations/${encodeURIComponent(zcap.id)}`;
 
       let err;
       let result;
