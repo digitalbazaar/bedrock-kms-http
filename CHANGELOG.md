@@ -1,5 +1,12 @@
 # bedrock-kms-http ChangeLog
 
+## 12.0.1 - 2022-03-xx
+
+### Fixed
+- Use `@digitalbazaar/webkms-switch@10` to be consistent with
+  `@digitalbazaar/ezcap-express@6` and other breaking changes
+  in this major version.
+
 ## 12.0.0 - 2022-03-01
 
 ### Changed
