@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 12.0.1 - 2022-03-xx
+## 12.0.1 - 2022-03-03
 
 ### Fixed
 - Use `@digitalbazaar/webkms-switch@10` to be consistent with
