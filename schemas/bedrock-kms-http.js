@@ -1,9 +1,7 @@
 /*!
  * Copyright (c) 2020-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
-const cidrRegex = require('cidr-regex');
+import cidrRegex from 'cidr-regex';
 
 const controller = {
   title: 'controller',
@@ -171,7 +169,7 @@ const postRevocationBody = {
   ...delegatedZcap
 };
 
-module.exports = {
+export {
   postKeystoreBody,
   postRevocationBody,
   updateKeystoreConfigBody
