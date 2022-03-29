@@ -1,5 +1,23 @@
 # bedrock-kms-http ChangeLog
 
+## 12.1.0 - 2022-03-xx
+
+### Changed
+- Update peer deps:
+  - `bedrock@4.5`
+  - `bedrock-express@6.4.1`
+  - `bedrock-kms@8.3.0`
+  - `bedrock-validation@5.6.3`
+  - `bedrock-zcap-storage@5.2`.
+- Update internals to use esm style and use `esm.js` to
+  transpile to CommonJS.
+
+### Removed
+- Remove unused peer deps:
+  - `bedrock-server`
+  - `bedrock-jsonld-document-loader`
+  - `bedrock-mongodb`.
+
 ## 12.0.1 - 2022-03-03
 
 ### Fixed
