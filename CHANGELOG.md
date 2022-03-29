@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 12.1.0 - 2022-03-xx
+## 12.1.0 - 2022-03-29
 
 ### Changed
 - Update peer deps:
