@@ -1,14 +1,14 @@
 /*
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
-const bedrock = require('bedrock');
+import * as bedrock from '@bedrock/core';
+import * as helpers from './helpers.js';
+import {agent} from '@bedrock/https-agent';
+import {createRequire} from 'module';
+import {mockData} from './mock.data.js';
+const require = createRequire(import.meta.url);
 const {CapabilityAgent} = require('@digitalbazaar/webkms-client');
-const helpers = require('./helpers');
-const {agent} = require('bedrock-https-agent');
 const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
-const mockData = require('./mock.data');
 const {signCapabilityInvocation} = require(
   '@digitalbazaar/http-signature-zcap-invoke');
 const {ZcapClient} = require('@digitalbazaar/ezcap');

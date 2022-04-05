@@ -1,8 +1,9 @@
 {
-  "name": "bedrock-kms-http",
+  "name": "@bedrock/kms-http",
   "version": "12.1.1-0",
+  "type": "module",
   "description": "Bedrock KMS HTTP API",
-  "main": "./lib",
+  "main": "./lib/index.js",
   "scripts": {
     "lint": "eslint ."
   },
@@ -30,18 +31,17 @@
     "cidr-regex": "^3.1.1",
     "cors": "^2.8.5",
     "crypto-ld": "^6.0.0",
-    "esm": "^3.2.25",
     "forwarded": "^0.2.0",
     "netmask": "^2.0.2"
   },
   "peerDependencies": {
-    "bedrock": "^4.5.0",
-    "bedrock-app-identity": "^1.0.0",
-    "bedrock-express": "^6.4.1",
-    "bedrock-kms": "^8.1.0",
-    "bedrock-meter-usage-reporter": "^5.0.0",
-    "bedrock-validation": "^5.6.3",
-    "bedrock-zcap-storage": "^5.2.0"
+    "@bedrock/core": "^5.0.0",
+    "@bedrock/app-identity": "^2.0.0",
+    "@bedrock/express": "^7.0.0",
+    "@bedrock/kms": "^9.0.0",
+    "@bedrock/meter-usage-reporter": "^6.0.0",
+    "@bedrock/validation": "^6.0.0",
+    "@bedrock/zcap-storage": "^6.0.0"
   },
   "directories": {
     "lib": "./lib"
@@ -50,9 +50,9 @@
     "eslint": "^7.32.0",
     "eslint-config-digitalbazaar": "^2.8.0",
     "eslint-plugin-jsdoc": "^37.9.7",
-    "jsdoc-to-markdown": "^6.0.1"
+    "jsdoc-to-markdown": "^7.1.1"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=14"
   }
 }

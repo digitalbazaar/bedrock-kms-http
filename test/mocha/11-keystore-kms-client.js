@@ -1,10 +1,10 @@
-/*
- * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
+/*!
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
-const brHttpsAgent = require('bedrock-https-agent');
-const helpers = require('./helpers');
+import * as helpers from './helpers.js';
+import {httpsAgent} from '@bedrock/https-agent';
+import {createRequire} from 'module';
+const require = createRequire(import.meta.url);
 const {CapabilityAgent, KmsClient, KeystoreAgent} =
   require('@digitalbazaar/webkms-client');
 
@@ -31,7 +31,6 @@ describe('keystore API interactions using webkms-client', () => {
     const {id: keystoreId} = await helpers.createKeystore(
       {capabilityAgent: bobCapabilityAgent});
     try {
-      const {httpsAgent} = brHttpsAgent;
       const kmsClient = new KmsClient({httpsAgent});
       bobKeystoreAgent = new KeystoreAgent(
         {capabilityAgent: bobCapabilityAgent, keystoreId, kmsClient});

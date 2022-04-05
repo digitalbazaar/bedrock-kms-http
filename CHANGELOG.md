@@ -1,5 +1,13 @@
 # bedrock-kms-http ChangeLog
 
+## 13.0.0 - 2022-04-xx
+
+### Changed
+- **BREAKING**: Rename package to `@bedrock/kms-http`.
+- **BREAKING**: Convert to module (ESM).
+- **BREAKING**: Remove default export.
+- **BREAKING**: Require node 14.x.
+
 ## 12.1.0 - 2022-03-29
 
 ### Changed

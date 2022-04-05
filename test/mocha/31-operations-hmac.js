@@ -1,14 +1,15 @@
-/*
+/*!
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
-const {httpsAgent} = require('bedrock-https-agent');
+import * as helpers from './helpers.js';
+import {httpsAgent} from '@bedrock/https-agent';
+import {createRequire} from 'module';
+import pMap from 'p-map';
+const require = createRequire(import.meta.url);
 const {CapabilityAgent, Hmac, KmsClient} = require(
   '@digitalbazaar/webkms-client');
-const helpers = require('./helpers');
-const pMap = require('p-map');
-const {util: {uuid}} = require('bedrock');
+
+const {util: {uuid}} = bedrock;
 
 const ZCAP_ROOT_PREFIX = 'urn:zcap:root:';
 

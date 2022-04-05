@@ -1,10 +1,10 @@
-/*
+/*!
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
-const brHttpsAgent = require('bedrock-https-agent');
-const helpers = require('./helpers');
+import * as helpers from './helpers.js';
+import {httpsAgent} from '@bedrock/https-agent';
+import {createRequire} from 'module';
+const require = createRequire(import.meta.url);
 const {CapabilityAgent, KmsClient, KeystoreAgent} =
   require('@digitalbazaar/webkms-client');
 
@@ -24,7 +24,6 @@ describe('revocations API with ipAllowList', () => {
 
     aliceKeystoreConfig = await helpers.createKeystore(
       {capabilityAgent: aliceCapabilityAgent});
-    const {httpsAgent} = brHttpsAgent;
     const kmsClient = new KmsClient({httpsAgent});
     aliceKeystoreAgent = new KeystoreAgent({
       capabilityAgent: aliceCapabilityAgent,
