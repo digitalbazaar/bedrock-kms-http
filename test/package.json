@@ -1,6 +1,7 @@
 {
   "name": "bedrock-kms-http-test",
   "version": "0.0.1-0",
+  "type": "module",
   "description": "Bedrock KMS HTTP API test",
   "private": true,
   "scripts": {
