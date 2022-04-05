@@ -1,19 +1,17 @@
-/*
- * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
+/*!
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-const bedrock = require('bedrock');
-require('bedrock-https-agent');
-require('bedrock-kms-http');
-require('bedrock-meter');
-require('bedrock-security-context');
-require('bedrock-meter-usage-reporter');
-require('bedrock-app-identity');
-const {handlers} = require('bedrock-meter-http');
-// this is responsible for providing the `ssm-v1` key store
-require('bedrock-ssm-mongodb');
-
-require('bedrock-test');
-require('bedrock-karma');
+import * as bedrock from '@bedrock/core';
+import '@bedrock/https-agent';
+import '@bedrock/kms';
+import '@bedrock/kms-http';
+import '@bedrock/meter';
+import {handlers} from '@bedrock/meter-http';
+import '@bedrock/meter-usage-reporter';
+import '@bedrock/security-context';
+import '@bedrock/ssm-mongodb';
+import '@bedrock/test';
+import '@bedrock/karma';
 
 bedrock.events.on('bedrock.init', async () => {
   /* Handlers need to be added before `bedrock.start` is called. These are

@@ -1,15 +1,15 @@
-/*
+/*!
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
-const brHttpsAgent = require('bedrock-https-agent');
+import * as helpers from './helpers.js';
+import {httpsAgent} from '@bedrock/https-agent';
+import {createRequire} from 'module';
+const require = createRequire(import.meta.url);
 const {CapabilityAgent, KmsClient, KeystoreAgent} =
   require('@digitalbazaar/webkms-client');
 const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
 const {signCapabilityInvocation} = require(
   '@digitalbazaar/http-signature-zcap-invoke');
-const helpers = require('./helpers');
 
 describe('generateKey', () => {
   it('generates a key', async () => {
@@ -143,7 +143,6 @@ describe('get public key description', () => {
       {secret, handle});
     const {id: keystoreId} = await helpers.createKeystore(
       {capabilityAgent});
-    const {httpsAgent} = brHttpsAgent;
     const kmsClient = new KmsClient({keystoreId, httpsAgent});
     let keystoreAgent;
     try {

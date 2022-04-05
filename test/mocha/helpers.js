@@ -1,10 +1,13 @@
 /*
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
-const bedrock = require('bedrock');
-const brHttpsAgent = require('bedrock-https-agent');
+import * as bedrock from '@bedrock/core';
+import {createRequire} from 'module';
+import {documentLoader} from '@bedrock/jsonld-document-loader';
+import {getAppIdentity} from '@bedrock/app-identity';
+import {httpsAgent} from '@bedrock/https-agent';
+import jsigs from 'jsonld-signatures';
+const require = createRequire(import.meta.url);
 const {AsymmetricKey, CapabilityAgent, KeystoreAgent, KmsClient} =
   require('@digitalbazaar/webkms-client');
 const {
@@ -12,17 +15,13 @@ const {
   constants: zcapConstants
 } = require('@digitalbazaar/zcap');
 const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
-const {getAppIdentity} = require('bedrock-app-identity');
-const {httpsAgent} = require('bedrock-https-agent');
-const jsigs = require('jsonld-signatures');
 const {ZcapClient} = require('@digitalbazaar/ezcap');
-const {util: {uuid}} = bedrock;
-const {documentLoader} = require('bedrock-jsonld-document-loader');
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
+const {util: {uuid}} = bedrock;
 const {ZCAP_CONTEXT_URL} = zcapConstants;
 
-exports.createMeter = async ({capabilityAgent} = {}) => {
+export async function createMeter({capabilityAgent} = {}) {
   // create signer using the application's capability invocation key
   const {keys: {capabilityInvocationKey}} = getAppIdentity();
 
@@ -45,13 +44,13 @@ exports.createMeter = async ({capabilityAgent} = {}) => {
   // return full meter ID
   const {id} = meter;
   return {id: `${meterService}/${id}`};
-};
+}
 
-exports.createKeystore = async ({
+export async function createKeystore({
   capabilityAgent, ipAllowList, referenceId, meterId,
   kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`,
   kmsModule = 'ssm-v1',
-}) => {
+}) {
   if(!meterId) {
     // create a meter for the keystore
     ({id: meterId} = await exports.createMeter({capabilityAgent}));
@@ -77,11 +76,11 @@ exports.createKeystore = async ({
     invocationSigner: capabilityAgent.getSigner(),
     httpsAgent
   });
-};
+}
 
-exports.createKeystoreAgent = async ({
+export async function createKeystoreAgent({
   handle, ipAllowList, secret, kmsClientHeaders = {}
-}) => {
+}) {
   const capabilityAgent = await CapabilityAgent.fromSecret({secret, handle});
 
   let err;
@@ -104,18 +103,18 @@ exports.createKeystoreAgent = async ({
   });
 
   return keystoreAgent;
-};
+}
 
-exports.getKeystore = async ({id, capabilityAgent}) => {
+export async function getKeystore({id, capabilityAgent}) {
   const kmsClient = new KmsClient({keystoreId: id, httpsAgent});
   const invocationSigner = capabilityAgent.getSigner();
   return kmsClient.getKeystore({invocationSigner});
-};
+}
 
-exports.delegate = async ({
+export async function delegate({
   parentCapability, controller, invocationTarget, expires, allowedAction,
   delegator, purposeOptions = {}
-}) => {
+}) {
   const newCapability = {
     '@context': ZCAP_CONTEXT_URL,
     id: `urn:zcap:${uuid()}`,
@@ -134,19 +133,19 @@ exports.delegate = async ({
   });
 };
 
-exports.revokeDelegatedCapability = async ({
+export async function revokeDelegatedCapability({
   capabilityToRevoke, invocationSigner
-}) => {
-  const {httpsAgent} = brHttpsAgent;
+}) {
   const kmsClient = new KmsClient({httpsAgent});
   await kmsClient.revokeCapability({
     capabilityToRevoke,
     invocationSigner
   });
-};
+}
 
-exports.signWithDelegatedKey = async ({capability, doc, invocationSigner}) => {
-  const {httpsAgent} = brHttpsAgent;
+export async function signWithDelegatedKey({
+  capability, doc, invocationSigner
+}) {
   const delegatedSigningKey = await AsymmetricKey.fromCapability({
     capability,
     invocationSigner,
@@ -161,4 +160,4 @@ exports.signWithDelegatedKey = async ({capability, doc, invocationSigner}) => {
     purpose: new AssertionProofPurpose(),
     suite
   });
-};
+}

@@ -1,15 +1,15 @@
-/*
+/*!
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
+import {createRequire} from 'module';
+const require = createRequire(import.meta.url);
 const {constants: zcapConstants} = require('@digitalbazaar/zcap');
 
 const {ZCAP_CONTEXT_URL} = zcapConstants;
 
-const data = {};
+export const mockData = {};
 
-module.exports = data;
-
-const zcaps = data.zcaps = {};
+const zcaps = mockData.zcaps = {};
 
 // Note: This zcap is only used to check JSON schema validators, it does not
 // have valid proofs.
