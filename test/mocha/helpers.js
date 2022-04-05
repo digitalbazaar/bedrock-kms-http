@@ -131,7 +131,7 @@ export async function delegate({
     purpose: new CapabilityDelegation({parentCapability, ...purposeOptions}),
     suite: new Ed25519Signature2020({signer: delegator.getSigner()}),
   });
-};
+}
 
 export async function revokeDelegatedCapability({
   capabilityToRevoke, invocationSigner
