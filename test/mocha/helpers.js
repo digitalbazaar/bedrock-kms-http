@@ -53,7 +53,7 @@ export async function createKeystore({
 }) {
   if(!meterId) {
     // create a meter for the keystore
-    ({id: meterId} = await exports.createMeter({capabilityAgent}));
+    ({id: meterId} = await createMeter({capabilityAgent}));
   }
 
   // create keystore
@@ -86,7 +86,7 @@ export async function createKeystoreAgent({
   let err;
   let keystore;
   try {
-    keystore = await exports.createKeystore({capabilityAgent, ipAllowList});
+    keystore = await createKeystore({capabilityAgent, ipAllowList});
   } catch(e) {
     err = e;
   }
