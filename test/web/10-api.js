@@ -1,13 +1,11 @@
-/*
- * Copyright (c) 2019-2021 Digital Bazaar, Inc. All rights reserved.
+/*!
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
-
-const pMap = require('p-map');
-const uuid = require('uuid-random');
-const {CapabilityAgent, KeystoreAgent, KmsClient} =
-  require('@digitalbazaar/webkms-client');
-const helpers = require('./helpers');
+import pMap from 'p-map';
+import uuid from 'uuid-random';
+import {CapabilityAgent, KeystoreAgent, KmsClient}
+  from '@digitalbazaar/webkms-client';
+import * as helpers from './helpers.js';
 
 describe('bedrock-kms-http HMAC operations', () => {
   describe('Sha256HmacKey2019', () => {
