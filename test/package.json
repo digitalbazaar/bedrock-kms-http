@@ -9,7 +9,7 @@
     "test:debug": "node --preserve-symlinks test.js test --log-level debug",
     "test-node": "node --preserve-symlinks test.js test --framework mocha",
     "test-karma": "node --preserve-symlinks test.js test --framework karma",
-    "coverage": "cross-env NODE_ENV=test c8 --reporter=lcov --reporter=text-summary node --preserve-symlinks test.js test --config ./node_modules/@bedrock/karma/lib/coverageConfig.js",
+    "coverage": "cross-env NODE_ENV=test c8 --reporter=lcov --reporter=text-summary node --preserve-symlinks test.js test --framework mocha",
     "coverage-ci": "cross-env NODE_ENV=test c8 --reporter=lcovonly node --preserve-symlinks test.js test --framework mocha",
     "coverage-report": "c8 report"
   },
