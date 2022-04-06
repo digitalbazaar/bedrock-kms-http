@@ -1,10 +1,10 @@
 /*!
- * Copyright (c) 2021 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2021-2022 Digital Bazaar, Inc. All rights reserved.
  */
-const {decode} = require('base58-universal');
-const {driver} = require('@digitalbazaar/did-method-key');
-const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
-const {ZcapClient} = require('@digitalbazaar/ezcap');
+import {decode} from 'base58-universal';
+import {driver} from '@digitalbazaar/did-method-key';
+import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
+import {ZcapClient} from '@digitalbazaar/ezcap';
 
 // found in bedrock-app-identity
 const DEFAULT_APPLICATION_ID_SEED =
@@ -17,8 +17,8 @@ const MULTIHASH_IDENTITY_FUNCTION_CODE = 0x00;
 // seed byte size
 const SEED_BYTE_SIZE = 32;
 
-exports.createMeter = async ({capabilityAgent} = {}) => {
-  const invocationSigner = await exports.getInvocationSigner();
+export async function createMeter({capabilityAgent} = {}) {
+  const invocationSigner = await getInvocationSigner();
   const zcapClient = new ZcapClient({
     invocationSigner,
     SuiteClass: Ed25519Signature2020
@@ -38,9 +38,9 @@ exports.createMeter = async ({capabilityAgent} = {}) => {
   // return full meter ID
   const {id} = meter;
   return {id: `${meterService}/${id}`};
-};
+}
 
-exports.getInvocationSigner = async () => {
+export async function getInvocationSigner() {
   // convert multibase seed to Uint8Array
   const seed = _decodeMultibaseSeed({
     seedMultibase: DEFAULT_APPLICATION_ID_SEED
@@ -53,7 +53,7 @@ exports.getInvocationSigner = async () => {
 
   const capabilityInvocationKey = didKey.keyPairs.get(capabilityInvocation[0]);
   return capabilityInvocationKey.signer();
-};
+}
 
 function _decodeMultibaseSeed({seedMultibase}) {
   const prefix = seedMultibase[0];
