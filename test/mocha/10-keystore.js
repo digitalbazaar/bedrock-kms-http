@@ -5,10 +5,10 @@ import * as bedrock from '@bedrock/core';
 import * as helpers from './helpers.js';
 import {agent} from '@bedrock/https-agent';
 import {createRequire} from 'module';
+import {httpClient, DEFAULT_HEADERS} from '@digitalbazaar/http-client';
 import {mockData} from './mock.data.js';
 const require = createRequire(import.meta.url);
 const {CapabilityAgent} = require('@digitalbazaar/webkms-client');
-const {httpClient, DEFAULT_HEADERS} = require('@digitalbazaar/http-client');
 const {signCapabilityInvocation} = require(
   '@digitalbazaar/http-signature-zcap-invoke');
 const {ZcapClient} = require('@digitalbazaar/ezcap');
