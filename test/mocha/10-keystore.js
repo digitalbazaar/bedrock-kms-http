@@ -4,7 +4,7 @@
 import * as bedrock from '@bedrock/core';
 import * as helpers from './helpers.js';
 import {agent} from '@bedrock/https-agent';
-import {createRequire} from 'module';
+import {createRequire} from 'node:module';
 import {httpClient, DEFAULT_HEADERS} from '@digitalbazaar/http-client';
 import {mockData} from './mock.data.js';
 const require = createRequire(import.meta.url);

@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 import * as bedrock from '@bedrock/core';
-import {createRequire} from 'module';
+import {createRequire} from 'node:module';
 import {documentLoader} from '@bedrock/jsonld-document-loader';
 import {getAppIdentity} from '@bedrock/app-identity';
 import {httpsAgent} from '@bedrock/https-agent';
