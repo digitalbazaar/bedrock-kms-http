@@ -1,5 +1,17 @@
 # bedrock-kms-http ChangeLog
 
+## 14.0.0 - 2022-04-xx
+
+### Changed
+- **BREAKING**: Update peer deps:
+  - `@bedrock/core@6`
+  - `@bedrock/app-identity@3`
+  - `@bedrock/express@8`
+  - `@bedrock/kms@10`
+  - `@bedrock/meter-usage-reporter@7`
+  - `@bedrock/validation@7`
+  - `@bedrock/zcap-storage@7`.
+
 ## 13.0.0 - 2022-04-05
 
 ### Changed
