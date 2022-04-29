@@ -4,7 +4,7 @@
 import * as bedrock from '@bedrock/core';
 import * as helpers from './helpers.js';
 import {httpsAgent} from '@bedrock/https-agent';
-import {createRequire} from 'module';
+import {createRequire} from 'node:module';
 import pMap from 'p-map';
 const require = createRequire(import.meta.url);
 const {CapabilityAgent, Hmac, KmsClient} = require(
