@@ -1,16 +1,14 @@
 /*!
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-import * as bedrock from '@bedrock/core';
 import * as helpers from './helpers.js';
 import {httpsAgent} from '@bedrock/https-agent';
 import {createRequire} from 'node:module';
 import pMap from 'p-map';
+import uuid from 'uuid-random';
 const require = createRequire(import.meta.url);
 const {CapabilityAgent, Hmac, KmsClient} = require(
   '@digitalbazaar/webkms-client');
-
-const {util: {uuid}} = bedrock;
 
 const ZCAP_ROOT_PREFIX = 'urn:zcap:root:';
 

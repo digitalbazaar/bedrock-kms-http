@@ -334,7 +334,7 @@ describe('bedrock-kms-http API', () => {
         should.exist(result);
         result.should.eql(expectedConfig);
       });
-      it('throw internal server error when attempting to update "meterId"',
+      it('throw operation error when attempting to update "meterId"',
         async () => {
           // TODO: Remove or update this test when the following is fixed
           // eslint-disable-next-line max-len
@@ -385,7 +385,7 @@ describe('bedrock-kms-http API', () => {
           should.not.exist(result);
           should.exist(err);
           err.status.should.equal(500);
-          err.data.type.should.equal('bedrock.InternalServerError');
+          err.data.type.should.equal('OperationError');
         });
       it('rejects config update for an invalid zcap', async () => {
         const secret = 'd852a72d-013f-4dd6-8ba2-588aaf601b66';
