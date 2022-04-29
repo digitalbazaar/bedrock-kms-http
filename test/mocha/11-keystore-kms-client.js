@@ -55,7 +55,7 @@ describe('keystore API interactions using webkms-client', () => {
     should.not.exist(result);
     should.exist(err);
     err.status.should.equal(400);
-    err.data.should.have.keys('message', 'type', 'details', 'cause');
+    err.data.should.include.keys('message', 'name', 'type', 'details', 'cause');
     err.data.type.should.equal('URLMismatchError');
     err.data.details.should.have.keys(
       ['expected', 'httpStatusCode', 'actual', 'configId', 'requestUrl']);

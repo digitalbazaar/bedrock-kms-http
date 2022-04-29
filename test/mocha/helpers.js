@@ -7,6 +7,7 @@ import {documentLoader} from '@bedrock/jsonld-document-loader';
 import {getAppIdentity} from '@bedrock/app-identity';
 import {httpsAgent} from '@bedrock/https-agent';
 import jsigs from 'jsonld-signatures';
+import uuid from 'uuid-random';
 const require = createRequire(import.meta.url);
 const {AsymmetricKey, CapabilityAgent, KeystoreAgent, KmsClient} =
   require('@digitalbazaar/webkms-client');
@@ -18,7 +19,6 @@ const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
 const {ZcapClient} = require('@digitalbazaar/ezcap');
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
-const {util: {uuid}} = bedrock;
 const {ZCAP_CONTEXT_URL} = zcapConstants;
 
 export async function createMeter({capabilityAgent} = {}) {
