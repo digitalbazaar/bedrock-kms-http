@@ -1,5 +1,13 @@
 # bedrock-kms-http ChangeLog
 
+## 14.2.0 - 2022-05-xx
+
+### Changed
+- Be more resilient to keystore config controller changes. When a keystore
+  is new and KMS operations are performed on it that could cause false-positive
+  fail authz errors, fetch a fresh version of the config to ensure that the
+  controller has not changed.
+
 ## 14.1.0 - 2022-05-12
 
 ### Added
