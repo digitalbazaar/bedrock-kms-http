@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 14.1.0 - 2022-05-xx
+## 14.1.0 - 2022-05-12
 
 ### Added
 - Include full error as non-public `cause` in `onError` handler.
