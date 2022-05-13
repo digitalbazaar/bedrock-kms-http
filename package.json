@@ -38,7 +38,7 @@
     "@bedrock/app-identity": "^3.0.0",
     "@bedrock/core": "^6.0.0",
     "@bedrock/express": "^8.0.0",
-    "@bedrock/kms": "^10.1.0",
+    "@bedrock/kms": "^10.2.0",
     "@bedrock/meter-usage-reporter": "^7.0.0",
     "@bedrock/validation": "^7.0.0",
     "@bedrock/zcap-storage": "^7.0.0"
