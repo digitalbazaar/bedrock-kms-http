@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 14.2.0 - 2022-05-xx
+## 14.2.0 - 2022-05-13
 
 ### Changed
 - Be more resilient to keystore config controller changes. When a keystore
