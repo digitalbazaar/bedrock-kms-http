@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 14.2.1 - 2022-05-xx
+## 14.2.1 - 2022-05-13
 
 ### Fixed
 - Fix cache busting for invoked delegated zcap cases.
