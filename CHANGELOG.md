@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 14.3.1 - 2022-05-xx
+## 14.3.1 - 2022-05-16
 
 ### Fixed
 - Use `@digitalbazaar/webkms-switch@10.2` to ensure that pre-cached `webkms`
