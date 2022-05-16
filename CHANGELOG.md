@@ -1,5 +1,10 @@
 # bedrock-kms-http ChangeLog
 
+## 14.3.0 - 2022-05-xx
+
+### Added
+- Add debug logging for keystore config cache busting.
+
 ## 14.2.1 - 2022-05-13
 
 ### Fixed
