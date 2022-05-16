@@ -67,7 +67,7 @@ describe('keystore API interactions using webkms-client', () => {
       bobKeystoreAgent.keystoreId);
   });
 
-  it('updates config controller twice proving cache busting', async () => {
+  it('updates config and uses key proving cache busting', async () => {
     const keystoreId = aliceKeystoreConfig.id;
     const kmsClient = new KmsClient({httpsAgent});
 
@@ -87,6 +87,9 @@ describe('keystore API interactions using webkms-client', () => {
     //   {capabilityAgent: agent2, keystoreId, kmsClient});
     const agent3KeystoreAgent = new KeystoreAgent(
       {capabilityAgent: agent3, keystoreId, kmsClient});
+
+    // generate a key for use
+    const hmacKey = await aliceKeystoreAgent.generateKey({type: 'hmac'});
 
     // delegate zcap for updating config from agent2 to agent3 to test
     // cache busting with delegated zcap
@@ -120,7 +123,7 @@ describe('keystore API interactions using webkms-client', () => {
       // disable cache delete functionality on update
       keystores._disableClearCacheOnUpdate(true);
 
-      // update controller alice => agent1 (no cache busting required
+      // update controller alice => agent1 (no cache busting required)
       {
         config.sequence++;
         config.controller = agent1.id;
@@ -164,6 +167,72 @@ describe('keystore API interactions using webkms-client', () => {
         result.config.controller.should.eql(agent1.id);
         ({config} = result);
       }
+
+      // update controller back to alice to test key op cache busting
+      {
+        config.sequence++;
+        config.controller = aliceCapabilityAgent.id;
+        const result = await agent1KeystoreAgent.updateConfig({config});
+        result.config.id.should.eql(config.id);
+        result.config.controller.should.eql(aliceCapabilityAgent.id);
+        ({config} = result);
+      }
+
+      // use hmac key as alice (requires cache busting by inspecting root
+      // zcap)
+      await hmacKey.sign({data: new Uint8Array([0])});
+
+      // update controller alice => agent1 (no cache busting required)
+      {
+        config.sequence++;
+        config.controller = agent1.id;
+        const result = await aliceKeystoreAgent.updateConfig({config});
+        result.config.id.should.eql(config.id);
+        result.config.controller.should.eql(agent1.id);
+        ({config} = result);
+      }
+
+      // use hmac key as agent1 (requires cache busting by
+      // inspecting the root zcap)
+      hmacKey.invocationSigner = agent1.getSigner();
+      // use different data each time to avoid hmac caching
+      await hmacKey.sign({data: new Uint8Array([1])});
+
+      // update controller agent1 => agent2 (requires cache busting by
+      // inspecting the root zcap)
+      {
+        config.sequence++;
+        config.controller = agent2.id;
+        const result = await agent1KeystoreAgent.updateConfig({config});
+        result.config.id.should.eql(config.id);
+        result.config.controller.should.eql(agent2.id);
+        ({config} = result);
+      }
+
+      // use hmac key as agent3 (requires cache busting by
+      // inspecting a delegated zcap)
+      hmacKey.capability = agent3Zcap;
+      hmacKey.invocationSigner = agent3.getSigner();
+      // use different data each time to avoid hmac caching
+      await hmacKey.sign({data: new Uint8Array([1])});
+
+      // update controller agent2 => agent3 (cache should already be fresh)
+      {
+        config.sequence++;
+        config.controller = agent3.id;
+        const result = await agent3KeystoreAgent.updateConfig(
+          {capability: agent3Zcap, config});
+        result.config.id.should.eql(config.id);
+        result.config.controller.should.eql(agent3.id);
+        ({config} = result);
+      }
+
+      // use hmac key as agent1 (requires cache busting by
+      // inspecting a deep delegated zcap)
+      hmacKey.capability = agent1Zcap;
+      hmacKey.invocationSigner = agent1.getSigner();
+      // use different data each time to avoid hmac caching
+      await hmacKey.sign({data: new Uint8Array([1])});
     } catch(e) {
       assertNoError(e);
     } finally {

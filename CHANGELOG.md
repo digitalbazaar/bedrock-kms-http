@@ -1,5 +1,12 @@
 # bedrock-kms-http ChangeLog
 
+## 14.3.1 - 2022-05-xx
+
+### Fixed
+- Use `@digitalbazaar/webkms-switch@10.2` to ensure that pre-cached `webkms`
+  request meta data is not overwritten and that a custom `getRootController`
+  function is used (to enable cache busting on KMS operations).
+
 ## 14.3.0 - 2022-05-16
 
 ### Added
