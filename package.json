@@ -27,7 +27,7 @@
     "@digitalbazaar/ed25519-signature-2020": "^3.0.0",
     "@digitalbazaar/ed25519-verification-key-2020": "^3.2.0",
     "@digitalbazaar/ezcap-express": "^6.2.0",
-    "@digitalbazaar/webkms-switch": "^10.0.0",
+    "@digitalbazaar/webkms-switch": "^10.1.0",
     "cidr-regex": "^3.1.1",
     "cors": "^2.8.5",
     "crypto-ld": "^6.0.0",
