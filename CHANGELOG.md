@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 14.4.0 - 2022-05-xx
+## 14.4.0 - 2022-05-19
 
 ### Added
 - Add max age header for CORS, defaulting to the max acceptable time for
