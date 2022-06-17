@@ -1,5 +1,10 @@
 # bedrock-kms-http ChangeLog
 
+## 14.5.0 - 2022-xx-xx
+
+### Changed
+- Use `package.json` `files` field.
+
 ## 14.5.0 - 2022-06-19
 
 ### Changed
