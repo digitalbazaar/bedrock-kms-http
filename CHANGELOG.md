@@ -1,5 +1,11 @@
 # bedrock-kms-http ChangeLog
 
+## 14.5.0 - 2022-06-xx
+
+### Changed
+- Use `@bedrock/kms@10.3`.
+- Use `@digitalbazaar/webkms-switch@10.3`.
+
 ## 14.4.0 - 2022-05-19
 
 ### Added
