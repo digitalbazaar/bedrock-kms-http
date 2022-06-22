@@ -5,7 +5,7 @@
   "description": "Bedrock KMS HTTP API test",
   "private": true,
   "scripts": {
-    "test": "node --preserve-symlinks test.js test",
+    "test": "npm run test-node",
     "test:debug": "node --preserve-symlinks test.js test --log-level debug",
     "test-node": "node --preserve-symlinks test.js test --framework mocha",
     "test-karma": "node --preserve-symlinks test.js test --framework karma",
