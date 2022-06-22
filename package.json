@@ -28,35 +28,35 @@
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-kms-http",
   "dependencies": {
-    "@digitalbazaar/ed25519-signature-2020": "^3.0.0",
-    "@digitalbazaar/ed25519-verification-key-2020": "^3.2.0",
-    "@digitalbazaar/ezcap-express": "^6.2.0",
-    "@digitalbazaar/webkms-switch": "^10.3.0",
+    "@digitalbazaar/ed25519-signature-2020": "^4.0.1",
+    "@digitalbazaar/ed25519-verification-key-2020": "^4.0.0",
+    "@digitalbazaar/ezcap-express": "^7.0.0",
+    "@digitalbazaar/webkms-switch": "^11.0.0",
     "cidr-regex": "^3.1.1",
     "cors": "^2.8.5",
-    "crypto-ld": "^6.0.0",
+    "crypto-ld": "^7.0.0",
     "forwarded": "^0.2.0",
     "netmask": "^2.0.2"
   },
   "peerDependencies": {
-    "@bedrock/app-identity": "^3.0.0",
-    "@bedrock/core": "^6.0.0",
+    "@bedrock/app-identity": "^4.0.0",
+    "@bedrock/core": "^6.0.1",
     "@bedrock/express": "^8.0.0",
-    "@bedrock/kms": "^10.3.0",
-    "@bedrock/meter-usage-reporter": "^7.0.0",
+    "@bedrock/kms": "^11.0.0",
+    "@bedrock/meter-usage-reporter": "^8.0.0",
     "@bedrock/validation": "^7.0.0",
-    "@bedrock/zcap-storage": "^7.0.0"
+    "@bedrock/zcap-storage": "^8.0.0"
   },
   "directories": {
     "lib": "./lib"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-digitalbazaar": "^2.8.0",
-    "eslint-plugin-jsdoc": "^39.2.9",
+    "eslint": "^8.18.0",
+    "eslint-config-digitalbazaar": "^3.0.0",
+    "eslint-plugin-jsdoc": "^39.3.3",
     "jsdoc-to-markdown": "^7.1.1"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   }
 }

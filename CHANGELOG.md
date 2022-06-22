@@ -1,9 +1,16 @@
 # bedrock-kms-http ChangeLog
 
-## 14.5.0 - 2022-xx-xx
+## 15.0.0 - 2022-xx-xx
 
 ### Changed
+- **BREAKING**: Require Node.js >=16.
 - Use `package.json` `files` field.
+- Update dependencies.
+- **BREAKING**: Update peer dependencies.
+  - `@bedrock/app-identity@4`
+  - `@bedrock/kms@11`
+  - `@bedrock/meter-usage-reporter@8`
+  - `@bedrock/zcap-storage@8`
 
 ## 14.5.0 - 2022-06-19
 

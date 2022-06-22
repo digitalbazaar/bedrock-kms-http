@@ -1,9 +1,7 @@
 /*!
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-import {createRequire} from 'node:module';
-const require = createRequire(import.meta.url);
-const {constants: zcapConstants} = require('@digitalbazaar/zcap');
+import {constants as zcapConstants} from '@digitalbazaar/zcap';
 
 const {ZCAP_CONTEXT_URL} = zcapConstants;
 
