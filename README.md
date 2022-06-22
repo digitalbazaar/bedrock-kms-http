@@ -1,4 +1,4 @@
-# Bedrock Key Management System API module _(bedrock-kms-http)_
+# Bedrock Key Management System API module _(@bedrock/kms-http)_
 > HTTP APIs for Bedrock Key Management.
 
 ## Table of Contents
@@ -18,7 +18,7 @@
 To install via NPM:
 
 ```
-npm install --save bedrock-kms-http
+npm install @bedrock/kms-http
 ```
 
 ### Development
