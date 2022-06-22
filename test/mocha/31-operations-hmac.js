@@ -3,12 +3,9 @@
  */
 import * as helpers from './helpers.js';
 import {httpsAgent} from '@bedrock/https-agent';
-import {createRequire} from 'node:module';
 import pMap from 'p-map';
-import uuid from 'uuid-random';
-const require = createRequire(import.meta.url);
-const {CapabilityAgent, Hmac, KmsClient} = require(
-  '@digitalbazaar/webkms-client');
+import {v4 as uuid} from 'uuid';
+import {CapabilityAgent, Hmac, KmsClient} from '@digitalbazaar/webkms-client';
 
 const ZCAP_ROOT_PREFIX = 'urn:zcap:root:';
 

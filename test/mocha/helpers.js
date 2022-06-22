@@ -2,21 +2,20 @@
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 import * as bedrock from '@bedrock/core';
-import {createRequire} from 'node:module';
 import {documentLoader} from '@bedrock/jsonld-document-loader';
 import {getAppIdentity} from '@bedrock/app-identity';
 import {httpsAgent} from '@bedrock/https-agent';
 import jsigs from 'jsonld-signatures';
-import uuid from 'uuid-random';
-const require = createRequire(import.meta.url);
-const {AsymmetricKey, CapabilityAgent, KeystoreAgent, KmsClient} =
-  require('@digitalbazaar/webkms-client');
-const {
+import {v4 as uuid} from 'uuid';
+import {
+  AsymmetricKey, CapabilityAgent, KeystoreAgent, KmsClient
+} from '@digitalbazaar/webkms-client';
+import {
   CapabilityDelegation,
-  constants: zcapConstants
-} = require('@digitalbazaar/zcap');
-const {Ed25519Signature2020} = require('@digitalbazaar/ed25519-signature-2020');
-const {ZcapClient} = require('@digitalbazaar/ezcap');
+  constants as zcapConstants
+} from '@digitalbazaar/zcap';
+import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
+import {ZcapClient} from '@digitalbazaar/ezcap';
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
 const {ZCAP_CONTEXT_URL} = zcapConstants;

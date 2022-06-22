@@ -11,7 +11,7 @@
 
 ## Install
 
-- Node.js 12+ is required.
+- Node.js 16+ is required.
 
 ### NPM
 

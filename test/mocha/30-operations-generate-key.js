@@ -4,12 +4,12 @@
 import * as helpers from './helpers.js';
 import {httpClient, DEFAULT_HEADERS} from '@digitalbazaar/http-client';
 import {httpsAgent} from '@bedrock/https-agent';
-import {createRequire} from 'node:module';
-const require = createRequire(import.meta.url);
-const {CapabilityAgent, KmsClient, KeystoreAgent} =
-  require('@digitalbazaar/webkms-client');
-const {signCapabilityInvocation} = require(
-  '@digitalbazaar/http-signature-zcap-invoke');
+import {
+  CapabilityAgent, KmsClient, KeystoreAgent
+} from '@digitalbazaar/webkms-client';
+import {
+  signCapabilityInvocation
+} from '@digitalbazaar/http-signature-zcap-invoke';
 
 describe('generateKey', () => {
   it('generates a key', async () => {
