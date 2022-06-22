@@ -9,8 +9,8 @@
     "test:debug": "node --preserve-symlinks test.js test --log-level debug",
     "test-node": "node --preserve-symlinks test.js test --framework mocha",
     "test-karma": "node --preserve-symlinks test.js test --framework karma",
-    "coverage": "cross-env NODE_ENV=test c8 --reporter=lcov --reporter=text-summary node --preserve-symlinks test.js test --framework mocha",
-    "coverage-ci": "cross-env NODE_ENV=test c8 --reporter=lcovonly node --preserve-symlinks test.js test --framework mocha",
+    "coverage": "cross-env NODE_ENV=test c8 npm run test-node",
+    "coverage-ci": "cross-env NODE_ENV=test c8 --reporter=lcovonly --reporter=text-summary --reporter=text npm run test-node",
     "coverage-report": "c8 report"
   },
   "dependencies": {
@@ -58,6 +58,11 @@
     ],
     "exclude": [
       "node_modules/@bedrock/kms-http/node_modules/**"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "text"
     ]
   }
 }
