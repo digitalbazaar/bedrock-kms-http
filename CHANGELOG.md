@@ -11,6 +11,7 @@
   - `@bedrock/kms@11`
   - `@bedrock/meter-usage-reporter@8`
   - `@bedrock/zcap-storage@8`
+- Lint module.
 
 ## 14.5.0 - 2022-06-19
 
