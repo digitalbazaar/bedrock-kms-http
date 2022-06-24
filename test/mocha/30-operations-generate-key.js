@@ -34,7 +34,7 @@ describe('generateKey', () => {
     // source of requests in the test suite are from 127.0.0.1
     const secret = '22612679-05ce-4ffd-bf58-22b3c4bc1314';
     const handle = 'testKeyAllowList';
-    const ipAllowList = ['127.0.0.1/32'];
+    const ipAllowList = ['127.0.0.1/32', '::1/128'];
     const keystoreAgent = await helpers.createKeystoreAgent(
       {handle, ipAllowList, secret});
     let err;
@@ -77,7 +77,7 @@ describe('generateKey', () => {
     // source of requests in the test suite are from 127.0.0.1
     const secret = 'efef2772-f7aa-4d25-9eac-6228f2a64b3b';
     const handle = 'testKeyAllowList';
-    const ipAllowList = ['8.8.8.8/32', '127.0.0.1/32'];
+    const ipAllowList = ['8.8.8.8/32', '127.0.0.1/32', '::1/128'];
     const keystoreAgent = await helpers.createKeystoreAgent(
       {handle, ipAllowList, secret});
     let err;

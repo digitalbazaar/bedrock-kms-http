@@ -43,7 +43,7 @@ describe('bedrock-kms-http API', () => {
       const capabilityAgent = await CapabilityAgent.fromSecret(
         {secret, handle});
 
-      const ipAllowList = ['127.0.0.1/32'];
+      const ipAllowList = ['127.0.0.1/32', '::1/128'];
 
       let err;
       let result;
@@ -193,7 +193,7 @@ describe('bedrock-kms-http API', () => {
         const capabilityAgent = await CapabilityAgent.fromSecret(
           {secret, handle});
 
-        const ipAllowList = ['127.0.0.1/32'];
+        const ipAllowList = ['127.0.0.1/32', '::1/128'];
 
         const keystore = await helpers.createKeystore(
           {capabilityAgent, ipAllowList});
@@ -518,7 +518,7 @@ describe('bedrock-kms-http API', () => {
           const capabilityAgent2 = await CapabilityAgent.fromSecret(
             {secret: secret2, handle: handle2});
 
-          const ipAllowList = ['127.0.0.1/32'];
+          const ipAllowList = ['127.0.0.1/32', '::1/128'];
 
           let err;
           let result;

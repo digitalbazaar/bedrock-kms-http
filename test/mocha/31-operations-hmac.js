@@ -37,7 +37,7 @@ describe('bedrock-kms-http HMAC operations', () => {
     it('successfully signs', async () => {
       const secret = '22612679-05ce-4ffd-bf58-22b3c4bc1314';
       const handle = 'testKeyAllowList';
-      const ipAllowList = ['127.0.0.1/32'];
+      const ipAllowList = ['127.0.0.1/32', '::1/128'];
       const keystoreAgent = await helpers.createKeystoreAgent(
         {handle, ipAllowList, secret});
       const hmac = await keystoreAgent.generateKey({type: 'hmac'});

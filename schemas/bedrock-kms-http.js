@@ -114,7 +114,7 @@ const ipAllowList = {
   items: {
     type: 'string',
     // leading and trailing slashes in regex must be removed
-    pattern: cidrRegex.v4({exact: true}).toString().slice(1, -1),
+    pattern: cidrRegex({exact: true}).toString().slice(1, -1),
   }
 };
 
