@@ -2,11 +2,11 @@
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 import * as helpers from './helpers.js';
-import {httpClient, DEFAULT_HEADERS} from '@digitalbazaar/http-client';
-import {httpsAgent} from '@bedrock/https-agent';
 import {
-  CapabilityAgent, KmsClient, KeystoreAgent
+  CapabilityAgent, KeystoreAgent, KmsClient
 } from '@digitalbazaar/webkms-client';
+import {DEFAULT_HEADERS, httpClient} from '@digitalbazaar/http-client';
+import {httpsAgent} from '@bedrock/https-agent';
 import {
   signCapabilityInvocation
 } from '@digitalbazaar/http-signature-zcap-invoke';

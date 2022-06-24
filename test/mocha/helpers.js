@@ -2,11 +2,6 @@
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 import * as bedrock from '@bedrock/core';
-import {documentLoader} from '@bedrock/jsonld-document-loader';
-import {getAppIdentity} from '@bedrock/app-identity';
-import {httpsAgent} from '@bedrock/https-agent';
-import jsigs from 'jsonld-signatures';
-import {v4 as uuid} from 'uuid';
 import {
   AsymmetricKey, CapabilityAgent, KeystoreAgent, KmsClient
 } from '@digitalbazaar/webkms-client';
@@ -14,7 +9,12 @@ import {
   CapabilityDelegation,
   constants as zcapConstants
 } from '@digitalbazaar/zcap';
+import {documentLoader} from '@bedrock/jsonld-document-loader';
 import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
+import {getAppIdentity} from '@bedrock/app-identity';
+import {httpsAgent} from '@bedrock/https-agent';
+import jsigs from 'jsonld-signatures';
+import {v4 as uuid} from 'uuid';
 import {ZcapClient} from '@digitalbazaar/ezcap';
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
