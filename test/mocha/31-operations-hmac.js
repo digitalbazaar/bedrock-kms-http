@@ -2,10 +2,10 @@
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 import * as helpers from './helpers.js';
+import {CapabilityAgent, Hmac, KmsClient} from '@digitalbazaar/webkms-client';
 import {httpsAgent} from '@bedrock/https-agent';
 import pMap from 'p-map';
 import {v4 as uuid} from 'uuid';
-import {CapabilityAgent, Hmac, KmsClient} from '@digitalbazaar/webkms-client';
 
 const ZCAP_ROOT_PREFIX = 'urn:zcap:root:';
 

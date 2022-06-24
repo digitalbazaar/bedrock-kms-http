@@ -3,15 +3,15 @@
  */
 import * as bedrock from '@bedrock/core';
 import * as helpers from './helpers.js';
+import {DEFAULT_HEADERS, httpClient} from '@digitalbazaar/http-client';
 import {agent} from '@bedrock/https-agent';
-import {httpClient, DEFAULT_HEADERS} from '@digitalbazaar/http-client';
-import {mockData} from './mock.data.js';
 import {CapabilityAgent} from '@digitalbazaar/webkms-client';
+import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
+import {mockData} from './mock.data.js';
 import {
   signCapabilityInvocation
 } from '@digitalbazaar/http-signature-zcap-invoke';
 import {ZcapClient} from '@digitalbazaar/ezcap';
-import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
 
 describe('bedrock-kms-http API', () => {
   describe('keystores', () => {
