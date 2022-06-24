@@ -36,7 +36,7 @@
     "cors": "^2.8.5",
     "crypto-ld": "^7.0.0",
     "forwarded": "^0.2.0",
-    "netmask": "^2.0.2"
+    "ipaddr.js": "^2.0.1"
   },
   "peerDependencies": {
     "@bedrock/app-identity": "^4.0.0",
