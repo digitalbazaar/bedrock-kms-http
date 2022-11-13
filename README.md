@@ -50,7 +50,7 @@ This module exposes the following API endpoints.
 {
   sequence: 0,
   controller: 'did:key:z6MkoyZVQSetDxU66AsfinUPzgSEu5N9Jf1anHEY4YCzcE54',
-  meterId: 'https://localhost:18443/meters/z3pYurSyUQ5BTBcahRKuzri',
+  meterId: 'https://localhost:18443/meters/z19ygjQcNmQ9AbG7hCF39Kizs',
   kmsModule: 'ssm-v1'
 }
 ```
@@ -71,7 +71,7 @@ This module exposes the following API endpoints.
 ```
 {
   id: 'https://localhost:18443/kms/keystores/z1AByGXEmfZnyG8rgM3aVpYxG',
-  meterId: 'https://localhost:18443/meters/z3pYurSyUQ5BTBcahRKuzri',
+  meterId: 'https://localhost:18443/meters/z19ygjQcNmQ9AbG7hCF39Kizs',
   sequence: 0,
   controller: 'did:key:z6MkoyZVQSetDxU66AsfinUPzgSEu5N9Jf1anHEY4YCzcE54',
   kmsModule: 'ssm-v1'
@@ -109,7 +109,7 @@ This module exposes the following API endpoints.
     controller: 'did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9',
     id: 'https://localhost:18443/kms/keystores/z19xPXyqB3dnqKZ7BtVFvqSLH',
     sequence: 1,
-    meterId: 'https://localhost:18443/meters/zD3E9XJxyUUuJ5ZW14EhCFy',
+    meterId: 'https://localhost:18443/meters/z19zMxFgrtXrR3RArhogVQ78T',
     kmsModule: 'ssm-v1'
   }
 }
@@ -133,7 +133,7 @@ This module exposes the following API endpoints.
 ```
 {
   id: 'https://localhost:18443/kms/keystores/z1A2Dahs56An4rttS3t2QKi69',
-  meterId: 'https://localhost:18443/meters/zC3vXcEbC3iYEntNVZxvq6E',
+  meterId: 'https://localhost:18443/meters/z19zMxFgrtXrR3RArhogVQ78T',
   sequence: 0,
   controller: 'did:key:z6MkoyZVQSetDxU66AsfinUPzgSEu5N9Jf1anHEY4YCzcE54',
   kmsModule: 'ssm-v1'
