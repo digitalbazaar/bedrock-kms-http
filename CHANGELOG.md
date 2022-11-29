@@ -1,5 +1,11 @@
 # bedrock-kms-http ChangeLog
 
+## 16.0.0 -
+
+### Changed
+- **BREAKING**: Upgrade to `@bedrock/kms@12` & `@bedrock/zcap-storage@9`
+  for compatibility with newer node mongodb driver.
+
 ## 15.0.0 - 2022-06-30
 
 ### Changed
