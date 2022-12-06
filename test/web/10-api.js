@@ -86,7 +86,7 @@ describe('bedrock-kms-http HMAC operations', () => {
   });
 });
 
-async function _createKeystore({capabilityAgent, referenceId}) {
+async function _createKeystore({capabilityAgent}) {
   const {id: meterId} = await helpers.createMeter({capabilityAgent});
 
   // create keystore
@@ -97,9 +97,6 @@ async function _createKeystore({capabilityAgent, referenceId}) {
     meterId
   };
 
-  if(referenceId) {
-    config.referenceId = referenceId;
-  }
   return KmsClient.createKeystore({
     url: 'https://localhost:18443/kms/keystores',
     config,
