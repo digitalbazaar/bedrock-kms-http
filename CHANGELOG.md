@@ -2,6 +2,10 @@
 
 ## 16.0.0 - 2022-12-dd
 
+### Changed
+- **BREAKING**: Use `@bedrock/kms@12` which does not create indexes for
+  `referenceId`.
+
 ### Removed
 - **BREAKING**: Remove support for setting a `referenceId` in the keystore
   config. This feature is not used and querying using it has not been supported
