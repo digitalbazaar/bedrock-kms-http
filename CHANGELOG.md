@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 16.0.0 - 2022-12-dd
+## 16.0.0 - 2022-12-06
 
 ### Changed
 - **BREAKING**: Use `@bedrock/kms@12` which does not create indexes for
