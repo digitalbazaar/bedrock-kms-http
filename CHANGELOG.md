@@ -1,5 +1,13 @@
 # bedrock-kms-http ChangeLog
 
+## 16.0.0 - 2022-12-dd
+
+### Removed
+- **BREAKING**: Remove support for setting a `referenceId` in the keystore
+  config. This feature is not used and querying using it has not been supported
+  for some time. Now passing it in a keystore config will generate a validation
+  error.
+
 ## 15.0.0 - 2022-06-30
 
 ### Changed

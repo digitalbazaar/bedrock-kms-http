@@ -13,11 +13,6 @@ const id = {
   type: 'string'
 };
 
-const referenceId = {
-  title: 'referenceId',
-  type: 'string'
-};
-
 const delegatedZcap = {
   title: 'delegatedZcap',
   type: 'object',
@@ -138,7 +133,6 @@ const postKeystoreBody = {
   properties: {
     controller,
     ipAllowList,
-    referenceId,
     sequence,
     kmsModule,
     meterId
@@ -158,7 +152,6 @@ const updateKeystoreConfigBody = {
     controller,
     id,
     ipAllowList,
-    referenceId,
     sequence,
     kmsModule,
     meterId

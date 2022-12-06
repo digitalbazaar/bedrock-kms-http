@@ -46,7 +46,7 @@ export async function createMeter({capabilityAgent} = {}) {
 }
 
 export async function createKeystore({
-  capabilityAgent, ipAllowList, referenceId, meterId,
+  capabilityAgent, ipAllowList, meterId,
   kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`,
   kmsModule = 'ssm-v1',
 }) {
@@ -62,9 +62,6 @@ export async function createKeystore({
     meterId,
     kmsModule
   };
-  if(referenceId) {
-    config.referenceId = referenceId;
-  }
   if(ipAllowList) {
     config.ipAllowList = ipAllowList;
   }
