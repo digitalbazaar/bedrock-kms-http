@@ -1,5 +1,10 @@
 # bedrock-kms-http ChangeLog
 
+## 17.0.0 - 2023-08-xx
+
+### Changed
+- Use `@bedrock/kms@13`.
+
 ## 16.0.0 - 2022-12-06
 
 ### Changed
