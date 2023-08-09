@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 17.0.0 - 2023-08-xx
+## 17.0.0 - 2023-08-09
 
 ### Changed
 - **BREAKING**: Drop support for Node.js v16.
