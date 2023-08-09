@@ -3,6 +3,7 @@
 ## 17.0.0 - 2023-08-xx
 
 ### Changed
+- **BREAKING**: Drop support for Node.js v16.
 - Use `@bedrock/kms@13`.
 
 ## 16.0.0 - 2022-12-06
