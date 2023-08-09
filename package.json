@@ -58,6 +58,6 @@
     "jsdoc-to-markdown": "^7.1.1"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   }
 }
