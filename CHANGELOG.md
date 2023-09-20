@@ -8,6 +8,7 @@
 - **BREAKING**: Update peer deps:
   - Use `@bedrock/kms@14`. This version requires Node.js 18+.
   - Use `@bedrock/meter-usage-reporter@9`. This version requires Node.js 18+.
+- Update test deps.
 
 ## 17.0.0 - 2023-08-09
 
