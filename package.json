@@ -32,7 +32,7 @@
     "@digitalbazaar/ed25519-verification-key-2020": "^4.0.0",
     "@digitalbazaar/ezcap-express": "^7.0.0",
     "@digitalbazaar/webkms-switch": "^11.0.0",
-    "cidr-regex": "^3.1.1",
+    "cidr-regex": "^4.0.0",
     "cors": "^2.8.5",
     "crypto-ld": "^7.0.0",
     "forwarded": "^0.2.0",
