@@ -5,7 +5,9 @@
 ### Changed
 - Use `@digitalbazaar/ed25519-signature-2020@5`.
 - Use `cidr-regex@4`. This version is pure ESM.
-
+- **BREAKING**: Update peer deps:
+  - Use `@bedrock/kms@14`. This version requires Node.js 18+.
+  - Use `@bedrock/meter-usage-reporter@9`. This version requires Node.js 18+.
 
 ## 17.0.0 - 2023-08-09
 
