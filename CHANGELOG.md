@@ -1,5 +1,16 @@
 # bedrock-kms-http ChangeLog
 
+## 19.0.0 - 2024-mm-dd
+
+### Changed
+- **BREAKING**: Make the use of the WebKMS context in WebKMS operations
+  optional. No other changes should be needed to deployments that choose
+  to update to this version, it is marked as a breaking change out of
+  caution around potential test suites that were looking for errors to
+  be thrown if the WebKMS context was not present. This will no longer
+  be the case -- though if WebKMS operations are sent with the context
+  present, those operations will still be accepted.
+
 ## 18.0.0 - 2023-09-20
 
 ### Changed
