@@ -42,7 +42,7 @@
     "@digitalbazaar/ezcap": "^4.0.0",
     "@digitalbazaar/http-client": "^4.0.0",
     "@digitalbazaar/http-signature-zcap-invoke": "^6.0.0",
-    "@digitalbazaar/webkms-client": "digitalbazaar/webkms-client#remove-context",
+    "@digitalbazaar/webkms-client": "^14.0.0",
     "@digitalbazaar/zcap": "^9.0.0",
     "base58-universal": "^2.0.0",
     "c8": "^7.11.3",
