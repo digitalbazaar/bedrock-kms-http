@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 19.0.0 - 2024-mm-dd
+## 19.0.0 - 2024-01-25
 
 ### Changed
 - **BREAKING**: Make the use of the WebKMS context in WebKMS operations
