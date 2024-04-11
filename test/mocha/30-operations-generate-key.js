@@ -1,9 +1,9 @@
 /*!
- * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2024 Digital Bazaar, Inc. All rights reserved.
  */
 import * as helpers from './helpers.js';
 import {
-  CapabilityAgent, KeystoreAgent, KmsClient
+  AsymmetricKey, CapabilityAgent, KeystoreAgent, KmsClient
 } from '@digitalbazaar/webkms-client';
 import {DEFAULT_HEADERS, httpClient} from '@digitalbazaar/http-client';
 import {httpsAgent} from '@bedrock/https-agent';
@@ -116,8 +116,7 @@ describe('generateKey', () => {
   it('generates a key with "maxCapabilityChainLength=1"', async () => {
     const secret = '0ad59134-7583-11ec-b16e-10bf48838a41';
     const handle = 'testKeyMaxCapabilityChainLength';
-    const keystoreAgent = await helpers.createKeystoreAgent(
-      {handle, secret});
+    const keystoreAgent = await helpers.createKeystoreAgent({handle, secret});
     let err;
     let result;
     try {
@@ -130,6 +129,60 @@ describe('generateKey', () => {
     assertNoError(err);
     should.exist(result);
     result.should.include.keys([
+      'capability', 'id', 'type', 'invocationSigner', 'kmsClient', 'kmsId'
+    ]);
+  });
+  it('generates a P-256 key with kms client', async () => {
+    const secret = '3083050c-abad-4d81-a9fe-bd3c5fb1b6c2';
+    const handle = 'testKeyKmsClient';
+    const keystoreAgent = await helpers.createKeystoreAgent({handle, secret});
+    const {capabilityAgent, kmsClient} = keystoreAgent;
+    const invocationSigner = capabilityAgent.getSigner();
+    let err;
+    let result;
+    try {
+      result = await kmsClient.generateKey({
+        type: 'urn:webkms:multikey:P-256', invocationSigner
+      });
+    } catch(e) {
+      err = e;
+    }
+    assertNoError(err);
+    should.exist(result);
+    result.should.include.keys(['keyId', 'keyDescription']);
+    const {keyId, keyDescription} = result;
+    const {id, type} = keyDescription;
+    const key = new AsymmetricKey({
+      id, kmsId: keyId, type, invocationSigner, kmsClient, keyDescription
+    });
+    key.should.include.keys([
+      'capability', 'id', 'type', 'invocationSigner', 'kmsClient', 'kmsId'
+    ]);
+  });
+  it('generates a BBS key with kms client', async () => {
+    const secret = '3083050c-abad-4d81-a9fe-bd3c5fb1b6c2';
+    const handle = 'testKeyKmsClient';
+    const keystoreAgent = await helpers.createKeystoreAgent({handle, secret});
+    const {capabilityAgent, kmsClient} = keystoreAgent;
+    const invocationSigner = capabilityAgent.getSigner();
+    let err;
+    let result;
+    try {
+      result = await kmsClient.generateKey({
+        type: 'urn:webkms:multikey:BBS-BLS12-381-SHA-256', invocationSigner
+      });
+    } catch(e) {
+      err = e;
+    }
+    assertNoError(err);
+    should.exist(result);
+    result.should.include.keys(['keyId', 'keyDescription']);
+    const {keyId, keyDescription} = result;
+    const {id, type} = keyDescription;
+    const key = new AsymmetricKey({
+      id, kmsId: keyId, type, invocationSigner, kmsClient, keyDescription
+    });
+    key.should.include.keys([
       'capability', 'id', 'type', 'invocationSigner', 'kmsClient', 'kmsId'
     ]);
   });
