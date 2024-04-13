@@ -169,7 +169,7 @@ describe('generateKey', () => {
     let result;
     try {
       result = await kmsClient.generateKey({
-        type: 'urn:webkms:multikey:BBS-BLS12-381-SHA-256', invocationSigner
+        type: 'urn:webkms:multikey:Bls12381G2', invocationSigner
       });
     } catch(e) {
       err = e;
