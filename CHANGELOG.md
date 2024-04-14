@@ -1,5 +1,20 @@
 # bedrock-kms-http ChangeLog
 
+## 20.0.0 - 2024-04-dd
+
+### Changed
+- **BREAKING**: Use peer dependency `@bedrock/kms@15` which does not include
+  a `defaultDocumentLoader`. Instead, that document loader (that matches the
+  previous implementation from `@bedrock/kms`) is provided in this module. No
+  special changes to deployments to support this should be necessary. To
+  reimplement the document loader feature, the following peer dependencies have
+  been added (and which were removed from `@bedrock/kms`):
+  - `@bedrock/did-context@5`
+  - `@bedrock/did-io@10`
+  - `@bedrock/jsonld-document-loader@4`
+  - `@bedrock/security-context@8`
+  - `@bedrock/veres-one-context@15`
+
 ## 19.0.0 - 2024-01-25
 
 ### Changed
