@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 20.0.0 - 2024-04-dd
+## 20.0.0 - 2024-04-14
 
 ### Changed
 - **BREAKING**: Use peer dependency `@bedrock/kms@15` which does not include
