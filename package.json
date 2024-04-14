@@ -41,10 +41,15 @@
   "peerDependencies": {
     "@bedrock/app-identity": "^4.0.0",
     "@bedrock/core": "^6.0.1",
+    "@bedrock/did-context": "^5.0.0",
+    "@bedrock/did-io": "^10.1.0",
     "@bedrock/express": "^8.0.0",
-    "@bedrock/kms": "^14.0.0",
+    "@bedrock/jsonld-document-loader": "^4.0.0",
+    "@bedrock/kms": "^15.0.0",
     "@bedrock/meter-usage-reporter": "^9.0.0",
+    "@bedrock/security-context": "^8.0.0",
     "@bedrock/validation": "^7.0.0",
+    "@bedrock/veres-one-context": "^15.0.0",
     "@bedrock/zcap-storage": "^8.0.0"
   },
   "directories": {
@@ -54,7 +59,7 @@
     "eslint": "^8.18.0",
     "eslint-config-digitalbazaar": "^5.0.1",
     "eslint-plugin-jsdoc": "^48.0.2",
-    "eslint-plugin-unicorn": "^50.0.1",
+    "eslint-plugin-unicorn": "^52.0.0",
     "jsdoc-to-markdown": "^8.0.0"
   },
   "engines": {
