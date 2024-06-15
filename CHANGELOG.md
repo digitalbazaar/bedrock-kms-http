@@ -1,5 +1,11 @@
 # bedrock-kms-http ChangeLog
 
+## 20.1.0 - 2024-mm-dd
+
+### Changed
+- Use `@digitalbazaar/ed25519-multikey` to resolve ed25519 verification methods.
+  No changes to deployments are expected.
+
 ## 20.0.0 - 2024-04-14
 
 ### Changed
