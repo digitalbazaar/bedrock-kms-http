@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 21.0.0 - 2024-08-xx
+## 21.0.0 - 2024-08-02
 
 ### Changed
 - **BREAKING**: Update peer deps:
