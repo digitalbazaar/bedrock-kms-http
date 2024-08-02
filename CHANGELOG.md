@@ -1,5 +1,21 @@
 # bedrock-kms-http ChangeLog
 
+## 21.0.0 - 2024-08-xx
+
+### Changed
+- **BREAKING**: Update peer deps:
+  - `@bedrock/core@6.1.3`
+  - `@bedrock/did-context@6.0.0`
+  - `@bedrock/did-io@10.3.1`
+  - `@bedrock/express@8.3.1`
+  - `@bedrock/jsonld-document-loader@5.1.0`
+  - `@bedrock/meter-usage-reporter@9.0.1`
+  - `@bedrock/security-context@9.0.0`
+  - `@bedrock/validation@7.1.0`
+  - `@bedrock/veres-one-context@16.0.0`
+  - `@bedrock/zcap-storage@8.0.1`
+- Update minor, test, and dev dependencies.
+
 ## 20.1.0 - 2024-06-15
 
 ### Changed
