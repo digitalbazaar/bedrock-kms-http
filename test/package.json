@@ -32,7 +32,7 @@
     "@bedrock/package-manager": "^3.0.0",
     "@bedrock/security-context": "^9.0.0",
     "@bedrock/server": "^5.1.0",
-    "@bedrock/ssm-mongodb": "^11.2.1",
+    "@bedrock/ssm-mongodb": "^12.1.0",
     "@bedrock/test": "^8.2.0",
     "@bedrock/validation": "^7.1.0",
     "@bedrock/veres-one-context": "^16.0.0",
