@@ -539,6 +539,6 @@ describe('revocations API', () => {
     should.exist(err);
     err.data.type.should.equal('ValidationError');
     err.data.message.should.equal(
-      'A validation error occured in the \'delegatedZcap\' validator.');
+      'A validation error occurred in the \'delegatedZcap\' validator.');
   });
 });

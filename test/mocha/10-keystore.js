@@ -134,7 +134,8 @@ describe('bedrock-kms-http API', () => {
         should.not.exist(result);
         err.data.type.should.equal('ValidationError');
         err.data.message.should.equal(
-          'A validation error occured in the \'postKeystoreBody\' validator.');
+          'A validation error occurred in ' +
+          'the \'postKeystoreBody\' validator.');
       });
     it('throws error with no controller in zcap validation', async () => {
       const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
@@ -161,7 +162,7 @@ describe('bedrock-kms-http API', () => {
       should.not.exist(result);
       err.data.type.should.equal('ValidationError');
       err.data.message.should.equal(
-        'A validation error occured in the \'delegatedZcap\' validator.');
+        'A validation error occurred in the \'delegatedZcap\' validator.');
     });
 
     describe('get keystore config', () => {
