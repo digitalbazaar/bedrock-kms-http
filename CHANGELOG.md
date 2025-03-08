@@ -1,5 +1,25 @@
 # bedrock-kms-http ChangeLog
 
+## 22.0.0 - 2025-03-xx
+
+### Changed
+- Update dependencies.
+  - `@bedrock/ed25519-multikey@1.3.1`.
+  - `cidr-regex@4.1.3`.
+- Update peer dependencies.
+  - `@bedrock/core@6.3.0`.
+  - `@bedrock/did-io@10.4.0`.
+  - `@bedrock/jsonld-document-loader@5.2.0`.
+  - **BREAKING**: `@bedrock/kms@16`.
+    - Updated for `@bedrock/mongodb@11`.
+  - **BREAKING**: `@bedrock/meter-usage-reporter@10`.
+    - Updated for `@bedrock/mongodb@11`.
+  - `@bedrock/validation@7.1.1`.
+  - **BREAKING**: `@bedrock/zcap-storage@9`.
+    - Updated for `@bedrock/mongodb@11`.
+- Update dev dependencies.
+- Update test dependencies.
+
 ## 21.0.0 - 2024-08-02
 
 ### Changed
