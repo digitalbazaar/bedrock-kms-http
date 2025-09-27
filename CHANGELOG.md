@@ -1,5 +1,11 @@
 # bedrock-kms-http ChangeLog
 
+## 22.1.0 - 2025-mm-dd
+
+### Changed
+- Update peer dependencies:
+  - `@bedrock/zcap-storage@9.3`.
+
 ## 22.0.0 - 2025-03-07
 
 ### Changed
