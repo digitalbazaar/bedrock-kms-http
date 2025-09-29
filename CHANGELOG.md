@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 22.1.0 - 2025-mm-dd
+## 22.1.0 - 2025-09-28
 
 ### Changed
 - Update peer dependencies:
