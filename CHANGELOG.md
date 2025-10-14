@@ -1,5 +1,12 @@
 # bedrock-kms-http ChangeLog
 
+## 22.2.0 - 2025-10-dd
+
+### Changed
+- `helpers.getKeystoreId` will use `config.server.host` first if defined
+  before falling back to `req.host` to improve reliability when operating
+  behind a reverse proxy.
+
 ## 22.1.0 - 2025-09-28
 
 ### Changed
