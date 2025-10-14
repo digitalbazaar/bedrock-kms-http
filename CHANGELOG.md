@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 23.0.0 - 2025-10-dd
+## 23.0.0 - 2025-10-14
 
 ### Changed
 - **BREAKING**: `helpers.getKeystoreId` will use `config.server.baseUri`
