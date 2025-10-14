@@ -1,10 +1,10 @@
 # bedrock-kms-http ChangeLog
 
-## 22.2.0 - 2025-10-dd
+## 23.0.0 - 2025-10-dd
 
 ### Changed
-- `helpers.getKeystoreId` will use `config.server.baseUri` rather than
-  `req.host` to align with other Bedrock service behavior.
+- **BREAKING**: `helpers.getKeystoreId` will use `config.server.baseUri`
+  rather than `req.host` to align with other Bedrock service behavior.
 
 ## 22.1.0 - 2025-09-28
 
