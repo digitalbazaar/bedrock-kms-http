@@ -3,9 +3,8 @@
 ## 22.2.0 - 2025-10-dd
 
 ### Changed
-- `helpers.getKeystoreId` will use `config.server.host` first if defined
-  before falling back to `req.host` to improve reliability when operating
-  behind a reverse proxy.
+- `helpers.getKeystoreId` will use `config.server.host` rather than
+  `req.host` to align with other Bedrock service behavior.
 
 ## 22.1.0 - 2025-09-28
 
