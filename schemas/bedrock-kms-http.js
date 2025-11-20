@@ -162,7 +162,18 @@ const postRevocationBody = {
   ...delegatedZcap
 };
 
+const getConfigsQuery = {
+  title: 'Service Object Configuration Query',
+  type: 'object',
+  required: ['controller'],
+  additionalProperties: false,
+  properties: {
+    controller
+  }
+};
+
 export {
+  getConfigsQuery,
   postKeystoreBody,
   postRevocationBody,
   updateKeystoreConfigBody
