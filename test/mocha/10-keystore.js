@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2025 Digital Bazaar, Inc. All rights reserved.
  */
 import * as bedrock from '@bedrock/core';
 import * as helpers from './helpers.js';
@@ -138,7 +138,7 @@ describe('bedrock-kms-http API', () => {
           'the \'postKeystoreBody\' validator.');
       });
     it('throws error with no controller in zcap validation', async () => {
-      const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+      const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
       const handle = 'testKey1';
       const capabilityAgent = await CapabilityAgent.fromSecret(
         {secret, handle});
@@ -164,6 +164,36 @@ describe('bedrock-kms-http API', () => {
       err.data.message.should.equal(
         'A validation error occurred in the \'delegatedZcap\' validator.');
     });
+
+    describe(`get a controller's keystore configs`, () => {
+      it('gets two keystores', async () => {
+        const secret = 'e3ecebb0-d94f-47bf-b11b-5ac08ce37f5d';
+        const handle = 'testKey1';
+        const capabilityAgent = await CapabilityAgent.fromSecret(
+          {secret, handle});
+
+        const keystore1 = await helpers.createKeystore({capabilityAgent});
+        const keystore2 = await helpers.createKeystore({capabilityAgent});
+
+        let err;
+        let result;
+        try {
+          const kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`;
+          const url = `${kmsBaseUrl}/keystores`;
+          result = await helpers.getKeystores({url, capabilityAgent});
+        } catch(e) {
+          err = e;
+        }
+        assertNoError(err);
+        should.exist(result);
+        result.should.have.keys(['results']);
+        result.results.length.should.equal(2);
+        result.results[0].id.should.equal(keystore1.id);
+        result.results[0].controller.should.equal(capabilityAgent.id);
+        result.results[1].id.should.equal(keystore2.id);
+        result.results[1].controller.should.equal(capabilityAgent.id);
+      });
+    }); // get keystore configs
 
     describe('get keystore config', () => {
       it('gets a keystore', async () => {
@@ -216,7 +246,7 @@ describe('bedrock-kms-http API', () => {
         result.ipAllowList.should.eql(ipAllowList);
       });
       it('returns NotAllowedError for invalid source IP', async () => {
-        const secret = ' b07e6b31-d910-438e-9a5f-08d945a5f676';
+        const secret = 'b07e6b31-d910-438e-9a5f-08d945a5f676';
         const handle = 'testKey1';
         const capabilityAgent = await CapabilityAgent.fromSecret(
           {secret, handle});
