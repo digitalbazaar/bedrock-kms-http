@@ -107,6 +107,19 @@ export async function getKeystore({id, capabilityAgent}) {
   return kmsClient.getKeystore({invocationSigner});
 }
 
+export async function getKeystores({url, capabilityAgent}) {
+  const zcapClient = new ZcapClient({
+    agent: httpsAgent,
+    invocationSigner: capabilityAgent.getSigner(),
+    SuiteClass: Ed25519Signature2020
+  });
+  const {data} = await zcapClient.read({
+    url: `${url}?controller=${encodeURIComponent(capabilityAgent.id)}`,
+    capability: `urn:zcap:root:${encodeURIComponent(url)}`
+  });
+  return data;
+}
+
 export async function delegate({
   parentCapability, controller, invocationTarget, expires, allowedAction,
   delegator, purposeOptions = {}
