@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 23.1.0 - 2025-11-dd
+## 23.1.0 - 2025-11-21
 
 ### Added
 - Add route for fetching all keystore configs for a given root controller.
