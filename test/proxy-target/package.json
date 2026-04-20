@@ -1,0 +1,33 @@
+{
+  "name": "bedrock-kms-http-test-proxy-target",
+  "version": "0.0.1-0",
+  "type": "module",
+  "description": "Bedrock KMS HTTP API test proxy target",
+  "private": true,
+  "scripts": {
+    "start": "node --preserve-symlinks index.js"
+  },
+  "dependencies": {
+    "@bedrock/app-identity": "^4.0.0",
+    "@bedrock/core": "^6.3.0",
+    "@bedrock/did-context": "^6.0.0",
+    "@bedrock/did-io": "^10.4.0",
+    "@bedrock/express": "^8.6.2",
+    "@bedrock/https-agent": "^4.1.0",
+    "@bedrock/jsonld-document-loader": "^5.2.0",
+    "@bedrock/kms": "^16.0.0",
+    "@bedrock/kms-http": "file:..",
+    "@bedrock/ledger-context": "^25.0.0",
+    "@bedrock/meter": "^6.0.0",
+    "@bedrock/meter-http": "^14.0.0",
+    "@bedrock/meter-usage-reporter": "^10.0.0",
+    "@bedrock/mongodb": "^11.0.0",
+    "@bedrock/package-manager": "^3.0.0",
+    "@bedrock/security-context": "^9.0.0",
+    "@bedrock/server": "^5.1.0",
+    "@bedrock/ssm-mongodb": "^13.0.0",
+    "@bedrock/validation": "^7.1.1",
+    "@bedrock/veres-one-context": "^16.0.0",
+    "@bedrock/zcap-storage": "^9.3.0"
+  }
+}
