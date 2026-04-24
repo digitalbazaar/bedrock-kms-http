@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2019-2024 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2026 Digital Bazaar, Inc.
  */
 import * as helpers from './helpers.js';
 import {

@@ -1,5 +1,18 @@
 # bedrock-kms-http ChangeLog
 
+## 23.2.0 - 2026-04-dd
+
+### Added
+- Add KMS module proxy feature. The `kmsModuleProxy` configuration option can
+  be used to specify that KMS operations for a specific KMS module are to be
+  proxied to a "proxy target" instead of handled locally. Any number of KMS
+  modules can be proxied, but each to exactly one proxy target. This feature
+  allows another application instance running bedrock-kms-http, but that is
+  necessarily configured with the same external address and that uses the
+  same database, to run inside of an isolated environment when performing
+  key operations. This feature enables an additional layer of security to
+  be added to deployments.
+
 ## 23.1.0 - 2025-11-21
 
 ### Added
