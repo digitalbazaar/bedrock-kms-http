@@ -8,10 +8,23 @@ import '@bedrock/kms';
 import '@bedrock/kms-http';
 import '@bedrock/meter';
 import '@bedrock/meter-usage-reporter';
+import '@bedrock/mongodb';
 import '@bedrock/security-context';
 import '@bedrock/ssm-mongodb';
 
-// FIXME: add custom config
+const {config} = bedrock;
+
+bedrock.events.on('bedrock.configure', async () => {
+  // use fresh test database
+  config.mongodb.name = 'bedrock_kms_http_proxy_target_test';
+  config.mongodb.dropCollections = {
+    onInit: true,
+    collections: []
+  };
+
+  // allow self-signed certs in test framework
+  config['https-agent'].rejectUnauthorized = false;
+});
 
 bedrock.events.on('bedrock.init', async () => {
   /* Handlers need to be added before `bedrock.start` is called. These are
@@ -19,7 +32,7 @@ bedrock.events.on('bedrock.init', async () => {
   handlers.setCreateHandler({
     handler({meter} = {}) {
       // use configured meter usage reporter as service ID for tests
-      meter.serviceId = bedrock.config['app-identity'].seeds.services.webkms.id;
+      meter.serviceId = config['app-identity'].seeds.services.webkms.id;
       return {meter};
     }
   });
