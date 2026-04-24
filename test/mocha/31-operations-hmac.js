@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2026 Digital Bazaar, Inc.
  */
 import * as helpers from './helpers.js';
 import {CapabilityAgent, Hmac, KmsClient} from '@digitalbazaar/webkms-client';
