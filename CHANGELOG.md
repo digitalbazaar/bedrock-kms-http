@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 23.2.0 - 2026-04-dd
+## 23.2.0 - 2026-04-24
 
 ### Added
 - Add KMS module proxy feature. The `kmsModuleProxy` configuration option can
