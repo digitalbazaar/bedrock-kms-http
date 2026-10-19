@@ -92,7 +92,7 @@ const delegatedZcap = {
         proofValue: {
           title: 'proofValue',
           type: 'string'
-        },
+        }
       }
     }
   }
@@ -109,7 +109,7 @@ const ipAllowList = {
   items: {
     type: 'string',
     // leading and trailing slashes in regex must be removed
-    pattern: cidrRegex({exact: true}).toString().slice(1, -1),
+    pattern: cidrRegex({exact: true}).toString().slice(1, -1)
   }
 };
 
@@ -146,7 +146,7 @@ const updateKeystoreConfigBody = {
   required: [
     'controller',
     'id',
-    'sequence',
+    'sequence'
   ],
   properties: {
     controller,
