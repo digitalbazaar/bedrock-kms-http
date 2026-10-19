@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2019-2025 Digital Bazaar, Inc. All rights reserved.
+/*!
+ * Copyright (c) 2019-2026 Digital Bazaar, Inc.
  */
 import * as bedrock from '@bedrock/core';
 import * as helpers from './helpers.js';
@@ -83,7 +83,7 @@ describe('bedrock-kms-http API', () => {
       err.data.details.errors.should.have.length(1);
       const [error] = err.data.details.errors;
       error.name.should.equal('ValidationError');
-      error.message.should.contain('should match pattern');
+      error.message.should.contain('match pattern');
       error.details.path.should.equal('.ipAllowList[0]');
     });
     it('returns error on invalid ipAllowList', async () => {
@@ -107,7 +107,7 @@ describe('bedrock-kms-http API', () => {
       err.data.details.errors.should.have.length(1);
       const [error] = err.data.details.errors;
       error.name.should.equal('ValidationError');
-      error.message.should.contain('should NOT have fewer than 1 items');
+      error.message.should.contain('NOT have fewer than 1 items');
       error.details.path.should.equal('.ipAllowList');
     });
     it('throws error on no sequence in postKeystoreBody validation',
