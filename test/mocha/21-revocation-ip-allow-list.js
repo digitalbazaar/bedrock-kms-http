@@ -27,7 +27,7 @@ describe('revocations API with ipAllowList', () => {
     aliceKeystoreAgent = new KeystoreAgent({
       capabilityAgent: aliceCapabilityAgent,
       keystoreId: aliceKeystoreConfig.id,
-      kmsClient,
+      kmsClient
     });
   });
 

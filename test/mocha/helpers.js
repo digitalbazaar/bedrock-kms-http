@@ -48,7 +48,7 @@ export async function createMeter({capabilityAgent} = {}) {
 export async function createKeystore({
   capabilityAgent, ipAllowList, meterId,
   kmsBaseUrl = `${bedrock.config.server.baseUri}/kms`,
-  kmsModule = 'ssm-v1',
+  kmsModule = 'ssm-v1'
 }) {
   if(!meterId) {
     // create a meter for the keystore
@@ -138,7 +138,7 @@ export async function delegate({
   return jsigs.sign(newCapability, {
     documentLoader,
     purpose: new CapabilityDelegation({parentCapability, ...purposeOptions}),
-    suite: new Ed25519Signature2020({signer: delegator.getSigner()}),
+    suite: new Ed25519Signature2020({signer: delegator.getSigner()})
   });
 }
 

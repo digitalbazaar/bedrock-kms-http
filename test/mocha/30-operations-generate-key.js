@@ -57,7 +57,7 @@ describe('generateKey', () => {
     const ipAllowList = ['8.8.8.8/32'];
     const keystoreAgent = await helpers.createKeystoreAgent({
       handle, ipAllowList, secret, kmsClientHeaders: {
-        'x-forwarded-for': '8.8.8.8',
+        'x-forwarded-for': '8.8.8.8'
       }
     });
     let err;

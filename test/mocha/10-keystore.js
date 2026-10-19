@@ -306,7 +306,7 @@ describe('bedrock-kms-http API', () => {
           // did:key:z6MknP29cPcQ7G76MWmnsuEEdeFya8ij3fXvJcTJYLXadmp9
           controller: capabilityAgent2.id,
           id: url,
-          sequence: 1,
+          sequence: 1
         };
 
         const headers = await signCapabilityInvocation({
@@ -367,7 +367,7 @@ describe('bedrock-kms-http API', () => {
       it('throw operation error when attempting to update "meterId"',
         async () => {
           // TODO: Remove or update this test when the following is fixed
-          // eslint-disable-next-line max-len
+
           // https://github.com/digitalbazaar/bedrock-kms-http/blob/main/lib/http.js#L182
           const secret = '69ae7dc3-1d6d-4ff9-9cc0-c07b43d2006b';
           const handle = 'testKeyUpdate';
@@ -448,7 +448,7 @@ describe('bedrock-kms-http API', () => {
         const newConfig = {
           controller: capabilityAgent2.id,
           id: url,
-          sequence: 1,
+          sequence: 1
         };
 
         // the capability invocation here is signed by capabilityAgent2 which
@@ -511,7 +511,7 @@ describe('bedrock-kms-http API', () => {
           controller: capabilityAgent2.id,
           id: url,
           // the proper sequence would be 1
-          sequence: 10,
+          sequence: 10
         };
 
         const headers = await signCapabilityInvocation({
@@ -575,7 +575,7 @@ describe('bedrock-kms-http API', () => {
             controller: capabilityAgent2.id,
             id: url,
             ipAllowList,
-            sequence: 1,
+            sequence: 1
           };
 
           const headers = await signCapabilityInvocation({
@@ -669,7 +669,7 @@ describe('bedrock-kms-http API', () => {
             controller: capabilityAgent2.id,
             id: url,
             ipAllowList,
-            sequence: 1,
+            sequence: 1
           };
 
           const headers = await signCapabilityInvocation({

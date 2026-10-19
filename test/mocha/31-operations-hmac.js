@@ -115,7 +115,7 @@ describe('bedrock-kms-http HMAC operations', () => {
       const ipAllowList = ['8.8.8.8/32'];
       const keystoreAgent = await helpers.createKeystoreAgent({
         handle, ipAllowList, secret, kmsClientHeaders: {
-          'x-forwarded-for': '8.8.8.8',
+          'x-forwarded-for': '8.8.8.8'
         }
       });
       const hmac = await keystoreAgent.generateKey({type: 'hmac'});
