@@ -1,5 +1,10 @@
 # bedrock-kms-http ChangeLog
 
+## 23.3.0 - 2026-mm-dd
+
+### Changed
+- Update dependencies and expected node version (>=22).
+
 ## 23.2.0 - 2026-04-24
 
 ### Added
