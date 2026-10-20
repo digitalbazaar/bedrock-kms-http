@@ -10,9 +10,9 @@ jobs:
       matrix:
         node-version: [24.x]
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
@@ -30,9 +30,9 @@ jobs:
       matrix:
         node-version: [22.x, 24.x, 26.x]
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
         node-version: ${{ matrix.node-version }}
     - run: |
@@ -55,9 +55,9 @@ jobs:
       matrix:
         node-version: [24.x]
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
         node-version: ${{ matrix.node-version }}
     - run: |
@@ -80,9 +80,9 @@ jobs:
       matrix:
         node-version: [24.x]
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
         node-version: ${{ matrix.node-version }}
     - run: |
@@ -94,8 +94,8 @@ jobs:
         cd test
         npm run coverage-ci
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v7
       with:
-        file: ./test/coverage/lcov.info
+        files: ./test/coverage/lcov.info
         fail_ci_if_error: true
         token: ${{ secrets.CODECOV_TOKEN }}
