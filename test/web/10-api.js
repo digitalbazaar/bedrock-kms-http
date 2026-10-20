@@ -5,7 +5,6 @@ import * as helpers from './helpers.js';
 import {CapabilityAgent, KeystoreAgent, KmsClient}
   from '@digitalbazaar/webkms-client';
 import pMap from 'p-map';
-import {v4 as uuid} from 'uuid';
 
 describe('bedrock-kms-http HMAC operations', () => {
   describe('Sha256HmacKey2019', () => {
@@ -57,7 +56,7 @@ describe('bedrock-kms-http HMAC operations', () => {
           // uuids are 37 chars long, * 30 is ~1KiB
           let v = '';
           for(let n = 0; n < 30; ++n) {
-            v += uuid();
+            v += crypto.randomUUID();
           }
           vData.push(new TextEncoder('utf-8').encode(v));
         }
