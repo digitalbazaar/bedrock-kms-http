@@ -19,7 +19,6 @@ jobs:
     - name: Run eslint
       run: npm run lint
   test-node:
-    needs: [lint]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     services:
@@ -45,7 +44,6 @@ jobs:
         cd test
         npm run test-node
   test-karma:
-    needs: [lint]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     services:
@@ -71,7 +69,6 @@ jobs:
         cd test
         npm run test-karma
   coverage:
-    needs: [test-node, test-karma]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     services:
