@@ -3,7 +3,11 @@
 ## 23.3.0 - 2026-mm-dd
 
 ### Changed
-- Update dependencies and expected node version (>=22).
+- Update dependencies.
+- **NOTE**: Update supported platforms.
+  - Test on Node.js >=22.
+  - Update `engines.node` to `>=22`.
+  - Update README requirements section.
 
 ## 23.2.0 - 2026-04-24
 
