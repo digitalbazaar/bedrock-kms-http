@@ -6,7 +6,8 @@ permissions: {}
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 10
     strategy:
       matrix:
@@ -23,7 +24,8 @@ jobs:
     - name: Run eslint
       run: npm run lint
   test-node:
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 10
     services:
       mongodb:
@@ -50,7 +52,8 @@ jobs:
         cd test
         npm run test-node
   test-karma:
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 10
     services:
       mongodb:
@@ -77,7 +80,8 @@ jobs:
         cd test
         npm run test-karma
   coverage:
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 10
     services:
       mongodb:
