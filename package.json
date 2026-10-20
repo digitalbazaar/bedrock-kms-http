@@ -39,18 +39,18 @@
     "ipaddr.js": "^2.5.0"
   },
   "peerDependencies": {
-    "@bedrock/app-identity": "^4.0.0",
+    "@bedrock/app-identity": "^4.2.0",
     "@bedrock/core": "^6.3.0",
     "@bedrock/did-context": "^6.0.0",
-    "@bedrock/did-io": "^10.4.0",
-    "@bedrock/express": "^8.3.1",
-    "@bedrock/jsonld-document-loader": "^5.2.0",
-    "@bedrock/kms": "^16.0.0",
-    "@bedrock/meter-usage-reporter": "^10.0.0",
+    "@bedrock/did-io": "^10.5.0",
+    "@bedrock/express": "^8.8.1",
+    "@bedrock/jsonld-document-loader": "^5.2.1",
+    "@bedrock/kms": "^16.2.0",
+    "@bedrock/meter-usage-reporter": "^10.1.0",
     "@bedrock/security-context": "^9.0.0",
-    "@bedrock/validation": "^7.1.1",
+    "@bedrock/validation": "^7.3.0",
     "@bedrock/veres-one-context": "^16.0.0",
-    "@bedrock/zcap-storage": "^9.3.0"
+    "@bedrock/zcap-storage": "^9.7.0"
   },
   "directories": {
     "lib": "./lib"

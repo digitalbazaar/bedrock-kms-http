@@ -4,6 +4,8 @@
 
 ### Changed
 - Update dependencies.
+- Update peer minor dependencies.
+- Update dev and test dependencies.
 - **NOTE**: Update supported platforms.
   - Test on Node.js >=22.
   - Update `engines.node` to `>=22`.
