@@ -5,7 +5,6 @@ import * as helpers from './helpers.js';
 import {CapabilityAgent, Hmac, KmsClient} from '@digitalbazaar/webkms-client';
 import {httpsAgent} from '@bedrock/https-agent';
 import pMap from 'p-map';
-import {v4 as uuid} from 'uuid';
 
 const ZCAP_ROOT_PREFIX = 'urn:zcap:root:';
 
@@ -76,8 +75,8 @@ describe('bedrock-kms-http HMAC operations', () => {
 
       // now delegate and try to invoke
       const delegatee = await CapabilityAgent.fromSecret({
-        secret: uuid(),
-        handle: uuid()
+        secret: crypto.randomUUID(),
+        handle: crypto.randomUUID()
       });
       const rootCapability = ZCAP_ROOT_PREFIX +
         encodeURIComponent(keystoreAgent.keystoreId);
@@ -149,7 +148,7 @@ describe('bedrock-kms-http HMAC operations', () => {
         // uuids are 37 chars long, * 30 is ~1KiB
         let v = '';
         for(let n = 0; n < 30; ++n) {
-          v += uuid();
+          v += crypto.randomUUID();
         }
         vData.push(new TextEncoder('utf-8').encode(v));
       }

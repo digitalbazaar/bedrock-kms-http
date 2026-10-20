@@ -14,7 +14,6 @@ import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
 import {getAppIdentity} from '@bedrock/app-identity';
 import {httpsAgent} from '@bedrock/https-agent';
 import jsigs from 'jsonld-signatures';
-import {v4 as uuid} from 'uuid';
 import {ZcapClient} from '@digitalbazaar/ezcap';
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
@@ -126,7 +125,7 @@ export async function delegate({
 }) {
   const newCapability = {
     '@context': ZCAP_CONTEXT_URL,
-    id: `urn:zcap:${uuid()}`,
+    id: `urn:zcap:${crypto.randomUUID()}`,
     controller,
     parentCapability: parentCapability.id || parentCapability,
     invocationTarget: invocationTarget || parentCapability.invocationTarget,
