@@ -4,6 +4,8 @@
 
 ### Changed
 - Replace test `uuid` use with `crypto.randomUUID()`.
+- Update peer minor dependencies.
+- Update test dependencies.
 
 ## 23.3.0 - 2026-10-20
 
