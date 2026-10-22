@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 23.3.1 - 2026-10-xx
+## 23.3.1 - 2026-10-22
 
 ### Changed
 - Replace test `uuid` use with `crypto.randomUUID()`.
