@@ -43,7 +43,7 @@
     "@bedrock/core": "^6.3.0",
     "@bedrock/did-context": "^6.0.0",
     "@bedrock/did-io": "^10.5.0",
-    "@bedrock/express": "^8.8.1",
+    "@bedrock/express": "^8.8.3",
     "@bedrock/jsonld-document-loader": "^5.2.1",
     "@bedrock/kms": "^16.2.0",
     "@bedrock/meter-usage-reporter": "^10.1.0",
