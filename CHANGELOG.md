@@ -5,6 +5,8 @@
 ### Changed
 - Replace test `uuid` use with `crypto.randomUUID()`.
 - Update peer minor dependencies.
+  - `@bedrock/express@8.8.3`
+    - Fixes Node.js 26 compatibility.
 - Update test dependencies.
 
 ## 23.3.0 - 2026-10-20
