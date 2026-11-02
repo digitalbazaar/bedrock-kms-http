@@ -1,5 +1,10 @@
 # bedrock-kms-http ChangeLog
 
+## 23.4.0 - 2026-11-dd
+
+### Added
+- Report storage use on resource creation.
+
 ## 23.3.1 - 2026-10-22
 
 ### Changed
