@@ -1,6 +1,6 @@
 # bedrock-kms-http ChangeLog
 
-## 23.4.1 - 2026-11-dd
+## 23.4.1 - 2026-11-09
 
 ### Fixed
 - Fix keystore creation meter reporting bug.
