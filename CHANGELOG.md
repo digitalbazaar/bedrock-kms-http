@@ -1,5 +1,11 @@
 # bedrock-kms-http ChangeLog
 
+## 23.4.3 - 2026-11-dd
+
+### Changed
+- Update dependencies:
+  - `@digitalbazaar/ezcap-express@^7.3.2`.
+
 ## 23.4.2 - 2026-11-20
 
 ### Changed
