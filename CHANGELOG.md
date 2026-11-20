@@ -1,5 +1,12 @@
 # bedrock-kms-http ChangeLog
 
+## 23.4.2 - 2026-11-dd
+
+### Changed
+- Update dependencies:
+  - `@digitalbazaar/ezcap-express@^7.3.1`
+  - `http-proxy-middleware@4.2.2`.
+
 ## 23.4.1 - 2026-11-09
 
 ### Fixed
